@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <title>Document</title>
+  </head>
+
+    <script>
+      // Initialize the agent at application startup.
+      const fpPromise = import(
+        "https://fpjscdn.net/v3/2UZgp3skqLzfJpFUGUrw"
+      ).then((FingerprintJS) =>
+        FingerprintJS.load({
+          region: "eu",
+        })
+      );
+
+      let extendedResult = true;
+
+      function clickCheckbox() {
+        extendedResult = !extendedResult;
+        $('#extended').prop("checked", extendedResult);
+      }
+
+      // Get the visitor identifier when you need it.
+      function getVisitorData() {
+        fpPromise
+          .then((fp) =>
+            fp.get({
+              extendedResult,
+              products: ["identification", "botd"],
+            })
+          )
+          .then((result) => {
+            const visitorId = result.visitorId;
+            console.log(visitorId);
+            console.log(result);
+            $("#visitorId")
+              .empty()
+              .append(`Your visitorId is: ${visitorId} </br>`);
+            $("#requestId")
+              .empty()
+              .append(`Latest requestId: ${result.requestId} `);
+            $("#json").empty().append(JSON.stringify(result, undefined, 2));
+          });
+      }
+
+      getVisitorData();
+    </script>
+
+
+
+    <h1>FingerprintJS Simple HTML Demo (script snippet)</h1>
+    <button onClick="getVisitorData()">
+      Get visitor data from Fingerprint
+    </button>
+
+    <input type="checkbox" id="extended" style="margin-left: 10px" checked="true" onclick="clickCheckbox()"> 
+    <label for="extended">Extended result</label>
+    
+    <p id="visitorId"></p>
+    <p id="requestId"></p>
+    <pre id="json"></pre>
+  </body>
+</html>
