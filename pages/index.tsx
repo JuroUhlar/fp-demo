@@ -17,7 +17,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex items-center justify-center h-[100vh]">
-        <h1 className="text-3xl">Fingerprint JS Demo</h1>
+        <div>
+          <h1 className="text-3xl mb-4">Fingerprint JS Demo</h1>
+          <p>
+            <a
+              href="onePager.html"
+              className="text-blue-600 underline hover:text-blue-400"
+            >
+              Pure HTML page demo
+            </a>
+          </p>
+        </div>
       </main>
     </>
   );
