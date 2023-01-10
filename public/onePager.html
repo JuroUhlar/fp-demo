@@ -34,6 +34,8 @@
             fp.get({
               extendedResult,
               products: ["identification", "botd"],
+              linkedId: "hello",
+              tag: { myCustomId: "helloTag" },
             })
           )
           .then((result) => {
