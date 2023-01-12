@@ -11,14 +11,34 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <header>
-        <a
-          href="onePager.html"
-          className="text-blue-600 underline hover:text-blue-400"
-        >
-          Pure HTML page demo
-        </a>
+        <ul className="p-10">
+          <li>
+            <a
+              href="onePager.html"
+              className="text-blue-600 underline hover:text-blue-400"
+            >
+              Pure HTML demo
+            </a>
+          </li>
+          <li>
+            <a
+              href="gtm.html"
+              className="text-blue-600 underline hover:text-blue-400"
+            >
+              Google Tag Manager Demo
+            </a>
+          </li>
+          <li>
+            <a
+              href="cloudfront.html"
+              className="text-blue-600 underline hover:text-blue-400"
+            >
+              Cloudfront Demo
+            </a>
+          </li>
+        </ul>
       </header>
-      <main className="flex items-center justify-center h-[90vh]">
+      <main className="m-10">
         <div>
           <h1 className="text-3xl mb-4">Fingerprint JS Demo</h1>
 

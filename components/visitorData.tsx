@@ -10,32 +10,24 @@ const VisitorData: FunctionComponent = () => {
     products: ["botd", "identification"],
   });
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-  if (error) {
-    return <div>An error occurred: {error.message}</div>;
-  }
-
-  if (data) {
+  if (data && !isLoading) {
     console.log(data);
-    // perform some logic based on the visitor data
-    return (
-      <div>
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={() => getData()}
-        >
-          Get data
-        </button>
-        <div>Welcome {data.visitorFound ? `back` : ""}!</div>
-        <div>Your visitorId: {data.visitorId}</div>
-        <div>Request Id: {data.requestId}</div>
-      </div>
-    );
-  } else {
-    return null;
   }
+  return (
+    <div>
+      <button
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        onClick={() => getData({ ignoreCache: true })}
+      >
+        Get data
+      </button>
+      {isLoading && <span> Loading...</span>}
+      {error && <span>An error occurred: {error.message}</span>}
+      <div>Welcome {data?.visitorFound ? `back` : ""}!</div>
+      <div>Your visitorId: {data?.visitorId}</div>
+      <div>Request Id: {data?.requestId}</div>
+    </div>
+  );
 };
 
 export default VisitorData;
