@@ -14,15 +14,15 @@ export default function Home() {
         <ul className="p-10">
           <li>
             <a
-              href="onePager.html"
+              href="simple/index.html"
               className="text-blue-600 underline hover:text-blue-400"
             >
-              Pure HTML demo
+              Simple HTML demo
             </a>
           </li>
           <li>
             <a
-              href="gtm.html"
+              href="gtm/index.html"
               className="text-blue-600 underline hover:text-blue-400"
             >
               Google Tag Manager Demo
@@ -30,7 +30,7 @@ export default function Home() {
           </li>
           <li>
             <a
-              href="cloudfront.html"
+              href="cloudfront/index.html"
               className="text-blue-600 underline hover:text-blue-400"
             >
               Cloudfront Demo
