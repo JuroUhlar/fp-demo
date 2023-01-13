@@ -12,11 +12,11 @@
     <script>
       // Initialize the agent at application startup.
       const fpPromise = import(
-        "https://fpjscdn.net/v3/2UZgp3skqLzfJpFUGUrw"
+        'https://cloudfront.juraj.click/ghTV3FGADFbJVSId/buc1pMANm4wmx5j1?apiKey=2UZgp3skqLzfJpFUGUrw'
       ).then((FingerprintJS) =>
         FingerprintJS.load({
           region: "eu",
-          // endpoint: "https://fp.jurajuhlar.eu"
+          endpoint: 'https://cloudfront.juraj.click/ghTV3FGADFbJVSId/0FDnBHGnHdW3xKHa?region=eu'
         })
       );
 
@@ -34,8 +34,8 @@
             fp.get({
               extendedResult,
               products: ["identification", "botd"],
-              linkedId: "hello",
-              tag: { myCustomId: "helloTag" },
+              linkedId: "CloudFront",
+              tag: { integration: "CloudFront" },
             })
           )
           .then((result) => {
