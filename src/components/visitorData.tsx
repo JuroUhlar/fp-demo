@@ -26,12 +26,20 @@ const VisitorData: FunctionComponent = () => {
       <div>Welcome{data?.visitorFound ? ` back` : ""}!</div>
       <div>Your visitorId: {data?.visitorId}</div>
       <div>Request Id: {data?.requestId}</div>
-      <div>
-        You are a{" "}
-        {data?.visitorId
-          ? "nice human made of meat 🥩"
-          : "stinky robot made of code 🤖"}
-      </div>
+      {data && (
+        <div>
+          You are a{" "}
+          {data.visitorId === "" ? (
+            <>
+              stinky robot made of code <b className="text-3xl">🤖</b>
+            </>
+          ) : (
+            <>
+              nice human made of meat <b className="text-3xl">🥩</b>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 };
