@@ -16,19 +16,21 @@ const VisitorData: FunctionComponent = () => {
   return (
     <div>
       <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
         onClick={() => getData({ ignoreCache: true })}
       >
         Get data
       </button>
       {isLoading && <span> Loading...</span>}
       {error && <span>An error occurred: {error.message}</span>}
-      <div>Welcome {data?.visitorFound ? `back` : ""}!</div>
+      <div>Welcome{data?.visitorFound ? ` back` : ""}!</div>
       <div>Your visitorId: {data?.visitorId}</div>
       <div>Request Id: {data?.requestId}</div>
       <div>
         You are a{" "}
-        {data?.visitorId ? "human made of meat" : "stinky bot made of code"}
+        {data?.visitorId
+          ? "nice human made of meat 🥩"
+          : "stinky robot made of code 🤖"}
       </div>
     </div>
   );
