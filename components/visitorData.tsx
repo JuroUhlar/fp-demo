@@ -5,8 +5,8 @@ const VisitorData: FunctionComponent = () => {
   const { isLoading, error, data, getData } = useVisitorData({
     extendedResult: true,
     // ignoreCache: true,
-    linkedId: "next.js linked id",
-    tag: { myTag: "FooBar" },
+    linkedId: "Next.js",
+    tag: { integration: "Next.js" },
     products: ["botd", "identification"],
   });
 
