@@ -36,6 +36,14 @@ export default function Home() {
               Cloudfront Demo
             </a>
           </li>
+          <li>
+            <a
+              href="opensource/index.html"
+              className="text-blue-600 underline hover:text-blue-400"
+            >
+              Open Source FingerprintJS Demo
+            </a>
+          </li>
         </ul>
       </header>
       <main className="m-10">

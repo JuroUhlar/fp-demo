@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FingerprintJS (Open Source) Demo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script>
+      // Initialize the agent at application startup.
+      const fpPromise = import("https://openfpcdn.io/fingerprintjs/v3").then(
+        (FingerprintJS) => FingerprintJS.load()
+      );
+
+      // Get the visitor identifier when you need it.
+      fpPromise
+        .then((fp) => fp.get())
+        .then((result) => {
+          // This is the visitor identifier:
+          const visitorId = result.visitorId;
+          console.log(visitorId);
+          console.log(result);
+          $("#visitorId")
+            .empty()
+            .append(`Your visitorId is: ${visitorId} </br>`);
+          $("#json").empty().append(JSON.stringify(result, undefined, 2));
+        });
+    </script>
+  </head>
+  <body>
+    <h1>FingerprintJS (Open Source) Demo</h1>
+    <p id="visitorId"></p>
+    <pre id="json"></pre>
+  </body>
+</html>
