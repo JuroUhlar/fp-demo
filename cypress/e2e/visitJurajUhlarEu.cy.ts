@@ -4,3 +4,5 @@ describe("Visit some sites", () => {
     cy.get("h1").should("contain", "Fingerprint");
   });
 });
+
+export {};

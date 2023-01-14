@@ -3,3 +3,5 @@ describe("Visit", () => {
     cy.visit("https://fingerprint.com");
   });
 });
+
+export {};
