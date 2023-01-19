@@ -44,6 +44,14 @@ export default function Home() {
               Open Source FingerprintJS Demo
             </a>
           </li>
+          <li>
+            <a
+              href="default/index.html"
+              className="text-blue-600 underline hover:text-blue-400"
+            >
+              Simple HTML with default domain
+            </a>
+          </li>
         </ul>
       </header>
       <main className="m-10">
