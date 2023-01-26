@@ -1,15 +1,11 @@
-import FingerprintJS, { GetResult } from "@fingerprintjs/fingerprintjs-pro";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import Head from "next/head";
-import { useEffect, useState } from "react";
-import { CUSTOM_SUBDOMAIN, PUBLIC_API_KEY } from "../components/constants";
+import FingerprintJS, { GetResult } from '@fingerprintjs/fingerprintjs-pro';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import Head from 'next/head';
+import { useEffect, useState } from 'react';
+import { CUSTOM_SUBDOMAIN, PUBLIC_API_KEY } from '../components/constants';
 
-export default function ServerSide({
-  message,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const [fingerprintData, setFingerprintData] = useState<GetResult | null>(
-    null
-  );
+export default function ServerSide({ message }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const [fingerprintData, setFingerprintData] = useState<GetResult | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -48,5 +44,5 @@ export default function ServerSide({
 export const getServerSideProps: GetServerSideProps<{
   message: string;
 }> = async () => {
-  return { props: { message: "This page was rendered server side" } };
+  return { props: { message: 'This page was rendered server side' } };
 };
