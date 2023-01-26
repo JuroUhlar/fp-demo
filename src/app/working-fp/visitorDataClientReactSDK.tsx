@@ -1,15 +1,8 @@
 'use client';
 
-import {
-  FpjsProvider,
-  useVisitorData,
-} from '@fingerprintjs/fingerprintjs-pro-react';
+import { FpjsProvider, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { ComponentType, FunctionComponent, PropsWithChildren } from 'react';
-import {
-  PUBLIC_API_KEY,
-  REGION,
-  CUSTOM_SUBDOMAIN,
-} from '../../components/constants';
+import { PUBLIC_API_KEY, REGION, CUSTOM_SUBDOMAIN } from '../../constants';
 
 const WithFingerprintProReactPackage = (Component: ComponentType) => {
   const wrappedComponent = () => (

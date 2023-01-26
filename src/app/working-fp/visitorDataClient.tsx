@@ -2,12 +2,10 @@
 
 import FingerprintJS, { GetResult } from '@fingerprintjs/fingerprintjs-pro';
 import { FunctionComponent, useEffect, useState } from 'react';
-import { PUBLIC_API_KEY, CUSTOM_SUBDOMAIN } from '../../components/constants';
+import { PUBLIC_API_KEY, CUSTOM_SUBDOMAIN } from '../../constants';
 
 const VisitorDataClient: FunctionComponent = () => {
-  const [fingerprintData, setFingerprintData] = useState<GetResult | null>(
-    null
-  );
+  const [fingerprintData, setFingerprintData] = useState<GetResult | null>(null);
 
   useEffect(() => {
     (async () => {

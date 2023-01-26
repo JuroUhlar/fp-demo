@@ -2,7 +2,7 @@ import FingerprintJS, { GetResult } from '@fingerprintjs/fingerprintjs-pro';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import { CUSTOM_SUBDOMAIN, PUBLIC_API_KEY } from '../components/constants';
+import { CUSTOM_SUBDOMAIN, PUBLIC_API_KEY } from '../constants';
 
 export default function ServerSide({ message }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [fingerprintData, setFingerprintData] = useState<GetResult | null>(null);

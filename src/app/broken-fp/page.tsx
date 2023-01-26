@@ -1,6 +1,6 @@
-import FingerprintJS, { GetResult } from "@fingerprintjs/fingerprintjs-pro";
-import Head from "next/head";
-import { CUSTOM_SUBDOMAIN, PUBLIC_API_KEY } from "../../components/constants";
+import FingerprintJS, { GetResult } from '@fingerprintjs/fingerprintjs-pro';
+import Head from 'next/head';
+import { CUSTOM_SUBDOMAIN, PUBLIC_API_KEY } from '../../constants';
 
 export default async function ServerPage() {
   const fpPromise = FingerprintJS.load({
