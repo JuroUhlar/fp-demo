@@ -1,10 +1,10 @@
 'use client';
 
 import FingerprintJS, { GetResult } from '@fingerprintjs/fingerprintjs-pro';
-import { FunctionComponent, useEffect, useState } from 'react';
-import { PUBLIC_API_KEY, CUSTOM_SUBDOMAIN } from '../../constants';
+import { useEffect, useState } from 'react';
+import { CUSTOM_SUBDOMAIN, PUBLIC_API_KEY } from '../../constants';
 
-const VisitorDataClient: FunctionComponent = () => {
+export default function VisitorDataClient() {
   const [fingerprintData, setFingerprintData] = useState<GetResult | null>(null);
 
   useEffect(() => {
@@ -19,12 +19,20 @@ const VisitorDataClient: FunctionComponent = () => {
     })();
   }, []);
 
-  console.log(fingerprintData);
+  // const fpPromise = FingerprintJS.load({
+  //   apiKey: '2UZgp3skqLzfJpFUGUrw', //
+  // });
+
+  // fpPromise
+  //   .then((fp) => fp.get())
+  //   .then((result) => {
+  //     console.log(result.visitorId);
+  //     setFingerprintData(result);
+  //   });
+
   return (
     <>
       <div>Your visitorId: {fingerprintData?.visitorId}</div>
     </>
   );
-};
-
-export default VisitorDataClient;
+}
