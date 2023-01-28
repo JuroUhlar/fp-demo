@@ -3,14 +3,16 @@ import Head from 'next/head';
 import { CUSTOM_SUBDOMAIN, PUBLIC_API_KEY } from '../../constants';
 
 export default async function ServerPage() {
-  const fpPromise = FingerprintJS.load({
-    apiKey: PUBLIC_API_KEY,
-    endpoint: CUSTOM_SUBDOMAIN,
-  });
-  const fp = await fpPromise;
-  const data = await fp.get({ extendedResult: true });
+  let data: any = null;
 
-  console.log(data);
+  // This is an antipattern that will break server-side rendering
+  // const fpPromise = FingerprintJS.load({
+  //   apiKey: PUBLIC_API_KEY,
+  //   endpoint: CUSTOM_SUBDOMAIN,
+  // });
+  // const fp = await fpPromise;
+  //  data = await fp.get({ extendedResult: true });
+  // console.log(data);
   return (
     <>
       <main className="m-10">
