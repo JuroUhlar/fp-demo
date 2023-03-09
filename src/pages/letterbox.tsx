@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+// import lodash
+import _ from 'lodash';
 
 export default function Letterbox() {
   const [screen, setScreen] = useState<any>({});
@@ -20,10 +22,13 @@ export default function Letterbox() {
 
   useEffect(() => {
     updateScreen();
-    window.addEventListener('resize', () => {
-      console.log('resize');
-      updateScreen();
-    });
+    window.addEventListener(
+      'resize',
+      _.debounce(() => {
+        console.log('resize');
+        updateScreen();
+      }, 50)
+    );
   }, []);
 
   return (
