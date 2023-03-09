@@ -7,14 +7,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html>
       <head />
       <body>
-        <FpjsProvider
-          loadOptions={{
-            apiKey: PUBLIC_API_KEY,
-            endpoint: CUSTOM_SUBDOMAIN,
-          }}
-        >
-          {children}
-        </FpjsProvider>
+        <MyFpjsProvider>{children}</MyFpjsProvider>
       </body>
     </html>
   );
