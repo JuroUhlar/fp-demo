@@ -31,7 +31,7 @@ export default function Letterbox() {
   }, []);
 
   return (
-    <div className="flex h-screen items-center justify-center">
+    <div className="flex h-screen items-center justify-center bg-gray-900 text-orange-50">
       <div className="align-center">
         <h1 className="text-2xl mb-6" contentEditable="true">
           Properties on the `window` object
