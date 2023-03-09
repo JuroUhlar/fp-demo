@@ -8,8 +8,8 @@ export default function Letterbox() {
     const result = {
       screenWidth: window.screen.width,
       screenHeight: window.screen.height,
-      // screenAvailWidth: window.screen.availWidth,
-      // screenAvailHeight: window.screen.availHeight,
+      screenAvailWidth: window.screen.availWidth,
+      screenAvailHeight: window.screen.availHeight,
       windowHeight: window.innerHeight,
       windowWidth: window.innerWidth,
       windowOuterHeight: window.outerHeight,
@@ -31,10 +31,13 @@ export default function Letterbox() {
   }, []);
 
   return (
-    <div
-      style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center' }}
-    >
-      <pre>{JSON.stringify(screen, undefined, 2)}</pre>
+    <div className="flex h-screen items-center justify-center">
+      <div className="align-center">
+        <h1 className="text-2xl mb-6" contentEditable="true">
+          Properties on the `window` object
+        </h1>
+        <pre>{JSON.stringify(screen, undefined, 2)}</pre>
+      </div>
     </div>
   );
 }
