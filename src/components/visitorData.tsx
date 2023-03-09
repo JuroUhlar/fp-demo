@@ -1,13 +1,13 @@
-import { useVisitorData } from "@fingerprintjs/fingerprintjs-pro-react";
-import { FunctionComponent } from "react";
+import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { FunctionComponent } from 'react';
 
 const VisitorData: FunctionComponent = () => {
   const { isLoading, error, data, getData } = useVisitorData({
     extendedResult: true,
     // ignoreCache: true,
-    linkedId: "Next.js",
-    tag: { integration: "Next.js" },
-    products: ["botd", "identification"],
+    linkedId: 'Next.js',
+    tag: { integration: 'Next.js' },
+    products: ['botd', 'identification'],
   });
 
   if (data && !isLoading) {
@@ -23,13 +23,13 @@ const VisitorData: FunctionComponent = () => {
       </button>
       {isLoading && <span> Loading...</span>}
       {error && <span>An error occurred: {error.message}</span>}
-      <div>Welcome{data?.visitorFound ? ` back` : ""}!</div>
+      <div>Welcome{data?.visitorFound ? ` back` : ''}!</div>
       <div>Your visitorId: {data?.visitorId}</div>
       <div>Request Id: {data?.requestId}</div>
       {data && (
         <div>
-          You are a{" "}
-          {data.visitorId === "" ? (
+          You are a{' '}
+          {data.visitorId === '' ? (
             <>
               stinky robot made of code <b className="text-3xl">🤖</b>
             </>
