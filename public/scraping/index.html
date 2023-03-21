@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scraping snippets</title>
+    <script>
+      // Initialize the agent
+      const fpPromise = import('https://fpjscdn.net/v3/2UZgp3skqLzfJpFUGUrw').then(
+        (FingerprintJS) =>
+          FingerprintJS.load({
+            products: ['botd'],
+          })
+      );
+
+      async function onClickSearchFlights(from, to) {
+        // Collect data for a browser fingerprint and send it
+        // to Fingerprint Pro API. The response contains a requestId
+        const { requestId } = await (await fpPromise).get();
+
+        // Pass the requestId to your server alongside the flights query
+        const response = await fetch(`http://localhost:3000/api/web-scraping/flights`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ from, to, requestId: '1679339313914.BYqhOJ' }),
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Web scraping article snippets test</h1>
+    <button type="button" onclick="onClickSearchFlights('LAX', 'JFK')">Get flight results</button>
+  </body>
+</html>
