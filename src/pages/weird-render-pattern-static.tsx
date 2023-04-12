@@ -9,7 +9,7 @@ export default function ServerSide({ message }: InferGetStaticPropsType<typeof g
 
   (async () => {
     const fpPromise = FingerprintJS.load({
-      apiKey: '2UZgp3skqLzfJpFUGUrw',
+      apiKey: PUBLIC_API_KEY,
     });
     const fp = await fpPromise;
     const data = await fp.get({ extendedResult: true });

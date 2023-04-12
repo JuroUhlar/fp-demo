@@ -1,5 +1,6 @@
 import FingerprintJS from '@fingerprintjs/fingerprintjs-pro';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { PUBLIC_API_KEY } from '../constants';
 
 export default function ServerSide({
   message,
@@ -8,7 +9,7 @@ export default function ServerSide({
   console.log('Aaaaaaaaaaaaaaaaaaaaa');
 
   FingerprintJS.load({
-    apiKey: '2UZgp3skqLzfJpFUGUrw',
+    apiKey: PUBLIC_API_KEY,
   })
     .then((fp) => fp.get())
     .then((result) => {
