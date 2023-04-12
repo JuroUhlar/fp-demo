@@ -7,6 +7,23 @@
     <title>Document</title>
   </head>
   <body>
+    <script type="module">
+      const fpScript = await import('https://fpjscdn.net/v3/2UZgp3skqLzfJpFUGUrw');
+      const fpAgent = await fpScript.load({ region: 'eu' });
+      const { visitorId } = await fpAgent.get();
+      console.log(visitorId);
+    </script>
+
+    <script>
+      async function identify() {
+        const fpScript = await import('https://fpjscdn.net/v3/2UZgp3skqLzfJpFUGUrw');
+        const fpAgent = await fpScript.load({ region: 'eu' });
+        const { visitorId } = await fpAgent.get();
+        console.log(visitorId);
+      }
+      identify();
+    </script>
+
     <script>
       const fpPromise = import('https://fpjscdn.net/v3/2UZgp3skqLzfJpFUGUrw').then(
         (FingerprintJS) => FingerprintJS.load({ region: 'eu' })

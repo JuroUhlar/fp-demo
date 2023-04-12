@@ -2,16 +2,16 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs-pro';
 import { FunctionComponent, useEffect } from 'react';
 
 const Test: FunctionComponent = () => {
-  useEffect(() => {
-    // Initialize the agent on application start.
-    const fpPromise = FingerprintJS.load({
-      apiKey: '2UZgp3skqLzfJpFUGUrw',
-      region: 'eu',
-    });
+  // useEffect(() => {
+  //   // Initialize the agent on application start.
+  //   const fpPromise = FingerprintJS.load({
+  //     apiKey: '2UZgp3skqLzfJpFUGUrw',
+  //     region: 'eu',
+  //   });
 
-    // Get the visitorId when you need it.
-    fpPromise.then((fp) => fp.get()).then((result) => console.log(result.visitorId));
-  }, []);
+  //   // Get the visitorId when you need it.
+  //   fpPromise.then((fp) => fp.get()).then((result) => console.log(result.visitorId));
+  // }, []);
 
   return (
     <div>
