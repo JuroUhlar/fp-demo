@@ -1,5 +1,5 @@
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
-import { FunctionComponent, useEffect } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 const VisitorData: FunctionComponent = () => {
   const { isLoading, error, data, getData } = useVisitorData({
@@ -9,6 +9,8 @@ const VisitorData: FunctionComponent = () => {
     tag: { integration: 'Next.js' },
     products: ['botd', 'identification'],
   });
+
+  const [eventData, setEventData] = useState<any>({});
 
   useEffect(() => {
     if (!data?.requestId) {
@@ -24,8 +26,9 @@ const VisitorData: FunctionComponent = () => {
       body: JSON.stringify({ requestId: data?.requestId }),
     })
       .then((res) => res.json())
-      .then((data) => {
-        console.log('Server API Event Response: ', data.products);
+      .then((eventData) => {
+        console.log('Server API Event Response: ', eventData.products);
+        setEventData(eventData);
       });
   }, [data]);
 
@@ -40,8 +43,12 @@ const VisitorData: FunctionComponent = () => {
       {isLoading && <span> Loading...</span>}
       {error && <span>An error occurred: {error.message}</span>}
       <div>Welcome{data?.visitorFound ? ` back` : ''}!</div>
-      <div>Your visitorId: {data?.visitorId}</div>
-      <div>Request Id: {data?.requestId}</div>
+      <div>
+        Your visitorId: <code> {data?.visitorId}</code>
+      </div>
+      <div>
+        Request Id: <code> {data?.requestId}</code>
+      </div>
       {data && (
         <div>
           You are a{' '}
@@ -54,6 +61,16 @@ const VisitorData: FunctionComponent = () => {
               nice human made of meat <b className="text-3xl">🥩</b>
             </>
           )}
+          <div className="flex mt-4 justify-evenly">
+            <div>
+              <h2>JS Agent response</h2>
+              <pre>{JSON.stringify(data, null, 2)}</pre>
+            </div>
+            <div>
+              <h2>Server API Event response</h2>
+              <pre>{JSON.stringify(eventData, null, 2)}</pre>
+            </div>
+          </div>
         </div>
       )}
     </div>
