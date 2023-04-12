@@ -61,13 +61,13 @@ const VisitorData: FunctionComponent = () => {
               nice human made of meat <b className="text-3xl">🥩</b>
             </>
           )}
-          <div className="flex mt-4 justify-between">
+          <div className="flex flex-col md:flex-row mt-4 justify-between ">
             <div>
-              <h2>JS Agent response</h2>
+              <h2 className="font-bold m-4">JS Agent response</h2>
               <pre>{JSON.stringify(data, null, 2)}</pre>
             </div>
             <div>
-              <h2>Server API Event response</h2>
+              <h2 className="font-bold m-4">Server API Event response</h2>
               <pre>{JSON.stringify(eventData, null, 2)}</pre>
             </div>
           </div>
