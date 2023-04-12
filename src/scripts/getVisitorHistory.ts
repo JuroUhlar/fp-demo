@@ -5,8 +5,7 @@ import {
   FingerprintJsServerApiClient,
   Region,
 } from "@fingerprintjs/fingerprintjs-pro-server-api";
-
-const SERVER_API_KEY = process.env.FP_API_KEY as string;
+import { SERVER_API_KEY } from '../constants';
 
 // Init client with the given region and the secret api_key
 const client = new FingerprintJsServerApiClient({

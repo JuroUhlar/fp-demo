@@ -1,12 +1,5 @@
-const dotenv = require("dotenv");
-dotenv.config({ path: ".env.local" });
-
-import {
-  FingerprintJsServerApiClient,
-  Region,
-} from "@fingerprintjs/fingerprintjs-pro-server-api";
-
-const SERVER_API_KEY = process.env.FP_API_KEY as string;
+import { FingerprintJsServerApiClient, Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { SERVER_API_KEY } from '../constants';
 
 // Init client with the given region and the secret api_key
 const client = new FingerprintJsServerApiClient({
@@ -16,5 +9,5 @@ const client = new FingerprintJsServerApiClient({
 
 // Get visitor history
 client
-  .getEvent("1673351180902.CUPqGn")
+  .getEvent('1673351180902.CUPqGn')
   .then((event) => console.log(event.products?.identification));

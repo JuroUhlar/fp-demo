@@ -1,5 +1,5 @@
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useEffect } from 'react';
 
 const VisitorData: FunctionComponent = () => {
   const { isLoading, error, data, getData } = useVisitorData({
@@ -10,9 +10,25 @@ const VisitorData: FunctionComponent = () => {
     products: ['botd', 'identification'],
   });
 
-  if (data && !isLoading) {
-    console.log(data);
-  }
+  useEffect(() => {
+    if (!data?.requestId) {
+      return;
+    }
+    console.log('JS Agent response: ', data);
+
+    fetch('/api/getRequest', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ requestId: data?.requestId }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('Server API Event Response: ', data.products);
+      });
+  }, [data]);
+
   return (
     <div>
       <button
