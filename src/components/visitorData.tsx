@@ -4,7 +4,7 @@ import { FunctionComponent, useEffect, useState } from 'react';
 const VisitorData: FunctionComponent = () => {
   const { isLoading, error, data, getData } = useVisitorData({
     extendedResult: true,
-    // ignoreCache: true,
+    ignoreCache: true,
     linkedId: 'Next.js',
     tag: { integration: 'Next.js' },
     products: ['botd', 'identification'],
