@@ -1,14 +1,12 @@
-import { SERVER_API_KEY } from './../../constants';
+import { SERVER_API_KEY, REGION_SDK } from './../../constants';
 import { FingerprintJsServerApiClient, Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { NextApiRequest, NextApiResponse } from 'next';
-
-const REGION = Region.EU;
 
 export default async function getFlightsEndpoint(req: NextApiRequest, res: NextApiResponse) {
   const { requestId } = req.body;
   try {
     const client = new FingerprintJsServerApiClient({
-      region: Region.Global,
+      region: REGION_SDK,
       apiKey: SERVER_API_KEY,
     });
 

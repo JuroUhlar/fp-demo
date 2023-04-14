@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import VisitorData from '../components/visitorData';
+import { Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 
 export default function Home() {
   return (
