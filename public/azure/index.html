@@ -12,11 +12,11 @@
     <script>
       // Initialize the agent at application startup.
       const fpPromise = import(
-        'https://azure.jurajuhlar.eu/fpjs/agent?apiKey=xvADip1wZkem5uyghtMj&version=3'
+        'https://azure-integration.jurajuhlar.eu/fpjs/agent?apiKey=xvADip1wZkem5uyghtMj&version=3'
       ).then((FingerprintJS) =>
         FingerprintJS.load({
           region: "eu",
-          endpoint: 'https://azure.jurajuhlar.eu/fpjs/result'
+          endpoint: 'https://azure-integration.jurajuhlar.eu/fpjs/result'
         })
       );
 
