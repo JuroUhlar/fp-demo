@@ -1,7 +1,7 @@
 import FingerprintJS, { GetResult } from '@fingerprintjs/fingerprintjs-pro';
 import { GetStaticProps, InferGetStaticPropsType } from 'next';
 import { useEffect, useState } from 'react';
-import { CUSTOM_SUBDOMAIN, PUBLIC_API_KEY } from '../constants';
+import { CUSTOM_SUBDOMAIN, PUBLIC_API_KEY, REGION } from '../constants';
 
 export default function ServerSide({ message }: InferGetStaticPropsType<typeof getStaticProps>) {
   const [fingerprintData, setFingerprintData] = useState<GetResult | null>(null);
@@ -11,6 +11,7 @@ export default function ServerSide({ message }: InferGetStaticPropsType<typeof g
       const fpPromise = FingerprintJS.load({
         apiKey: PUBLIC_API_KEY,
         endpoint: CUSTOM_SUBDOMAIN,
+        region: 'eu',
       });
       const fp = await fpPromise;
       const data = await fp.get({ extendedResult: true });
