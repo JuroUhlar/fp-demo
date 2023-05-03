@@ -5,7 +5,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html>
       <head />
       <body>
-        <MyFpjsProvider>{children}</MyFpjsProvider>
+        {/* <MyFpjsProvider> */}
+        {children}
+        {/* </MyFpjsProvider> */}
       </body>
     </html>
   );
