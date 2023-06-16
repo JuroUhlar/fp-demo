@@ -15,9 +15,22 @@ export default function Home() {
       <header>
         <ul className="p-10">
           <li>
-            <a href="simple/index.html" className="text-blue-600 underline hover:text-blue-400">
-              Simple HTML demo
+            <a href="default/index.html" className="text-blue-600 underline hover:text-blue-400">
+              Default CDN and API endpoints
             </a>
+          </li>
+          <li>
+            <a href="simple/index.html" className="text-blue-600 underline hover:text-blue-400">
+              Simple HTML demo (custom subdomain setup)
+            </a>
+          </li>
+          <li>
+            <Link
+              href="https://jurajuhlar.com/"
+              className="text-blue-600 underline hover:text-blue-400"
+            >
+              Cloudflare one CDN demo (jurajuhlar.com)
+            </Link>
           </li>
           <li>
             <a href="gtm/index.html" className="text-blue-600 underline hover:text-blue-400">
@@ -26,17 +39,12 @@ export default function Home() {
           </li>
           <li>
             <a href="cloudfront/index.html" className="text-blue-600 underline hover:text-blue-400">
-              Cloudfront Demo
+              Cloudfront Demo (different domain)
             </a>
           </li>
           <li>
             <a href="opensource/index.html" className="text-blue-600 underline hover:text-blue-400">
               Open Source FingerprintJS Demo
-            </a>
-          </li>
-          <li>
-            <a href="default/index.html" className="text-blue-600 underline hover:text-blue-400">
-              Simple HTML with default domain
             </a>
           </li>
           <li>
