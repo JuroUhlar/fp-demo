@@ -1,9 +1,11 @@
 'use client';
-import * as FingerprintJS from '@fingerprintjs/fingerprintjs-pro';
+// import * as FingerprintJS from '@fingerprintjs/fingerprintjs-pro';
 import { useEffect, useState } from 'react';
-
-
-
+import FingerprintJS, {
+  defaultEndpoint,
+  defaultScriptUrlPattern,
+  GetResult,
+} from '@fingerprintjs/fingerprintjs-pro';
 
 export default function ClientPage() {
   useEffect(() => {
@@ -13,11 +15,11 @@ export default function ClientPage() {
       region: 'eu',
       scriptUrlPattern: [
         'https://cloudfront.juraj.click/ghTV3FGADFbJVSId/buc1pMANm4wmx5j1?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
-        FingerprintJS.defaultScriptUrlPattern,
+        defaultScriptUrlPattern,
       ],
       endpoint: [
         'https://cloudfront.juraj.click/ghTV3FGADFbJVSId/0FDnBHGnHdW3xKHa?region=eu',
-        FingerprintJS.defaultEndpoint,
+        defaultEndpoint,
       ],
     });
 
@@ -30,8 +32,7 @@ export default function ClientPage() {
       });
   }, []);
 
-  const [fingerprintData, setFingerprintData] =
-    useState<FingerprintJS.GetResult | null>(null);
+  const [fingerprintData, setFingerprintData] = useState<GetResult | null>(null);
 
   return (
     <>
