@@ -7,7 +7,7 @@ const VisitorData: FunctionComponent = () => {
     ignoreCache: true,
     linkedId: 'Next.js',
     tag: { integration: 'Next.js' },
-    products: ['botd', 'identification'],
+    products: ['identification'],
   });
 
   const [eventData, setEventData] = useState<any>({});
