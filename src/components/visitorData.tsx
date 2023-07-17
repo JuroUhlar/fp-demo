@@ -1,13 +1,15 @@
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { FunctionComponent, useEffect, useState } from 'react';
 
-const VisitorData: FunctionComponent = () => {
+const VisitorData: FunctionComponent<{ disableBotDetection?: boolean }> = ({
+  disableBotDetection,
+}) => {
   const { isLoading, error, data, getData } = useVisitorData({
     extendedResult: true,
     ignoreCache: true,
     linkedId: 'Next.js',
     tag: { integration: 'Next.js' },
-    products: ['identification'],
+    products: disableBotDetection ? ['identification'] : ['botd', 'identification'],
   });
 
   const [eventData, setEventData] = useState<any>({});
