@@ -8,8 +8,8 @@
   </head>
   <body>
     <script>
-      const fpPromise = import('https://fpjscdn.net/v3/2UZgp3skqLzfJpFUGUrw').then(
-        (FingerprintJS) => FingerprintJS.load({ region: 'eu' })
+      const fpPromise = import('https://procdn.fpjs.sh/v3/njsW0y7Jiq3FbBj0ArOU').then(
+        (FingerprintJS) => FingerprintJS.load({ endpoint: 'https://apiv2.fpjs.sh' })
       );
       fpPromise
         .then((fp) => fp.get())

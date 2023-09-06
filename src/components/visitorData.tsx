@@ -9,7 +9,7 @@ const VisitorData: FunctionComponent<{ disableBotDetection?: boolean }> = ({
     ignoreCache: true,
     linkedId: 'Next.js',
     tag: { integration: 'Next.js' },
-    products: disableBotDetection ? ['identification'] : ['botd'],
+    products: disableBotDetection ? ['identification'] : undefined,
   });
 
   const [eventData, setEventData] = useState<any>({});
