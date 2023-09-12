@@ -6,15 +6,21 @@
     <title>Document</title>
 
     <script type="text/javascript">
-      const FPJS_SCRIPT_URL = 'https://fpjscdn.net/v3/';
-      const FPJS_PUBLIC_API_KEY = '2UZgp3skqLzfJpFUGUrw';
-      const FPJS_REGION = 'eu';
-      const FPJS_ENDPOINT = 'https://fp.jurajuhlar.eu';
+      // const FPJS_PUBLIC_API_KEY = '2UZgp3skqLzfJpFUGUrw';
+      const FPJS_PUBLIC_API_KEY = 'rzpSduhT63F6jaS35HFo';
+      const FPJS_SCRIPT_URL = `https://fingerprint.com/s2MB/?b=load-vercel&v=3&a=${FPJS_PUBLIC_API_KEY}&l=3.8.5`;
+      // const FPJS_SCRIPT_URL = `https://fpjscdn.net/v3/${FPJS_PUBLIC_API_KEY}`;
+      const FPJS_REGION = 'us';
+      // const FPJS_ENDPOINT = 'https://fp.jurajuhlar.eu';
+      const FPJS_ENDPOINT = 'https://fingerprint.com/r4a0Rd2Xs/';
       const AMPLITUDE_PUBLIC_API_KEY = '51f5ace86526a59400e9fd5d039a0016';
 
-      const fpPromise = import(FPJS_SCRIPT_URL + FPJS_PUBLIC_API_KEY).then((FingerprintJS) =>
+      const fpPromise = import(FPJS_SCRIPT_URL).then((FingerprintJS) =>
         FingerprintJS.load({
-          endpoint: [FPJS_ENDPOINT, FingerprintJS.defaultEndpoint],
+          endpoint: [
+            FPJS_ENDPOINT,
+            // FingerprintJS.defaultEndpoint
+          ],
           region: FPJS_REGION,
         })
       );

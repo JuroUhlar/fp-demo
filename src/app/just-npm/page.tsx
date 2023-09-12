@@ -11,15 +11,16 @@ export default function ClientPage() {
   useEffect(() => {
     // Initialize an agent at application startup.
     const fpPromise = FingerprintJS.load({
-      apiKey: '2UZgp3skqLzfJpFUGUrw',
-      region: 'eu',
+      apiKey: 'rzpSduhT63F6jaS35HFo',
+      region: 'us',
       scriptUrlPattern: [
-        'https://cloudfront.juraj.click/ghTV3FGADFbJVSId/buc1pMANm4wmx5j1?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
+        'https://fingerprint.com/s2MB/?b=load-vercel&v=<version>&a=<apiKey>&l=<loaderVersion>',
         defaultScriptUrlPattern,
       ],
       endpoint: [
-        'https://cloudfront.juraj.click/ghTV3FGADFbJVSId/0FDnBHGnHdW3xKHa?region=eu',
-        defaultEndpoint,
+        // 'https://cloudfront.juraj.click/ghTV3FGADFbJVSId/0FDnBHGnHdW3xKHa?region=eu',
+        'https://fingerprint.com/r4a0Rd2Xs/',
+        // defaultEndpoint,
       ],
     });
 
