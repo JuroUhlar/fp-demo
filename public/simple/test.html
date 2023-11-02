@@ -8,14 +8,21 @@
   </head>
   <body>
     <script>
-      const fpPromise = import('https://procdn.fpjs.sh/v3/njsW0y7Jiq3FbBj0ArOU').then(
-        (FingerprintJS) => FingerprintJS.load({ endpoint: 'https://apiv2.fpjs.sh' })
+      // Initialize the agent on page load.
+      const fpPromise = import('https://fp.jurajuhlar.eu/web/v3/2UZgp3skqLzfJpFUGUrw').then(
+        (FingerprintJS) =>
+          FingerprintJS.load({
+            endpoint: ['https://fp.jurajuhlar.eu', FingerprintJS.defaultEndpoint],
+            // region: 'eu',
+          })
       );
+
+      // Get the visitorId when you need it.
       fpPromise
         .then((fp) => fp.get())
         .then((result) => {
           const visitorId = result.visitorId;
-          console.log(visitorId);
+          console.log(result);
         });
     </script>
   </body>
