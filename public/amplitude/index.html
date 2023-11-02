@@ -6,43 +6,78 @@
     <title>Document</title>
 
     <script type="text/javascript">
-      // const FPJS_PUBLIC_API_KEY = '2UZgp3skqLzfJpFUGUrw';
-      const FPJS_PUBLIC_API_KEY = 'rzpSduhT63F6jaS35HFo';
-      const FPJS_SCRIPT_URL = `https://fingerprint-com-git-fix-add-cors-ingress-fp-pro.vercel.app/s2MB/?b=load-vercel&v=3&a=${FPJS_PUBLIC_API_KEY}&l=3.8.5&cdn=true`;
-      // const FPJS_SCRIPT_URL = `https://fpjscdn.net/v3/${FPJS_PUBLIC_API_KEY}`;
-      const FPJS_REGION = 'us';
-      // const FPJS_ENDPOINT = 'https://fp.jurajuhlar.eu';
+      const FPJS_PUBLIC_API_KEY = '2UZgp3skqLzfJpFUGUrw';
+      const FPJS_REGION = 'eu';
+      const FPJS_SCRIPT_URL = `https://dlxhio63e79vv.cloudfront.net/DBqbMN7zXxwl4Ei8/J5XlHIBN67YHskdR?apiKey=${FPJS_PUBLIC_API_KEY}`;
       const FPJS_ENDPOINT =
-        'https://fingerprint-com-git-fix-add-cors-ingress-fp-pro.vercel.app/r4a0Rd2Xs/';
-      const AMPLITUDE_PUBLIC_API_KEY = '51f5ace86526a59400e9fd5d039a0016';
+        'https://dlxhio63e79vv.cloudfront.net/DBqbMN7zXxwl4Ei8/S7lqsWfAyw2lq4Za?region=us';
+      const AMPLITUDE_PUBLIC_API_KEY = '5dceeefed9db59d2104f53897fbab3d2';
+      const AMPLITUDE_CDN_PROXY =
+        'https://dlxhio63e79vv.cloudfront.net/ampl-cdn/libs/analytics-browser-2.2.3-min.js.gz';
+      const AMPLITUDE_INGRESS_PROXY = 'https://dlxhio63e79vv.cloudfront.net/ampl-api/2/httpapi';
+
+      const EVENT_TYPE = 'Docs Page Viewed';
+
+      /**
+       * This is a plugin that renames the Page view event_properties according to our analytics needs
+       * @returns EnrichmentPlugin
+       */
+      const renameEventPropertiesEnrichment = () => {
+        return {
+          name: 'rename-event-properties-enrichment',
+          type: 'enrichment',
+          setup: async () => undefined,
+          execute: async (event) => {
+            // Only apply to Docs Page View events
+            if (event.event_type !== EVENT_TYPE) {
+              return event;
+            }
+
+            // Rename event properties
+            const originalEventProperties = event.event_properties;
+            event.event_properties = {
+              'Docs Page Domain': originalEventProperties['[Amplitude] Page Domain'],
+              'Docs Page Location': originalEventProperties['[Amplitude] Page Location'],
+              'Docs Page Path': originalEventProperties['[Amplitude] Page Path'],
+              'Docs Page Title': originalEventProperties['[Amplitude] Page Title'],
+              'Docs Page URL': originalEventProperties['[Amplitude] Page URL'],
+            };
+            return event;
+          },
+        };
+      };
+
+      const initAmplitude = (visitorId) => {
+        // prettier-ignore
+        !function(){"use strict";!function(e,t){var r=e.amplitude||{_q:[],_iq:{}};if(r.invoked)e.console&&console.error&&console.error("Amplitude snippet has been loaded.");else{var n=function(e,t){e.prototype[t]=function(){return this._q.push({name:t,args:Array.prototype.slice.call(arguments,0)}),this}},s=function(e,t,r){return function(n){e._q.push({name:t,args:Array.prototype.slice.call(r,0),resolve:n})}},o=function(e,t,r){e[t]=function(){if(r)return{promise:new Promise(s(e,t,Array.prototype.slice.call(arguments)))}}},i=function(e){for(var t=0;t<g.length;t++)o(e,g[t],!1);for(var r=0;r<h.length;r++)o(e,h[r],!0)};r.invoked=!0;var u=t.createElement("script");u.type="text/javascript",u.integrity="sha384-QhN12IHEJCDzzlNZ/ugu3iCq5jVI1saLR0QXlVfubYxdHb8NhKqgMhr9KeruyviR",u.crossOrigin="anonymous",u.async=!0,u.src=AMPLITUDE_CDN_PROXY,u.onload=function(){e.amplitude.runQueuedFunctions||console.log("[Amplitude] Error: could not load SDK")};var a=t.getElementsByTagName("script")[0];a.parentNode.insertBefore(u,a);for(var c=function(){return this._q=[],this},l=["add","append","clearAll","prepend","set","setOnce","unset","preInsert","postInsert","remove","getUserProperties"],p=0;p<l.length;p++)n(c,l[p]);r.Identify=c;for(var d=function(){return this._q=[],this},f=["getEventProperties","setProductId","setQuantity","setPrice","setRevenue","setRevenueType","setEventProperties"],v=0;v<f.length;v++)n(d,f[v]);r.Revenue=d;var g=["getDeviceId","setDeviceId","getSessionId","setSessionId","getUserId","setUserId","setOptOut","setTransport","reset","extendSession"],h=["init","add","remove","track","logEvent","identify","groupIdentify","setGroup","revenue","flush"];i(r),r.createInstance=function(e){return r._iq[e]={_q:[]},i(r._iq[e]),r._iq[e]},e.amplitude=r}}(window,document)}();
+        amplitude.add(renameEventPropertiesEnrichment());
+        amplitude.init(AMPLITUDE_PUBLIC_API_KEY, {
+          defaultTracking: {
+            pageViews: {
+              eventType: EVENT_TYPE,
+            },
+            attribution: false,
+            sessions: false,
+            formInteractions: false,
+            fileDownloads: false,
+          },
+          deviceId: visitorId,
+          disableCookies: true,
+          serverUrl: AMPLITUDE_INGRESS_PROXY,
+        });
+      };
 
       const fpPromise = import(FPJS_SCRIPT_URL).then((FingerprintJS) =>
         FingerprintJS.load({
-          endpoint: [
-            FPJS_ENDPOINT,
-            // FingerprintJS.defaultEndpoint
-          ],
+          // endpoint: [FPJS_ENDPOINT],
           region: FPJS_REGION,
         })
       );
 
-      const initAmplitude = (visitorId) => {
-        // prettier-ignore
-        !function(){"use strict";!function(e,t){var r=e.amplitude||{_q:[],_iq:{}};if(r.invoked)e.console&&console.error&&console.error("Amplitude snippet has been loaded.");else{var n=function(e,t){e.prototype[t]=function(){return this._q.push({name:t,args:Array.prototype.slice.call(arguments,0)}),this}},s=function(e,t,r){return function(n){e._q.push({name:t,args:Array.prototype.slice.call(r,0),resolve:n})}},o=function(e,t,r){e[t]=function(){if(r)return{promise:new Promise(s(e,t,Array.prototype.slice.call(arguments)))}}},i=function(e){for(var t=0;t<g.length;t++)o(e,g[t],!1);for(var r=0;r<h.length;r++)o(e,h[r],!0)};r.invoked=!0;var u=t.createElement("script");u.type="text/javascript",u.integrity="sha384-QhN12IHEJCDzzlNZ/ugu3iCq5jVI1saLR0QXlVfubYxdHb8NhKqgMhr9KeruyviR",u.crossOrigin="anonymous",u.async=!0,u.src="https://cdn.amplitude.com/libs/analytics-browser-2.2.3-min.js.gz",u.onload=function(){e.amplitude.runQueuedFunctions||console.log("[Amplitude] Error: could not load SDK")};var a=t.getElementsByTagName("script")[0];a.parentNode.insertBefore(u,a);for(var c=function(){return this._q=[],this},l=["add","append","clearAll","prepend","set","setOnce","unset","preInsert","postInsert","remove","getUserProperties"],p=0;p<l.length;p++)n(c,l[p]);r.Identify=c;for(var d=function(){return this._q=[],this},f=["getEventProperties","setProductId","setQuantity","setPrice","setRevenue","setRevenueType","setEventProperties"],v=0;v<f.length;v++)n(d,f[v]);r.Revenue=d;var g=["getDeviceId","setDeviceId","getSessionId","setSessionId","getUserId","setUserId","setOptOut","setTransport","reset","extendSession"],h=["init","add","remove","track","logEvent","identify","groupIdentify","setGroup","revenue","flush"];i(r),r.createInstance=function(e){return r._iq[e]={_q:[]},i(r._iq[e]),r._iq[e]},e.amplitude=r}}(window,document)}();
-        amplitude.init(AMPLITUDE_PUBLIC_API_KEY, {
-          defaultTracking: true,
-          deviceId: visitorId,
-          disableCookies: true,
-        });
-        console.log(`Amplitude initialized with visitor ID ${visitorId} as deviceId.`);
-      };
-
-      // Get the visitorId when you need it.
       fpPromise
         .then((fp) => fp.get())
         .then((result) => {
           const visitorId = result.visitorId;
-          console.log(result);
           if (visitorId) {
             initAmplitude(visitorId);
           }
