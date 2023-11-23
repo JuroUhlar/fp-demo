@@ -69,7 +69,7 @@
 
       const fpPromise = import(FPJS_SCRIPT_URL).then((FingerprintJS) =>
         FingerprintJS.load({
-          // endpoint: [FPJS_ENDPOINT],
+          endpoint: [FPJS_ENDPOINT],
           region: FPJS_REGION,
         })
       );
