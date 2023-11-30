@@ -1,33 +1,23 @@
 'use client';
 
 import { FunctionComponent, useEffect, useState } from 'react';
-import FingerprintJS from '@fingerprintjs/fingerprintjs-pro';
+import FingerprintJS, { ExtendedGetResult } from '@fingerprintjs/fingerprintjs-pro';
 import { PUBLIC_API_KEY } from '../../constants';
 
-type RequestState = 'loading' | 'success' | 'error' | null;
-
 const ProxyPlayground: FunctionComponent = ({}) => {
-  const [agentDefault, setAgentDefault] = useState<RequestState>(null);
-  const [resultDefault, setResultDefault] = useState<RequestState>(null);
-  const [visitorIdDefault, setVisitorIdDefault] = useState<string | null>(null);
+  const [visitorData, setVisitorData] = useState<ExtendedGetResult>();
 
   useEffect(() => {
     const tryDefault = async () => {
       // Initialize an agent at application startup.
-      const fpAgent = await FingerprintJS.load({ apiKey: PUBLIC_API_KEY });
-      if (fpAgent) {
-        setAgentDefault('success');
-        const result = await fpAgent.get();
-        if (result) {
-          setResultDefault('success');
-          setVisitorIdDefault(result.visitorId);
-        } else {
-          setResultDefault('error');
-        }
-      } else {
-        setAgentDefault('error');
-        setResultDefault('error');
-      }
+      const fpAgent = await FingerprintJS.load({
+        apiKey: PUBLIC_API_KEY,
+        scriptUrlPattern:
+          '/proxy/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
+      });
+      fpAgent.get({ extendedResult: true }).then((result) => {
+        setVisitorData(result);
+      });
     };
 
     tryDefault();
@@ -35,10 +25,8 @@ const ProxyPlayground: FunctionComponent = ({}) => {
 
   return (
     <div>
-      <h1>Default</h1>
-      <div>Agent: {agentDefault}</div>
-      <div>Result: {resultDefault}</div>
-      <div>VisitorId: {visitorIdDefault}</div>
+      <h1>Proxy Playground</h1>
+      <pre>{JSON.stringify(visitorData, null, 2)}</pre>
     </div>
   );
 };
