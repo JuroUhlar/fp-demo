@@ -1,40 +1,21 @@
 import { NextRequest } from 'next/server';
 import { URLSearchParams } from 'url';
 import { isNativeError } from 'util/types';
+import { parseCookies, parseHost, parseIp, randomShortString } from './utils';
 
 export const dynamic = 'force-dynamic';
 
-const parseCookies = (cookieHeader?: string | null) => {
-  if (!cookieHeader) {
-    return {};
+/**
+ * Identification request handler
+ */
+export async function POST(request: NextRequest) {
+  try {
+    return await proxyIdentificationRequest(request);
+  } catch (error) {
+    console.error(error);
+    return await getErrorResponse(request, error);
   }
-  const cookies = cookieHeader.split(';');
-  const result: Record<string, string> = {};
-  cookies.forEach((cookie) => {
-    const [name, value] = cookie.split('=');
-    result[name.trim()] = value.trim();
-  });
-  return result;
-};
-
-const parseIp = (request: NextRequest) => {
-  return (
-    request.ip ??
-    request.headers.get('x-real-ip') ??
-    request.headers.get('x-forwarded-for')?.split(',')[0] ??
-    '127.0.0.1'
-  );
-};
-
-const parseHost = (request: Request) => {
-  return request.headers.get('host') ?? new URL(request.url).hostname;
-};
-
-const randomShortString = ({ length }: { length: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 }) => {
-  return Math.random()
-    .toString(36)
-    .substring(2, 2 + length);
-};
+}
 
 const proxyIdentificationRequest = async (request: NextRequest): Promise<Response> => {
   // Call the right endpoint depending on the region parameter:
@@ -98,7 +79,7 @@ const getErrorResponse = (request: Request, error: unknown): Response => {
       v: '2',
       error: {
         code: 'IntegrationFailed',
-        message: `An error occurred with the custom integration. Reason: ${message}`,
+        message: `An identification error occurred with the custom integration. Reason: ${message}`,
       },
       requestId,
       products: {},
@@ -113,12 +94,3 @@ const getErrorResponse = (request: Request, error: unknown): Response => {
     }
   );
 };
-
-export async function POST(request: NextRequest) {
-  try {
-    return await proxyIdentificationRequest(request);
-  } catch (error) {
-    console.error(error);
-    return await getErrorResponse(request, error);
-  }
-}

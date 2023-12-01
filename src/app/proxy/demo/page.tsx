@@ -2,9 +2,9 @@
 
 import { FunctionComponent, useEffect, useState } from 'react';
 import FingerprintJS, { ExtendedGetResult } from '@fingerprintjs/fingerprintjs-pro';
-import { PUBLIC_API_KEY } from '../../constants';
+import { PUBLIC_API_KEY } from '../../../constants';
 
-const ProxyPlayground: FunctionComponent = ({}) => {
+const CustomProxyDemo: FunctionComponent = ({}) => {
   const [visitorData, setVisitorData] = useState<ExtendedGetResult>();
 
   const getData = async () => {
@@ -14,7 +14,6 @@ const ProxyPlayground: FunctionComponent = ({}) => {
       scriptUrlPattern:
         '/proxy/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
       endpoint: '/proxy/result?region=eu',
-      // disableTls: true,
     });
     fpAgent.get({ extendedResult: true }).then((result) => {
       setVisitorData(result);
@@ -36,4 +35,4 @@ const ProxyPlayground: FunctionComponent = ({}) => {
   );
 };
 
-export default ProxyPlayground;
+export default CustomProxyDemo;

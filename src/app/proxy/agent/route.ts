@@ -48,8 +48,13 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     console.error(error);
-    return new Response(isNativeError(error) ? error.message : `Something went wrong, ${error} `, {
-      status: 500,
-    });
+    return new Response(
+      isNativeError(error)
+        ? error.message
+        : `Something went wrong with Fingerprint agent download: ${error} `,
+      {
+        status: 500,
+      }
+    );
   }
 }
