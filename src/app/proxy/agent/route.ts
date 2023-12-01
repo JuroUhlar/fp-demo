@@ -1,6 +1,7 @@
-import axios from 'axios';
 import { URLSearchParams } from 'url';
 import { isNativeError } from 'util/types';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
   try {

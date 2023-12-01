@@ -1,4 +1,3 @@
-
 // const ContentSecurityPolicy = "base-uri 'self'; default-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.fptls.com https://fpjsfreferfrecdn.net https://*.fptls2.com https://eu.api.fpjs.io https://fpnpmcdn.net https://fpjscdn.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;";
 
 // const securityHeaders = [
@@ -11,9 +10,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    appDir: true
-  }
   // async headers() {
   //   return [
   //     {
@@ -23,6 +19,6 @@ const nextConfig = {
   //     },
   //   ]
   // },
-}
+};
 
 module.exports = nextConfig;

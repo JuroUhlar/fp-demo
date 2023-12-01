@@ -6,7 +6,6 @@ export default function ServerSide({
   message,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   // This gets executed during static generation
-  console.log('Aaaaaaaaaaaaaaaaaaaaa');
 
   FingerprintJS.load({
     apiKey: PUBLIC_API_KEY,
