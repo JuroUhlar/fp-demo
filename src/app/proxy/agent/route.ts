@@ -3,6 +3,9 @@ import { isNativeError } from 'util/types';
 
 export const dynamic = 'force-dynamic';
 
+/**
+ * Fingerprint agent download request handler
+ */
 export async function GET(request: Request) {
   try {
     const queryParams = new URLSearchParams(request.url.split('?')[1]);
@@ -13,7 +16,7 @@ export async function GET(request: Request) {
     const loaderParam = loaderVersion ? `/loader_v${loaderVersion}.js` : '';
     const agentDownloadUrl = new URL(`https://fpcdn.io/v${version}/${apiKey}${loaderParam}`);
 
-    // Forward all query parameters just in case and add the monitoring parameter
+    // Forward all query parameters and add the monitoring parameter
     agentDownloadUrl.search = request.url.split('?')[1];
     agentDownloadUrl.searchParams.append('ii', `custom-integration/1.0/procdn`);
 
@@ -48,13 +51,8 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     console.error(error);
-    return new Response(
-      isNativeError(error)
-        ? error.message
-        : `Something went wrong with Fingerprint agent download: ${error} `,
-      {
-        status: 500,
-      }
-    );
+    return new Response(isNativeError(error) ? error.message : `Agent download error: ${error} `, {
+      status: 500,
+    });
   }
 }

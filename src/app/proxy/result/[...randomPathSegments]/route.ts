@@ -10,7 +10,7 @@ export async function GET(
   { params }: { params: { randomPathSegments: string[] } }
 ) {
   try {
-    // Call the right endpoint depending on the region parameter:
+    // Call the right endpoint depending on the region parameter, with the same random path segments
     // https://api.fpjs.io, https://eu.api.fpjs.io, or https://ap.api.fpjs.io
     const queryParams = new URLSearchParams(request.url.split('?')[1]);
     const region = queryParams.get('region');
@@ -18,7 +18,7 @@ export async function GET(
     const randomPath = params.randomPathSegments.join('/');
     const browserCacheUrl = new URL(`https://${prefix}api.fpjs.io/${randomPath}`);
 
-    // Forward all query parameters just in case and add the monitoring parameter
+    // Forward all query parameters
     browserCacheUrl.search = request.url.split('?')[1];
 
     // Forward all headers except the cookie header
@@ -33,6 +33,7 @@ export async function GET(
       headers,
     });
 
+    // Forward the response unchanged
     return browserCacheResponse;
   } catch (error) {
     console.error(error);
