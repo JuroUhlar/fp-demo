@@ -1,8 +1,6 @@
-import { useVisitorData } from "@fingerprintjs/fingerprintjs-pro-react";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import Head from "next/head";
-import { createNoSubstitutionTemplateLiteral } from "typescript";
-import VisitorData from "../components/visitorData";
+import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import Head from 'next/head';
 
 export default function ServerSide({
   message,
@@ -10,9 +8,9 @@ export default function ServerSide({
   const { isLoading, data, getData } = useVisitorData({
     extendedResult: true,
     // ignoreCache: true,
-    linkedId: "Next.js",
-    tag: { integration: "Next.js" },
-    products: ["botd", "identification"],
+    linkedId: 'Next.js',
+    tag: { integration: 'Next.js' },
+    products: ['botd', 'identification'],
   });
 
   console.log(data);
@@ -40,5 +38,5 @@ export default function ServerSide({
 export const getServerSideProps: GetServerSideProps<{
   message: string;
 }> = async () => {
-  return { props: { message: "This page was rendered server side" } };
+  return { props: { message: 'This page was rendered server side' } };
 };

@@ -1,10 +1,10 @@
 'use client';
 
 import FingerprintJS, { GetResult } from '@fingerprintjs/fingerprintjs-pro';
-import { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { CUSTOM_SUBDOMAIN, PUBLIC_API_KEY } from '../../constants';
 
-export default function VisitorDataClient() {
+export const VisitorDataClient = () => {
   const [fingerprintData, setFingerprintData] = useState<GetResult | null>(null);
 
   useEffect(() => {
@@ -35,4 +35,4 @@ export default function VisitorDataClient() {
       <div>Your visitorId: {fingerprintData?.visitorId}</div>
     </>
   );
-}
+};
