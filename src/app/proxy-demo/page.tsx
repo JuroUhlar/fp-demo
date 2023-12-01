@@ -14,7 +14,7 @@ const ProxyPlayground: FunctionComponent = ({}) => {
       scriptUrlPattern:
         '/proxy/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
       endpoint: '/proxy/result?region=eu',
-      disableTls: true,
+      // disableTls: true,
     });
     fpAgent.get({ extendedResult: true }).then((result) => {
       setVisitorData(result);

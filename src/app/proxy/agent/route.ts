@@ -3,29 +3,29 @@ import { isNativeError } from 'util/types';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(req: Request) {
+export async function GET(request: Request) {
   try {
-    const queryParams = new URLSearchParams(req.url.split('?')[1]);
+    const queryParams = new URLSearchParams(request.url.split('?')[1]);
     const apiKey = queryParams.get('apiKey');
     const version = queryParams.get('version');
     const loaderVersion = queryParams.get('loaderVersion');
 
     const loaderParam = loaderVersion ? `/loader_v${loaderVersion}.js` : '';
-    const proCDNURL = new URL(`https://fpcdn.io/v${version}/${apiKey}${loaderParam}`);
+    const agentDownloadUrl = new URL(`https://fpcdn.io/v${version}/${apiKey}${loaderParam}`);
 
     // Forward all query parameters just in case and add the monitoring parameter
-    proCDNURL.search = req.url.split('?')[1];
-    proCDNURL.searchParams.append('ii', `custom-integration/1.0/procdn`);
+    agentDownloadUrl.search = request.url.split('?')[1];
+    agentDownloadUrl.searchParams.append('ii', `custom-integration/1.0/procdn`);
 
     // Forward all headers except the cookie header
     const headers = new Headers();
-    for (const [key, value] of req.headers.entries()) {
+    for (const [key, value] of request.headers.entries()) {
       headers.set(key, value);
     }
     headers.delete('cookie');
 
     // Request the JS agent from the CDN
-    const agentResponse = await fetch(proCDNURL.toString(), {
+    const agentResponse = await fetch(agentDownloadUrl, {
       headers,
     });
 
@@ -34,9 +34,9 @@ export async function GET(req: Request) {
     if (!agentResponse.headers.get('cache-control')?.includes('s-maxage')) {
       updatedHeaders.set('cache-control', 'public, max-age=3600, s-maxage=60');
     }
-    // If your http library decompresses the response automatically (as fetch does here), you need to remove these headers
+    // If your http library decompresses the response automatically (as `fetch` does here), you need to remove these headers
     // to tell the client the response is not compressed
-    // Alternatively, depending on your http library, you might be able to disable the automatic decompression and keep the headers
+    // Alternatively, depending on your http library, you might be able to disable the automatic decompression and keep the headers.
     updatedHeaders.delete('content-encoding');
     updatedHeaders.delete('transfer-encoding');
 
