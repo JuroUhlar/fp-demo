@@ -59,9 +59,9 @@ const proxyIdentificationRequest = async (request: NextRequest): Promise<Respons
     body: await request.blob(),
   });
 
-  // If your app needs to work using HTTP, remove the `strict-transport-security` header
   const updatedHeaders = new Headers(identificationResponse.headers);
-  updatedHeaders.delete('strict-transport-security');
+  // If your app needs to work using HTTP, remove the `strict-transport-security` header
+  // updatedHeaders.delete('strict-transport-security');
 
   // Return the response to the client
   return new Response(await identificationResponse.blob(), {

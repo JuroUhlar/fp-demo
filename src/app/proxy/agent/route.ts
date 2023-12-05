@@ -33,10 +33,10 @@ export async function GET(request: Request) {
     });
 
     const updatedHeaders = new Headers(agentResponse.headers);
-    // If you cannot properly forward the cache-control header, add one manually with a low max-age values
-    if (!agentResponse.headers.get('cache-control')?.includes('s-maxage')) {
-      updatedHeaders.set('cache-control', 'public, max-age=3600, s-maxage=60');
-    }
+    // If you cannot properly forward the cache-control header because your existing cache infra gets in the way,
+    //  add one manually with low max-age values
+    updatedHeaders.set('cache-control', 'public, max-age=3600, s-maxage=60');
+
     // If your http library decompresses the response automatically (as `fetch` does here), you need to remove these headers
     // to tell the client the response is not compressed
     // Alternatively, depending on your http library, you might be able to disable the automatic decompression and keep the headers.
