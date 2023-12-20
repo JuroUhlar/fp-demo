@@ -18,7 +18,7 @@ export async function GET(request: Request) {
 
     // Forward all query parameters and add the monitoring parameter
     agentDownloadUrl.search = request.url.split('?')[1];
-    agentDownloadUrl.searchParams.append('ii', `custom-integration/1.0/procdn`);
+    agentDownloadUrl.searchParams.append('ii', `custom-proxy-integration/1.0/procdn`);
 
     // Forward all headers except the cookie header
     const headers = new Headers();

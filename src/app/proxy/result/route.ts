@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 import { URLSearchParams } from 'url';
 import { isNativeError } from 'util/types';
 import { parseCookies, parseHost, parseIp, randomShortString } from './utils';
+import { REGION } from '../../../constants';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,14 +21,13 @@ export async function POST(request: NextRequest) {
 const proxyIdentificationRequest = async (request: NextRequest): Promise<Response> => {
   // Call the right endpoint depending on the region parameter:
   // https://api.fpjs.io, https://eu.api.fpjs.io, or https://ap.api.fpjs.io
-  const queryParams = new URLSearchParams(request.url.split('?')[1]);
-  const region = queryParams.get('region');
+  const region: string = REGION;
   const prefix = region === 'us' ? '' : `${region}.`;
   const identificationUrl = new URL(`https://${prefix}api.fpjs.io`);
 
   // Forward all present query parameters and append the monitoring parameter
   identificationUrl.search = request.url.split('?')[1] ?? '';
-  identificationUrl.searchParams.append('ii', `custom-integration/1.0/ingress`);
+  identificationUrl.searchParams.append('ii', `custom-proxy-integration/1.0/ingress`);
 
   // Copy all headers
   const headers = new Headers();

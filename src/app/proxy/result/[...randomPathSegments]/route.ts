@@ -1,4 +1,5 @@
 import { isNativeError } from 'util/types';
+import { REGION } from '../../../../constants';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,8 +13,7 @@ export async function GET(
   try {
     // Call the right endpoint depending on the region parameter, with the same random path segments
     // https://api.fpjs.io, https://eu.api.fpjs.io, or https://ap.api.fpjs.io
-    const queryParams = new URLSearchParams(request.url.split('?')[1]);
-    const region = queryParams.get('region');
+    const region: string = REGION;
     const prefix = region === 'us' ? '' : `${region}.`;
     const randomPath = params.randomPathSegments.join('/');
     const browserCacheUrl = new URL(`https://${prefix}api.fpjs.io/${randomPath}`);
