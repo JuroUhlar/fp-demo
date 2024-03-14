@@ -1,5 +1,3 @@
-'use client';
-
 import { JsAgentDebug } from '../../components/JsAgentDebug';
 
 export default function ExamplePage() {
