@@ -1,3 +1,5 @@
+'use client';
+
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
 import { FunctionComponent, useEffect, useState } from 'react';
 
