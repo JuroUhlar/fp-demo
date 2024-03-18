@@ -1,10 +1,10 @@
 'use client';
 
-import { JsAgentDebug } from '../../components/JsAgentDebug';
+import { NpmPackageIdentificationDemo } from '../../components/JsAgentNpmDemo';
 
 export default function ExamplePage() {
   return (
-    <JsAgentDebug
+    <NpmPackageIdentificationDemo
       loadOptions={{
         apiKey: '2UZgp3skqLzfJpFUGUrw',
         region: 'eu',

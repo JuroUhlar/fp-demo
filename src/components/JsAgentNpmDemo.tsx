@@ -10,17 +10,21 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 type JsAgentDebugProps = {
   name: string;
   loadOptions: LoadOptions;
-  getOptions?: GetOptions<true>;
+  getOptions?: GetOptions<boolean>;
 };
 
-export const JsAgentDebug = ({ loadOptions, getOptions, name }: JsAgentDebugProps) => {
+export const NpmPackageIdentificationDemo = ({
+  loadOptions,
+  getOptions,
+  name,
+}: JsAgentDebugProps) => {
   const [fingerprintData, setFingerprintData] = useState<GetResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   const usedGetOptions = useMemo(
     () => ({ linkedId: name, extendedResult: true, ...getOptions }),
-    [name, getOptions]
+    [name, getOptions],
   );
 
   const getVisitorData = useCallback(async () => {
