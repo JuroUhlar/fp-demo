@@ -6,9 +6,9 @@ export default function ExamplePage() {
       loadOptions={{
         apiKey: '2UZgp3skqLzfJpFUGUrw',
         region: 'eu',
-        endpoint: 'https://dzwm15ps31ena.cloudfront.net/fpjs/result?region=eu',
+        endpoint: 'https://cloudfront2.juraj.click/fpjs/result?region=eu',
         scriptUrlPattern:
-          'https://dzwm15ps31ena.cloudfront.net/fpjs/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
+          'https://cloudfront2.juraj.click/fpjs/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
       }}
       name={'CloudFront V2'}
     />
