@@ -31,7 +31,7 @@ export default function ClientPage() {
   return (
     <>
       <main className="m-10">
-        <h1>Pure NPM package</h1>
+        <h1>Static agent demo</h1>
         <pre>{JSON.stringify(fingerprintData, null, 2)}</pre>
       </main>
     </>
