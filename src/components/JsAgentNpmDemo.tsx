@@ -16,6 +16,7 @@ export type JsAgentDebugProps = {
   getOptions?: GetOptions<boolean>;
   serverApiKey?: string;
   serverApiRegion?: Region;
+  decryptionKey?: string;
 };
 
 export const NpmPackageIdentificationDemo = ({

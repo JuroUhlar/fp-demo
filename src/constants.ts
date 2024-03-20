@@ -9,18 +9,17 @@ export const CUSTOM_SUBDOMAIN_SCRIPT_URL =
 export const REGION = 'eu';
 export const REGION_SDK = Region.EU;
 
-export const MAIN_SUB_LOAD_OPTIONS: JsAgentDebugProps = {
-  name: 'Main jurajuhlar.eu subscription',
-  loadOptions: {
-    apiKey: PUBLIC_API_KEY,
-    scriptUrlPattern: CUSTOM_SUBDOMAIN_SCRIPT_URL,
-    endpoint: CUSTOM_SUBDOMAIN,
-  },
-  serverApiKey: SERVER_API_KEY,
-  serverApiRegion: REGION_SDK,
-};
-
 export const SUBS = {
+  main: {
+    name: 'Main jurajuhlar.eu subscription',
+    loadOptions: {
+      apiKey: PUBLIC_API_KEY,
+      scriptUrlPattern: CUSTOM_SUBDOMAIN_SCRIPT_URL,
+      endpoint: CUSTOM_SUBDOMAIN,
+    },
+    serverApiKey: SERVER_API_KEY,
+    serverApiRegion: REGION_SDK,
+  },
   identificationOnly: {
     name: 'Identification only subscription',
     loadOptions: {
@@ -34,6 +33,13 @@ export const SUBS = {
       apiKey: 'v36mGCIF3h552liQAU4F',
     },
     serverApiKey: process.env.NEXT_PUBLIC_ZERO_TRUST_MODE_SERVER_API_KEY,
+  },
+  sealedResults: {
+    name: 'Sealed results subscription',
+    loadOptions: {
+      apiKey: 'XkSle8LOYBYgKZco5978',
+    },
+    decryptionKey: process.env.SEALED_RESULTS_DECRYPT_KEY,
   },
 } satisfies Record<string, JsAgentDebugProps>;
 
