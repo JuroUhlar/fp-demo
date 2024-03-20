@@ -1,7 +1,7 @@
 import { Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { FunctionComponent } from 'react';
 import { UseEventOptions, useServerApiEvent } from '../hooks/useEvent';
-import { JsonViewer } from './jsonViewer';
+import { JsonViewer } from './JsonViewer';
 
 export const ServerApiResponseDemo: FunctionComponent<UseEventOptions> = ({
   requestId,

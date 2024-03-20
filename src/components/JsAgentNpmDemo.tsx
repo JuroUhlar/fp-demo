@@ -8,7 +8,7 @@ import FingerprintJS, {
 import { Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ServerApiResponseDemo } from './ServerApiResponseDemo';
-import { JsonViewer } from './jsonViewer';
+import { JsonViewer } from './JsonViewer';
 
 type JsAgentDebugProps = {
   name: string;
