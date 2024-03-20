@@ -5,18 +5,25 @@ import FingerprintJS, {
   GetResult,
   LoadOptions,
 } from '@fingerprintjs/fingerprintjs-pro';
+import { Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ServerApiResponseDemo } from './ServerApiResponseDemo';
+import { JsonViewer } from './jsonViewer';
 
 type JsAgentDebugProps = {
   name: string;
   loadOptions: LoadOptions;
   getOptions?: GetOptions<boolean>;
+  serverApiKey?: string;
+  serverApiRegion?: Region;
 };
 
 export const NpmPackageIdentificationDemo = ({
   loadOptions,
   getOptions,
   name,
+  serverApiKey,
+  serverApiRegion,
 }: JsAgentDebugProps) => {
   const [fingerprintData, setFingerprintData] = useState<GetResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -59,8 +66,20 @@ export const NpmPackageIdentificationDemo = ({
       )}
       <button onClick={getVisitorData}>Get visitor data</button>
       <p>{loading ? 'Loading...' : ''}</p>
-      <pre>{JSON.stringify(fingerprintData, null, 2)}</pre>
+      <h2>JS Agent Response</h2>
+      <JsonViewer data={fingerprintData} />
       {error && <pre>{error}</pre>}
+
+      {serverApiKey && serverApiRegion && (
+        <>
+          <h2>Server API Event Response</h2>
+          <ServerApiResponseDemo
+            requestId={fingerprintData?.requestId}
+            apiKey={serverApiKey}
+            region={serverApiRegion}
+          />
+        </>
+      )}
     </>
   );
 };

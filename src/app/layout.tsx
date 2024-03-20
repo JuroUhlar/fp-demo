@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { MyProviders } from './Providers';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -5,7 +6,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html>
       <head />
       <body suppressHydrationWarning={true}>
-        <MyProviders>{children}</MyProviders>
+        <MyProviders>
+          <Link href="/">Home</Link>
+          {children}
+        </MyProviders>
       </body>
     </html>
   );

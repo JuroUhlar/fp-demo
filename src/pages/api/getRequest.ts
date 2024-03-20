@@ -3,16 +3,18 @@ import { FingerprintJsServerApiClient, Region } from '@fingerprintjs/fingerprint
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function getFlightsEndpoint(req: NextApiRequest, res: NextApiResponse) {
-  const { requestId } = req.body;
+  const { requestId, apiKey, region } = req.body;
+  console.log(req.body);
   try {
     const client = new FingerprintJsServerApiClient({
-      region: REGION_SDK,
-      apiKey: SERVER_API_KEY,
+      region: region ?? REGION_SDK,
+      apiKey: apiKey ?? SERVER_API_KEY,
     });
 
     const eventResponse = await client.getEvent(requestId);
     res.status(200).json(eventResponse);
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       message: 'requestId not found',
     });
