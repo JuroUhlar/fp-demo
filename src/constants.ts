@@ -20,6 +20,23 @@ export const MAIN_SUB_LOAD_OPTIONS: JsAgentDebugProps = {
   serverApiRegion: REGION_SDK,
 };
 
+export const SUBS = {
+  identificationOnly: {
+    name: 'Identification only subscription',
+    loadOptions: {
+      apiKey: 'eajUlf6axysf2z89ZVWx',
+    },
+    serverApiKey: process.env.NEXT_PUBLIC_IDENTIFICATION_ONLY_SERVER_API_KEY,
+  },
+  zeroTrustMode: {
+    name: 'Zero Trust Mode subscription',
+    loadOptions: {
+      apiKey: 'v36mGCIF3h552liQAU4F',
+    },
+    serverApiKey: process.env.NEXT_PUBLIC_ZERO_TRUST_MODE_SERVER_API_KEY,
+  },
+} satisfies Record<string, JsAgentDebugProps>;
+
 export const CLOUDFRONT_ENDPOINT =
   'https://cloudfront.juraj.click/ghTV3FGADFbJVSId/0FDnBHGnHdW3xKHa?region=eu';
 export const CLOUDFRONT_SCRIPT_URL =

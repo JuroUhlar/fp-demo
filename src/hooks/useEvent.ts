@@ -8,7 +8,11 @@ export type UseEventOptions = {
   region?: Region;
 };
 
-export const useServerApiEvent = ({ requestId, apiKey, region }: UseEventOptions) => {
+export const useServerApiEvent = ({
+  requestId,
+  apiKey,
+  region = Region.Global,
+}: UseEventOptions) => {
   /** Temporary fix to store previous event because ReactQuery sets data to undefined before the fresh data is available when I make a new query and it makes everything flash */
 
   const {
