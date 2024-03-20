@@ -95,12 +95,12 @@
   dependencies:
     tslib "^2.4.0"
 
-"@fingerprintjs/fingerprintjs-pro-react@^2.6.2":
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/@fingerprintjs/fingerprintjs-pro-react/-/fingerprintjs-pro-react-2.6.2.tgz#55a045afe64a4fd3fbfb8d01e3c28622104c6604"
-  integrity sha512-R6FPsdHbu+q2pqSHygrZAnMH0vKbFclomwjWW0FoDlmOYiU1TjG55lvDgYyuPw7Za1BSSi+mAcIANu80rtNFBQ==
+"@fingerprintjs/fingerprintjs-pro-react@2.6.3-test.1":
+  version "2.6.3-test.1"
+  resolved "https://registry.yarnpkg.com/@fingerprintjs/fingerprintjs-pro-react/-/fingerprintjs-pro-react-2.6.3-test.1.tgz#7493e3105f4800b377261bc5bf091bf2b9101de8"
+  integrity sha512-m9BQdJxF4vCng4hpcQU5fOPfn+GK3m+iSeJ+JCo4JTDJpvlYa64iTcHD/Hb2tY3SN7SMRuJhVayCSojzGFJZEg==
   dependencies:
-    "@fingerprintjs/fingerprintjs-pro-spa" "^1.2.0"
+    "@fingerprintjs/fingerprintjs-pro-spa" "^1.3.0"
     fast-deep-equal "3.1.3"
 
 "@fingerprintjs/fingerprintjs-pro-server-api@^3.1.0":
@@ -110,7 +110,7 @@
   dependencies:
     node-fetch "^2.6.1"
 
-"@fingerprintjs/fingerprintjs-pro-spa@^1.2.0":
+"@fingerprintjs/fingerprintjs-pro-spa@^1.3.0":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@fingerprintjs/fingerprintjs-pro-spa/-/fingerprintjs-pro-spa-1.3.0.tgz#97ce1bac6155cdd77b2b60bfeb55b00b28fa2cf2"
   integrity sha512-XNZiA9kyuzfBZtCCr7B4x24pkp7WCpxzjAQbH87Iq89yWn48Auxc8Xh4a5q2Bpj9velFp1cdp76h3C0KaUsdwQ==

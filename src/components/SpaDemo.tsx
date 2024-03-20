@@ -9,8 +9,9 @@ import { Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ServerApiResponseDemo } from './ServerApiResponseDemo';
 import { JsonViewer } from './JsonViewer';
+import { CacheLocation, FpjsClient } from '@fingerprintjs/fingerprintjs-pro-spa';
 
-export type JsAgentDebugProps = {
+type JsAgentDebugProps = {
   name: string;
   loadOptions: LoadOptions;
   getOptions?: GetOptions<boolean>;
@@ -18,7 +19,7 @@ export type JsAgentDebugProps = {
   serverApiRegion?: Region;
 };
 
-export const NpmPackageIdentificationDemo = ({
+export const SpaDemo = ({
   loadOptions,
   getOptions,
   name,
@@ -37,9 +38,13 @@ export const NpmPackageIdentificationDemo = ({
   const getVisitorData = useCallback(async () => {
     setLoading(true);
     try {
-      const fpAgent = await FingerprintJS.load(loadOptions);
-      const result = await fpAgent.get(usedGetOptions);
-      setFingerprintData(result);
+      const fpjsClient = new FpjsClient({
+        loadOptions,
+        cacheLocation: CacheLocation.NoCache,
+      });
+      await fpjsClient.init();
+      const visitorData = await fpjsClient.getVisitorData(usedGetOptions);
+      setFingerprintData(visitorData);
       setError(null);
     } catch (error) {
       console.error(error);
