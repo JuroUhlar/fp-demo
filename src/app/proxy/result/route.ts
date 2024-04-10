@@ -91,6 +91,6 @@ const getErrorResponse = (request: Request, error: unknown): Response => {
         'Access-Control-Allow-Origin': request.headers.get('origin') ?? new URL(request.url).origin,
         'Access-Control-Allow-Credentials': 'true',
       },
-    }
+    },
   );
 };
