@@ -8,7 +8,7 @@ export default function ExamplePage() {
         region: 'eu',
         endpoint: 'https://cloudfront2.juraj.click/fpjs/result?region=eu',
         scriptUrlPattern:
-          'https://cloudfront2.juraj.click/fpjs/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
+          'https://d3t8v1h08ayt64.cloudfront.net/fpjs/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
       }}
       name={'CloudFront V2'}
     />

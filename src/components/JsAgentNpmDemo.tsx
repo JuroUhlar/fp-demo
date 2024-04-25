@@ -1,6 +1,7 @@
 'use client';
 
 import FingerprintJS, {
+  Agent,
   GetOptions,
   GetResult,
   LoadOptions,
@@ -29,16 +30,18 @@ export const NpmPackageIdentificationDemo = ({
   const [fingerprintData, setFingerprintData] = useState<GetResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [fpAgent, setFpAgent] = useState<Agent | null>(null);
 
   const usedGetOptions = useMemo(
     () => ({ linkedId: name, extendedResult: true, ...getOptions }),
     [name, getOptions],
   );
 
-  const getVisitorData = useCallback(async () => {
+  const reloadAgentAndGetVisitorData = useCallback(async () => {
     setLoading(true);
     try {
       const fpAgent = await FingerprintJS.load(loadOptions);
+      setFpAgent(fpAgent);
       const result = await fpAgent.get(usedGetOptions);
       setFingerprintData(result);
       setError(null);
@@ -48,11 +51,11 @@ export const NpmPackageIdentificationDemo = ({
     } finally {
       setLoading(false);
     }
-  }, [loadOptions, usedGetOptions]);
+  }, [loadOptions, usedGetOptions, setFpAgent]);
 
   useEffect(() => {
-    getVisitorData();
-  }, [getVisitorData]);
+    reloadAgentAndGetVisitorData();
+  }, [reloadAgentAndGetVisitorData]);
 
   return (
     <>
@@ -65,7 +68,17 @@ export const NpmPackageIdentificationDemo = ({
           <pre>{JSON.stringify(usedGetOptions, null, 2)}</pre>
         </>
       )}
-      <button onClick={getVisitorData}>Get visitor data</button>
+      <button onClick={reloadAgentAndGetVisitorData}>Reload agent and get visitor data</button>
+      <button
+        onClick={async () => {
+          const result = await fpAgent?.get(usedGetOptions);
+          if (result) {
+            setFingerprintData(result);
+          }
+        }}
+      >
+        Get visitor data
+      </button>
       <p>{loading ? 'Loading...' : ''}</p>
       <h2>JS Agent Response</h2>
       <JsonViewer data={fingerprintData} />
