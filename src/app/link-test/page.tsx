@@ -12,6 +12,11 @@ export default function ExamplePage() {
           <a href="https://dev.fingerprint.com/docs/does-not-exist">Dead link</a>
         </li>
         <li>
+          <Link href="https://dev.fingerprint.com/docs/quick-start-guide#get-your-api-key">
+            Live link, working hash
+          </Link>
+        </li>
+        <li>
           <a href="https://dev.fingerprint.com/docs/quick-start-guide#hash-does-not-exist">
             Live link but incorrect hash
           </a>
