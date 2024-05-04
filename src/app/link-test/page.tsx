@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function ExamplePage() {
   return (
     <div>
@@ -13,6 +15,12 @@ export default function ExamplePage() {
           <a href="https://dev.fingerprint.com/docs/quick-start-guide#hash-does-not-exist">
             Live link but incorrect hash
           </a>
+        </li>
+        <li>
+          <Link href="/agent">Live link but relative</Link>
+        </li>
+        <li>
+          <Link href="/does not exist">Broken link but relative</Link>
         </li>
       </ul>
     </div>
