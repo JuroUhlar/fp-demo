@@ -20,7 +20,7 @@ export default function ExamplePage() {
           <Link href="/agent">Live link but relative</Link>
         </li>
         <li>
-          <Link href="/does not exist">Broken link but relative</Link>
+          <Link href="/does-not-exist">Broken link but relative</Link>
         </li>
       </ul>
     </div>
