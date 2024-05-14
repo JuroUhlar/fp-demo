@@ -5,9 +5,9 @@ export default function ExamplePage() {
     <NpmPackageIdentificationDemo
       loadOptions={{
         apiKey: '8PxIlryhGKPBmCb2DBnK',
-        endpoint: 'https://d2csqj5xa2q11g.cloudfront.net/fpjs/result?region=us',
+        endpoint: 'https://d1de520979kahm.cloudfront.net/fpjs/result?region=us',
         scriptUrlPattern:
-          'https://d2csqj5xa2q11g.cloudfront.net/fpjs/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
+          'https://d1de520979kahm.cloudfront.net/fpjs/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
       }}
       name={'Cloudfront V2 Staging'}
     />
