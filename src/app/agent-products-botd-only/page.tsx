@@ -1,3 +1,4 @@
+import FingerprintJS, { defaultEndpoint } from '@fingerprintjs/fingerprintjs-pro';
 import { NpmPackageIdentificationDemo } from '../../components/JsAgentNpmDemo';
 import {
   CUSTOM_SUBDOMAIN,
@@ -14,7 +15,7 @@ export default function ExamplePage() {
       loadOptions={{
         apiKey: PUBLIC_API_KEY,
         region: REGION,
-        endpoint: CUSTOM_SUBDOMAIN,
+        endpoint: [CUSTOM_SUBDOMAIN, FingerprintJS.defaultEndpoint],
         scriptUrlPattern: CUSTOM_SUBDOMAIN_SCRIPT_URL,
       }}
       getOptions={{
