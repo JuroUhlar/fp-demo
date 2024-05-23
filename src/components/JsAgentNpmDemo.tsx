@@ -84,13 +84,13 @@ export const NpmPackageIdentificationDemo = ({
       <JsonViewer data={fingerprintData} />
       {error && <pre>{error}</pre>}
 
-      {serverApiKey && serverApiRegion && (
+      {serverApiKey && (
         <>
           <h2>Server API Event Response</h2>
           <ServerApiResponseDemo
             requestId={fingerprintData?.requestId}
             apiKey={serverApiKey}
-            region={serverApiRegion}
+            region={serverApiRegion ?? Region.Global}
           />
         </>
       )}
