@@ -14,10 +14,8 @@ export default function ExamplePage() {
       loadOptions={{
         apiKey: 'XSpWBBUesOp5R1n5x5Se',
         region: REGION,
-        endpoint: CUSTOM_SUBDOMAIN,
-        scriptUrlPattern: CUSTOM_SUBDOMAIN_SCRIPT_URL,
       }}
-      name={'JS Agent default (no products param)'}
+      name={'JS Agent default endpoints'}
       serverApiKey={SERVER_API_KEY}
       serverApiRegion={REGION_SDK}
     />
