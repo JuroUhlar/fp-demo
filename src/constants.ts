@@ -2,7 +2,7 @@ import { Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { JsAgentDebugProps } from './components/JsAgentNpmDemo';
 
 export const PUBLIC_API_KEY = process.env.NEXT_PUBLIC_PUBLIC_API_KEY ?? '2UZgp3skqLzfJpFUGUrw';
-export const SERVER_API_KEY = process.env.SERVER_API_KEY ?? '2ittvzwZZThxLA36pKGX';
+export const SERVER_API_KEY = process.env.SERVER_API_KEY ?? 'pamS1yQnSyi2yfbLq1ZU';
 export const CUSTOM_SUBDOMAIN = 'https://fp.jurajuhlar.eu';
 export const CUSTOM_SUBDOMAIN_SCRIPT_URL =
   'https://fp.jurajuhlar.eu/web/v<version>/<apiKey>/loader_v<loaderVersion>.js';
@@ -16,6 +16,7 @@ export const SUBS = {
       apiKey: PUBLIC_API_KEY,
       scriptUrlPattern: CUSTOM_SUBDOMAIN_SCRIPT_URL,
       endpoint: CUSTOM_SUBDOMAIN,
+      region: REGION,
     },
     serverApiKey: SERVER_API_KEY,
     serverApiRegion: REGION_SDK,

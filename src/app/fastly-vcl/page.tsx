@@ -5,13 +5,15 @@ export default function ExamplePage() {
   return (
     <NpmPackageIdentificationDemo
       loadOptions={{
-        apiKey: SUBS.identificationOnly.loadOptions.apiKey,
-        endpoint: 'https://fastly.jurajuhlar.eu/behavior/result',
+        apiKey: SUBS.main.loadOptions.apiKey,
+        region: SUBS.main.loadOptions.region,
+        endpoint: 'https://fastly.jurajuhlar.eu/fpjs/result?region=eu',
         scriptUrlPattern:
-          'https://fastly.jurajuhlar.eu/behavior/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
+          'https://fastly.jurajuhlar.eu/fpjs/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
       }}
       name={'Fastly VCL Integration'}
-      serverApiKey={SUBS.identificationOnly.serverApiKey}
+      serverApiKey={SUBS.main.serverApiKey}
+      serverApiRegion={SUBS.main.serverApiRegion}
     />
   );
 }
