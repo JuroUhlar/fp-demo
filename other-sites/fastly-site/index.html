@@ -6,12 +6,11 @@
     <title>Fastly VCL integration on the main domain (demo site)</title>
     <script>
       // Initialize the agent on page load.
-      const fpPromise = import('https://fp.jurajuhlar.eu/web/v3/2UZgp3skqLzfJpFUGUrw').then(
-        (FingerprintJS) =>
-          FingerprintJS.load({
-            endpoint: ['https://fp.jurajuhlar.eu', FingerprintJS.defaultEndpoint],
-            region: 'eu',
-          }),
+      const fpPromise = import('/fpjs/agent/2UZgp3skqLzfJpFUGUrw').then((FingerprintJS) =>
+        FingerprintJS.load({
+          endpoint: ['/fpjs/result?region=eu', FingerprintJS.defaultEndpoint],
+          region: 'eu',
+        }),
       );
 
       // Get the visitorId when you need it.
