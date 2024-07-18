@@ -18,12 +18,12 @@
         .then((result) => {
           const visitorId = result.visitorId;
           console.log(visitorId);
-          document.getElementById('result').innerHTML = visitorId;
+          document.getElementById('result').innerHTML = JSON.stringify(result, undefined, 2);
         });
     </script>
   </head>
   <body>
     <h1>Fastly VCL integration on the main domain (demo site) - EU region</h1>
-    <p id="result"></p>
+    <pre id="result"></pre>
   </body>
 </html>
