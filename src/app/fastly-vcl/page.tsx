@@ -7,9 +7,9 @@ export default function ExamplePage() {
       loadOptions={{
         apiKey: SUBS.main.loadOptions.apiKey,
         region: SUBS.main.loadOptions.region,
-        endpoint: 'https://fastly.jurajuhlar.eu/fpjs/result?region=eu',
+        endpoint: 'https://fastly4.jurajuhlar.eu/fpjs/result?region=eu',
         scriptUrlPattern:
-          'https://fastly.jurajuhlar.eu/fpjs/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
+          'https://fastly4.jurajuhlar.eu/fpjs/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
       }}
       name={'Fastly VCL Integration'}
       serverApiKey={SUBS.main.serverApiKey}
