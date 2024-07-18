@@ -42,9 +42,14 @@ resource "aws_cloudfront_distribution" "main_website_distribution" {
     }
   }
 
+  aliases = ["${var.subdomain}.${var.root_domain}"]
+
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn = "arn:aws:acm:us-east-1:013357491684:certificate/c3ffee8c-071b-4ff8-bec2-e222eff602bc"
+    ssl_support_method  = "sni-only"
   }
+
+
 
 
   #region Fingerprint CloudFront Integration start
@@ -82,6 +87,16 @@ resource "aws_cloudfront_distribution" "main_website_distribution" {
   }
   #endregion
 }
+
+# Make the distribution avaialable on a subdomain of juraj.click
+resource "aws_route53_record" "cloudfront_terraform_existing_distribution_record" {
+  zone_id = "Z01869442YM5PGH51JDVA"
+  name    = "${var.subdomain}.${var.root_domain}"
+  type    = "CNAME"
+  ttl     = 300
+  records = [aws_cloudfront_distribution.main_website_distribution.domain_name]
+}
+
 
 # Output the CloudFront domain name
 output "cloudfront_domain_name" {

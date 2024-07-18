@@ -3,7 +3,7 @@ module "fingerprint_cloudfront_integration" {
 
   fpjs_agent_download_path = "agent"
   fpjs_get_result_path     = "result"
-  fpjs_shared_secret       = "GX3UybSIs0PDQ9fywL2e"
+  fpjs_shared_secret       = var.proxy_secret
 }
 
 
