@@ -46,7 +46,7 @@ resource "aws_cloudfront_distribution" "fpjs_cloudfront_distribution" {
   #   cloudfront_default_certificate = true
   # }
 
-  aliases = ["cloudfront-via-terraform.juraj.click"]
+  aliases = ["${var.subdomain}.${var.root_domain}"]
 
   viewer_certificate {
     acm_certificate_arn = "arn:aws:acm:us-east-1:013357491684:certificate/c3ffee8c-071b-4ff8-bec2-e222eff602bc"
@@ -62,11 +62,9 @@ resource "aws_cloudfront_distribution" "fpjs_cloudfront_distribution" {
 
 
 # Make the distribution avaialable on a subdomain of juraj.click
-# Todo use a variable for the subdomain
-
 resource "aws_route53_record" "cloudfront_terraform_new_distribution_record" {
   zone_id = "Z01869442YM5PGH51JDVA"
-  name    = "cloudfront-via-terraform.juraj.click"
+  name    = "${var.subdomain}.${var.root_domain}"
   type    = "CNAME"
   ttl     = 300
   records = [aws_cloudfront_distribution.fpjs_cloudfront_distribution.domain_name]
