@@ -46,8 +46,3 @@ export async function POST(request: Request) {
   submissionsDatabase.set(visitorId, data);
   return Response.json({ status: 'OK' });
 }
-
-const { okay, error } = validateFingerprintResult(identificationEvent, request);
-if (!okay) {
-  return Response.json({ error }, { status: 403 });
-}

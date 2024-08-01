@@ -1,13 +1,11 @@
-locals {
-  fpcdn_origin_id = "fpcdn.io"
-}
+
 
 resource "aws_cloudfront_distribution" "fpjs_cloudfront_distribution" {
   comment = "Fingerprint distribution (created via Terraform)"
 
   origin {
-    domain_name = "fpcdn.io"
-    origin_id   = local.fpcdn_origin_id
+    domain_name = module.fingerprint_cloudfront_integration.fpjs_origin_name
+    origin_id   = module.fingerprint_cloudfront_integration.fpjs_origin_id
     custom_origin_config {
       origin_protocol_policy = "https-only"
       http_port              = 80
@@ -30,8 +28,8 @@ resource "aws_cloudfront_distribution" "fpjs_cloudfront_distribution" {
     allowed_methods          = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
     cached_methods           = ["GET", "HEAD"]
     cache_policy_id          = module.fingerprint_cloudfront_integration.fpjs_cache_policy_id
-    origin_request_policy_id = "216adef6-5c7f-47e4-b989-5492eafa07d3" # Default AllViewer policy
-    target_origin_id         = local.fpcdn_origin_id
+    origin_request_policy_id = module.fingerprint_cloudfront_integration.fpjs_origin_request_policy_id
+    target_origin_id         = module.fingerprint_cloudfront_integration.fpjs_origin_id
     viewer_protocol_policy   = "https-only"
     compress                 = true
 
@@ -46,6 +44,12 @@ resource "aws_cloudfront_distribution" "fpjs_cloudfront_distribution" {
   #   cloudfront_default_certificate = true
   # }
 
+  restrictions {
+    geo_restriction {
+      restriction_type = "none"
+    }
+  }
+
   aliases = ["${var.subdomain}.${var.root_domain}"]
 
   viewer_certificate {
@@ -53,11 +57,7 @@ resource "aws_cloudfront_distribution" "fpjs_cloudfront_distribution" {
     ssl_support_method  = "sni-only"
   }
 
-  restrictions {
-    geo_restriction {
-      restriction_type = "none"
-    }
-  }
+
 }
 
 

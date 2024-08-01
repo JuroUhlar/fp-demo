@@ -4,6 +4,8 @@ export const IPv4_REGEX =
   /^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.){3}(25[0-5]|(2[0-4]|1\d|[1-9]|)\d)$/;
 export const ALLOWED_REQUEST_TIMESTAMP_DIFF_MS = 4000;
 
+const env = process.env;
+
 /**
  * Validates the consistency of the Fingerprint identification result with the associated HTTP request
  *
@@ -58,12 +60,14 @@ export function validateFingerprintResult(identificationEvent, request) {
    * https://adam-p.ca/blog/2022/03/x-forwarded-for/.
    *
    * @param {Request} request
+   * @returns {string}
    */
   const parseIp = (request) => {
     const xForwardedFor = request.headers.get('x-forwarded-for');
     const requestIp = Array.isArray(xForwardedFor)
       ? xForwardedFor[0]
       : xForwardedFor?.split(',')[0] ?? '';
+    return requestIp;
   };
 
   const identificationIp = identification.ip;
@@ -77,7 +81,7 @@ export function validateFingerprintResult(identificationEvent, request) {
     };
   }
 
-  if (identification.confidence.score < env.MIN_CONFIDENCE_SCORE) {
+  if (identification.confidence.score < Number(env.MIN_CONFIDENCE_SCORE)) {
     return {
       okay: false,
       error:

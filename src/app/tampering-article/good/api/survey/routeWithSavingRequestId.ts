@@ -22,7 +22,7 @@ const parseRequestId = (payload: Payload) => {
 };
 
 export async function POST(request: Request) {
-  const { requestId } = parseRequestId(await request.json());
+  const { requestId, data } = parseRequestId(await request.json());
 
   if (await requestIdDatabase.has(requestId)) {
     return Response.json(
@@ -34,6 +34,7 @@ export async function POST(request: Request) {
   await requestIdDatabase.set(requestId, true);
 
   // Continue processing the request
+  const identificationEvent: any = {};
 
   /**
    * ✅ EXAMPLE OF GOOD PRACTICE
