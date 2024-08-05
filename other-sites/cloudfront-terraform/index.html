@@ -3,27 +3,37 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cloudfront Terraform integration on the main domain (demo site)</title>
+    <title>
+      Cloudfront Terraform integration on the main domain (demo site)
+    </title>
     <script>
       // Initialize the agent on page load.
-      const fpPromise = import('/fpjs/agent?apiKey=eajUlf6axysf2z89ZVWx').then((FingerprintJS) =>
-        FingerprintJS.load({
-          endpoint: ['/fpjs/result?region=us'],
-        }),
+      const fpPromise = import('/fpjs/agent?apiKey=eajUlf6axysf2z89ZVWx').then(
+        (FingerprintJS) =>
+          FingerprintJS.load({
+            endpoint: ['/fpjs/result?region=us'],
+          }),
       );
 
       // Get the visitorId when you need it.
       fpPromise
-        .then((fp) => fp.get())
+        .then((fp) => fp.get({ extendedResult: true }))
         .then((result) => {
           const visitorId = result.visitorId;
           console.log(visitorId);
-          document.getElementById('result').innerHTML = JSON.stringify(result, undefined, 2);
+          document.getElementById('result').innerHTML = JSON.stringify(
+            result,
+            undefined,
+            2,
+          );
         });
     </script>
   </head>
   <body>
-    <h1>Fastly VCL integration on the main domain (demo site) - EU region</h1>
+    <h1>
+      Cloudfront Terraform integration on the main domain (demo site) - US
+      region
+    </h1>
     <pre id="result"></pre>
   </body>
 </html>

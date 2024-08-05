@@ -2,7 +2,7 @@ import { NpmPackageIdentificationDemo } from '../../components/JsAgentNpmDemo';
 import { SUBS } from '../../constants';
 
 // const host = 'd3cu7lsl52iiaf.cloudfront.net';
-const host = 'cloudfront-via-terraform-existing-distro.juraj.click';
+const host = 'juraj.click';
 
 export default function ExamplePage() {
   return (
