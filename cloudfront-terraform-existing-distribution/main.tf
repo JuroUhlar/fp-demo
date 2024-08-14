@@ -1,14 +1,13 @@
-# Configure the AWS Provide
-# Create CloudFront distribution
+# Example CloudFront Distribution. DO NOT USE AS-IS, and make sure to follow best practices before releasing to the production.
 resource "aws_cloudfront_distribution" "main_website_distribution" {
   enabled             = true
   is_ipv6_enabled     = true
-  comment             = "CloudFront distribution for cloudfrontterraform.netlify.app"
+  comment             = "CloudFront distribution for ${var.website_origin_domain_name}"
   default_root_object = "index.html"
 
   origin {
-    domain_name = "cloudfrontterraform.netlify.app"
-    origin_id   = "netlify-website"
+    domain_name = var.website_origin_domain_name
+    origin_id   = "your-website"
 
     custom_origin_config {
       http_port              = 80
@@ -21,7 +20,7 @@ resource "aws_cloudfront_distribution" "main_website_distribution" {
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "netlify-website"
+    target_origin_id = "your-website"
 
     forwarded_values {
       query_string = false
@@ -42,10 +41,10 @@ resource "aws_cloudfront_distribution" "main_website_distribution" {
     }
   }
 
-  aliases = ["${var.subdomain}.${var.root_domain}"]
+  aliases = [var.website_domain]
 
   viewer_certificate {
-    acm_certificate_arn = "arn:aws:acm:us-east-1:013357491684:certificate/c3ffee8c-071b-4ff8-bec2-e222eff602bc"
+    acm_certificate_arn = var.certificate_arn
     ssl_support_method  = "sni-only"
   }
 
@@ -66,7 +65,7 @@ resource "aws_cloudfront_distribution" "main_website_distribution" {
   }
 
   ordered_cache_behavior {
-    path_pattern = "fpjs/*"
+    path_pattern = "${var.fpjs_behavior_path}/*"
 
     allowed_methods          = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
     cached_methods           = ["GET", "HEAD"]
@@ -85,17 +84,16 @@ resource "aws_cloudfront_distribution" "main_website_distribution" {
   #endregion
 }
 
-# Make the distribution avaialable on a subdomain of juraj.click
-resource "aws_route53_record" "cloudfront_terraform_existing_distribution_record" {
-  zone_id = "Z01869442YM5PGH51JDVA"
-  name    = "${var.subdomain}.${var.root_domain}"
-  type    = "CNAME"
-  ttl     = 300
-  records = [aws_cloudfront_distribution.main_website_distribution.domain_name]
+
+resource "aws_route53_record" "apex_domain" {
+  zone_id = var.domain_zone_id
+  name    = var.website_domain
+  type    = "A"
+
+  alias {
+    name                   = aws_cloudfront_distribution.main_website_distribution.domain_name
+    zone_id                = aws_cloudfront_distribution.main_website_distribution.hosted_zone_id
+    evaluate_target_health = false
+  }
 }
 
-
-# Output the CloudFront domain name
-output "cloudfront_domain_name" {
-  value = aws_cloudfront_distribution.main_website_distribution.domain_name
-}

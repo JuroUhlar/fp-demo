@@ -1,8 +1,14 @@
-
-
+# Example CloudFront Distribution. DO NOT USE AS-IS, and make sure to follow best practices before releasing to the production.
 resource "aws_cloudfront_distribution" "fpjs_cloudfront_distribution" {
-  comment = "Fingerprint distribution (created via Terraform)"
+  comment = "Fingerprint proxy integration distribution (created via Terraform)"
 
+  enabled = true
+
+  http_version = "http1.1"
+
+  price_class = "PriceClass_100"
+
+  #region Fingerprint CloudFront Integration start
   origin {
     domain_name = module.fingerprint_cloudfront_integration.fpjs_origin_name
     origin_id   = module.fingerprint_cloudfront_integration.fpjs_origin_id
@@ -17,12 +23,6 @@ resource "aws_cloudfront_distribution" "fpjs_cloudfront_distribution" {
       value = module.fingerprint_cloudfront_integration.fpjs_secret_manager_arn
     }
   }
-
-  enabled = true
-
-  http_version = "http1.1"
-
-  price_class = "PriceClass_100"
 
   default_cache_behavior {
     allowed_methods          = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
@@ -39,10 +39,7 @@ resource "aws_cloudfront_distribution" "fpjs_cloudfront_distribution" {
       include_body = true
     }
   }
-
-  # viewer_certificate {
-  #   cloudfront_default_certificate = true
-  # }
+  #endregion
 
   restrictions {
     geo_restriction {
@@ -50,21 +47,25 @@ resource "aws_cloudfront_distribution" "fpjs_cloudfront_distribution" {
     }
   }
 
-  aliases = ["${var.subdomain}.${var.root_domain}"]
-
+  aliases = [var.proxy_subdomain_domain]
   viewer_certificate {
-    acm_certificate_arn = "arn:aws:acm:us-east-1:013357491684:certificate/c3ffee8c-071b-4ff8-bec2-e222eff602bc"
+    acm_certificate_arn = var.certificate_arn
     ssl_support_method  = "sni-only"
   }
 
+  # If don't want to serve the distribution from a subdomain for now, use the default certificate instead
+  # (comment out `viewer_certificate` and `aliases` above and use the `viewer_certificate` below)
 
+  # viewer_certificate {
+  #   cloudfront_default_certificate = true
+  # }
 }
 
-
-# Make the distribution avaialable on a subdomain of juraj.click
+# You can make the distribution available on a subdomain of your website
+# (comment this out if you don't want to do that for now)
 resource "aws_route53_record" "cloudfront_terraform_new_distribution_record" {
-  zone_id = "Z01869442YM5PGH51JDVA"
-  name    = "${var.subdomain}.${var.root_domain}"
+  zone_id = var.domain_zone_id
+  name    = var.proxy_subdomain_domain
   type    = "CNAME"
   ttl     = 300
   records = [aws_cloudfront_distribution.fpjs_cloudfront_distribution.domain_name]
