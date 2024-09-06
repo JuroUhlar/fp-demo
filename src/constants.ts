@@ -42,6 +42,17 @@ export const SUBS = {
     },
     decryptionKey: process.env.SEALED_RESULTS_DECRYPT_KEY,
   },
+  openResponse: {
+    name: 'Open response subscription',
+    loadOptions: {
+      apiKey: 'c0cR30fx3zBIQLEAYHOV',
+      scriptUrlPattern:
+        '/proxy/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
+      endpoint: '/proxy/result-open-response',
+      region: 'us',
+    },
+    decryptionKey: process.env.OPEN_RESPONSE_DECRYPT_KEY,
+  },
 } satisfies Record<string, JsAgentDebugProps>;
 
 export const CLOUDFRONT_ENDPOINT =
