@@ -7,6 +7,11 @@ import {
   parseIp,
   randomShortString,
 } from '../result/utils';
+import {
+  DecryptionAlgorithm,
+  unsealEventsResponse,
+} from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { unsealDataCustom, unsealDataWithNodeSDK } from './unsealUtils';
 export const dynamic = 'force-dynamic';
 
 const REGION = 'us';
@@ -73,8 +78,30 @@ const proxyIdentificationRequest = async (
   // If your app needs to work using HTTP, remove the `strict-transport-security` header
   // updatedHeaders.delete('strict-transport-security');
 
-  // Return the response to the client
-  return new Response(await identificationResponse.blob(), {
+  // OPEN RESPONSE ADDITION: Get the response contents
+  const identificationResponseText = await identificationResponse.text();
+  const identificatonResponseJson = JSON.parse(identificationResponseText);
+
+  console.log(identificatonResponseJson);
+
+  const decryptionKey = process.env.OPEN_RESPONSE_DECRYPT_KEY;
+  if (!decryptionKey) {
+    throw new Error('Missing OPEN_RESPONSE_DECRYPT_KEY environment variable');
+  }
+
+  const unsealedDataNodeSDK = await unsealDataWithNodeSDK(
+    identificatonResponseJson.sealedResult,
+    decryptionKey,
+  );
+  const unsealedDataCustom = await unsealDataCustom(
+    identificatonResponseJson.sealedResult,
+    decryptionKey,
+  );
+  console.log(JSON.stringify(unsealedDataCustom, null, 2));
+  // END OF OPEN RESPONSE ADDITION
+
+  // OPEN RESPONSE CHANGE: Return the TEXT of the response to the client instead of blob()
+  return new Response(identificationResponseText, {
     status: identificationResponse.status,
     statusText: identificationResponse.statusText,
     headers: updatedHeaders,
@@ -105,3 +132,4 @@ const getErrorResponse = (request: Request, error: unknown): Response => {
     },
   );
 };
+
