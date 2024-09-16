@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { URLSearchParams } from 'url';
+
 import { isNativeError } from 'util/types';
 import {
   parseCookies,
@@ -7,10 +7,7 @@ import {
   parseIp,
   randomShortString,
 } from '../result/utils';
-import {
-  DecryptionAlgorithm,
-  unsealEventsResponse,
-} from '@fingerprintjs/fingerprintjs-pro-server-api';
+
 import { unsealDataCustom, unsealDataWithNodeSDK } from './unsealUtils';
 export const dynamic = 'force-dynamic';
 
@@ -76,13 +73,14 @@ const proxyIdentificationRequest = async (
 
   const updatedHeaders = new Headers(identificationResponse.headers);
   // If your app needs to work using HTTP, remove the `strict-transport-security` header
-  // updatedHeaders.delete('strict-transport-security');
+  updatedHeaders.delete('strict-transport-security');
+  // DEBUG: For debugging purposes, I am adding the unsealed payload to the response, artificially changing the content length
+  // So I need to delete the content length header to avoid a malformed (cut off) response
+  updatedHeaders.delete('content-length');
 
   // OPEN RESPONSE ADDITION: Get the response contents
   const identificationResponseText = await identificationResponse.text();
-  const identificatonResponseJson = JSON.parse(identificationResponseText);
-
-  console.log(identificatonResponseJson);
+  const identificationResponseObject = JSON.parse(identificationResponseText);
 
   const decryptionKey = process.env.OPEN_RESPONSE_DECRYPT_KEY;
   if (!decryptionKey) {
@@ -90,18 +88,27 @@ const proxyIdentificationRequest = async (
   }
 
   const unsealedDataNodeSDK = await unsealDataWithNodeSDK(
-    identificatonResponseJson.sealedResult,
+    identificationResponseObject.sealedResult,
     decryptionKey,
   );
   const unsealedDataCustom = await unsealDataCustom(
-    identificatonResponseJson.sealedResult,
+    identificationResponseObject.sealedResult,
     decryptionKey,
   );
   console.log(JSON.stringify(unsealedDataCustom, null, 2));
   // END OF OPEN RESPONSE ADDITION
 
-  // OPEN RESPONSE CHANGE: Return the TEXT of the response to the client instead of blob()
-  return new Response(identificationResponseText, {
+  // DEBUG: Add the unsealed payload to the response
+  const debugResponse = {
+    ...identificationResponseObject,
+    unsealedResult: unsealedDataCustom,
+  };
+  const debugResponseText = JSON.stringify(debugResponse);
+
+  // OPEN RESPONSE CHANGE: Return the TEXT of the response `identificationResponseText` to the client instead of `blob()`
+  // like `return new Response(identificationResponseText...`
+  // Here we return the debug response text instead just for debugging purposes
+  return new Response(debugResponseText, {
     status: identificationResponse.status,
     statusText: identificationResponse.statusText,
     headers: updatedHeaders,
