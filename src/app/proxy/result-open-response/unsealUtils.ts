@@ -34,6 +34,7 @@ function base64StrToUint8Array(str: string) {
   return data;
 }
 
+
 // Function that decrypts sealed data using AES-256-GCM
 function decrypt(sealedData: Uint8Array, encryptionKey: string) {
   // Get the decryption key generated in our dashboard

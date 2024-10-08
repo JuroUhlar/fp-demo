@@ -80,7 +80,7 @@ const proxyIdentificationRequest = async (
 
   // OPEN RESPONSE ADDITION: Get the response contents
   const identificationResponseText = await identificationResponse.text();
-  const identificationResponseObject = JSON.parse(identificationResponseText);
+  const identificationResponseJson = JSON.parse(identificationResponseText);
 
   const decryptionKey = process.env.OPEN_RESPONSE_DECRYPT_KEY;
   if (!decryptionKey) {
@@ -88,11 +88,11 @@ const proxyIdentificationRequest = async (
   }
 
   const unsealedDataNodeSDK = await unsealDataWithNodeSDK(
-    identificationResponseObject.sealedResult,
+    identificationResponseJson.sealedResult,
     decryptionKey,
   );
   const unsealedDataCustom = await unsealDataCustom(
-    identificationResponseObject.sealedResult,
+    identificationResponseJson.sealedResult,
     decryptionKey,
   );
   console.log(JSON.stringify(unsealedDataCustom, null, 2));
@@ -100,7 +100,7 @@ const proxyIdentificationRequest = async (
 
   // DEBUG: Add the unsealed payload to the response
   const debugResponse = {
-    ...identificationResponseObject,
+    ...identificationResponseJson,
     unsealedResult: unsealedDataCustom,
   };
   const debugResponseText = JSON.stringify(debugResponse);
