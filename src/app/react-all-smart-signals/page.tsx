@@ -9,6 +9,7 @@ export default function ExamplePage() {
       }}
       getOptions={{
         extendedResult: true,
+        timeout: 1,
       }}
       name={'React SDK All smart signals'}
     />
