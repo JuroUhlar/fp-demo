@@ -16,6 +16,7 @@
       fpPromise
         .then((fp) => fp.get())
         .then((result) => {
+          console.log(result);
           // This is the visitor identifier:
           const visitorId = result.visitorId;
           console.log(visitorId);

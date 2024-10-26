@@ -51,6 +51,7 @@ export const SUBS = {
       endpoint: '/proxy/result-open-response',
       region: 'us',
     },
+    serverApiKey: '9faii9hhDKMmrELbeshz',
     decryptionKey: process.env.OPEN_RESPONSE_DECRYPT_KEY,
   },
 } satisfies Record<string, JsAgentDebugProps>;
