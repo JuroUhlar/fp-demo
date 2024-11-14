@@ -82,6 +82,8 @@ const proxyIdentificationRequest = async (
   const identificationResponseText = await identificationResponse.text();
   const identificationResponseJson = JSON.parse(identificationResponseText);
 
+  console.log(identificationResponseText);
+
   const decryptionKey = process.env.OPEN_RESPONSE_DECRYPT_KEY;
   if (!decryptionKey) {
     throw new Error('Missing OPEN_RESPONSE_DECRYPT_KEY environment variable');

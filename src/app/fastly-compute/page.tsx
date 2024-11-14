@@ -1,7 +1,8 @@
 import { NpmPackageIdentificationDemo } from '../../components/JsAgentNpmDemo';
 import { REGION_SDK, SERVER_API_KEY, SUBS } from '../../constants';
 
-const integrationUrl = 'https://fastly-compute.jurajuhlar.site';
+const integrationUrl = 'https://fastly4.jurajuhlar.eu';
+// const integrationUrl = 'https://fastly-compute.jurajuhlar.site';
 
 export default function ExamplePage() {
   return (
