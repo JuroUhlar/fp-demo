@@ -11,6 +11,7 @@ const CustomProxyDemo: FunctionComponent = ({}) => {
     // Initialize an agent at application startup.
     const fpAgent = await FingerprintJS.load({
       apiKey: PUBLIC_API_KEY,
+      region: 'eu',
       scriptUrlPattern:
         '/proxy/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
       endpoint: '/proxy/result?region=eu',

@@ -1,6 +1,6 @@
 import {
   DecryptionAlgorithm,
-  EventResponse,
+  EventsGetResponse,
   unsealEventsResponse,
 } from '@fingerprintjs/fingerprintjs-pro-server-api';
 
@@ -8,7 +8,7 @@ export type DecryptPayload = {
   sealedResult: string;
 };
 
-export type DecryptResponse = EventResponse;
+export type DecryptResponse = EventsGetResponse;
 
 export async function POST(request: Request) {
   try {

@@ -9,7 +9,7 @@ const env = process.env;
 /**
  * Validates the consistency of the Fingerprint identification result with the associated HTTP request
  *
- * @param {import("@fingerprintjs/fingerprintjs-pro-server-api").EventResponse} identificationEvent - The event retrieved from Server API or Sealed result
+ * @param {import("@fingerprintjs/fingerprintjs-pro-server-api").EventsGetResponse} identificationEvent - The event retrieved from Server API or Sealed result
  * @param {Request} request - The HTTP request (for example, the survey submission request)
  * @returns {{ okay: boolean, error?: string} } - An object indicating the validation result.
  */
@@ -81,7 +81,9 @@ export function validateFingerprintResult(identificationEvent, request) {
     };
   }
 
-  if (identification.confidence.score < Number(env.MIN_CONFIDENCE_SCORE)) {
+  if (
+    Number(identification?.confidence?.score) < Number(env.MIN_CONFIDENCE_SCORE)
+  ) {
     return {
       okay: false,
       error:

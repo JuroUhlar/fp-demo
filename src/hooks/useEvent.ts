@@ -1,4 +1,7 @@
-import { EventResponse, Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import {
+  EventsGetResponse,
+  Region,
+} from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
@@ -17,7 +20,7 @@ export const useServerApiEvent = ({
     data: identificationEvent,
     isLoading: isLoadingServerResponse,
     error: serverError,
-  } = useQuery<EventResponse | undefined>({
+  } = useQuery<EventsGetResponse | undefined>({
     queryKey: ['event', requestId],
     queryFn: () =>
       fetch(`/api/getRequest`, {

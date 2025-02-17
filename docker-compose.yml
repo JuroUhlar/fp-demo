@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  nextjs:
+    build: .
+    container_name: nextjs_app
+    networks:
+      app_network:
+        ipv4_address: 86.49.8.62
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+
+networks:
+  app_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 86.49.8.0/24

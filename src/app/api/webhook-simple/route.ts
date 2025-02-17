@@ -1,10 +1,9 @@
-import { VisitWebhook } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { Webhook } from '@fingerprintjs/fingerprintjs-pro-server-api';
 
 const fingerprintEventsDatabase: Record<string, any> = { add: () => {} };
 
-
 export async function POST(request: Request) {
-  const identificationEvent = (await request.json()) as VisitWebhook;
+  const identificationEvent = (await request.json()) as Webhook;
   console.log(identificationEvent.visitorId);
   console.log(request.headers.get('Authorization'));
   fingerprintEventsDatabase.add(identificationEvent);

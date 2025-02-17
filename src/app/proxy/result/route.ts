@@ -33,6 +33,7 @@ const proxyIdentificationRequest = async (request: NextRequest): Promise<Respons
   const headers = new Headers();
   for (const [key, value] of request.headers.entries()) {
     headers.set(key, value);
+    console.log('received header', key, value);
   }
 
   // Delete all cookies from the Cookie header but keep `_iidt` if present
@@ -51,6 +52,8 @@ const proxyIdentificationRequest = async (request: NextRequest): Promise<Respons
   headers.set('FPJS-Proxy-Secret', PROXY_SECRET);
   headers.set('FPJS-Proxy-Client-IP', parseIp(request));
   headers.set('FPJS-Proxy-Forwarded-Host', parseHost(request));
+
+  console.log('sent headers', headers);
 
   // Make the identification request
   const identificationResponse = await fetch(identificationUrl, {
