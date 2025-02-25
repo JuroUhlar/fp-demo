@@ -1,18 +1,7 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.57"
-    }
-  }
-
-  required_version = ">= 1.2.0"
-}
 
 provider "aws" {
   region = "us-east-1"
 }
-
 
 module "fingerprint_cloudfront_integration" {
   source = "fingerprintjs/fingerprint-cloudfront-proxy-integration/aws"
@@ -20,20 +9,10 @@ module "fingerprint_cloudfront_integration" {
   fpjs_agent_download_path = "agent"
   fpjs_get_result_path     = "result"
   fpjs_shared_secret       = "GX3UybSIs0PDQ9fywL2e"
-
-  // Replaced this with the code above
-  # providers = {
-  #   aws = aws.us-east-1
-  # }
 }
 
 resource "aws_cloudfront_distribution" "fpjs_cloudfront_distribution" {
-  provider = aws
-  comment = "Fingerprint proxy integration distribution (created via Terraform)"
-
-  enabled = true
-
-  price_class = "PriceClass_100"
+  comment = "Second test 25/2 Fingerprint distribution (created via Terraform)"
 
   origin {
     domain_name = module.fingerprint_cloudfront_integration.fpjs_origin_name
@@ -49,6 +28,12 @@ resource "aws_cloudfront_distribution" "fpjs_cloudfront_distribution" {
       value = module.fingerprint_cloudfront_integration.fpjs_secret_manager_arn
     }
   }
+
+  enabled = true
+
+  http_version = "http1.1"
+
+  price_class = "PriceClass_100"
 
   default_cache_behavior {
     allowed_methods          = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
@@ -72,24 +57,7 @@ resource "aws_cloudfront_distribution" "fpjs_cloudfront_distribution" {
     }
   }
 
-    #   aliases = ["metrics.${data.aws_route53_zone.staging_bvnk_com.name}"]
-    #   viewer_certificate {
-    #     acm_certificate_arn = data.aws_acm_certificate.staging_bvnk_com.arn
-    #     ssl_support_method  = "sni-only"
-    #   }
-
-    // Added this 
   viewer_certificate {
     cloudfront_default_certificate = true
   }
-
 }
-
-
-# resource "aws_route53_record" "cloudfront_terraform_new_distribution_record" {
-#   zone_id = data.aws_route53_zone.staging_bvnk_com.zone_id
-#   name    = "metrics.${data.aws_route53_zone.staging_bvnk_com.name}"
-#   type    = "CNAME"
-#   ttl     = 300
-#   records = [aws_cloudfront_distribution.fpjs_cloudfront_distribution.domain_name]
-# }
