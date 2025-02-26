@@ -68,6 +68,7 @@ export const SUBS = {
         'https://procdn.fpjs.sh/v<version>/<apiKey>/loader_v<loaderVersion>.js',
     },
     serverApiKey: 'iKGpQSJNXuabLw7Yy9dH',
+    proxySecret: 'zGH8K6CQ9IfVog0EjqsH',
   },
 } satisfies Record<string, JsAgentDebugProps>;
 

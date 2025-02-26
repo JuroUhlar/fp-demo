@@ -14,20 +14,31 @@ export async function POST(request: NextRequest) {
     return await proxyIdentificationRequest(request);
   } catch (error) {
     console.error(error);
-    return await getErrorResponse(request, error);
+    return await getIdentificationRequestErrorResponse(request, error);
   }
 }
 
-const proxyIdentificationRequest = async (request: NextRequest): Promise<Response> => {
+export const proxyIdentificationRequest = async (
+  request: NextRequest,
+  customApiUrl?: string,
+): Promise<Response> => {
   // Call the right endpoint depending on the region parameter:
   // https://api.fpjs.io, https://eu.api.fpjs.io, or https://ap.api.fpjs.io
   const region: string = REGION;
   const prefix = region === 'us' ? '' : `${region}.`;
-  const identificationUrl = new URL(`https://${prefix}api.fpjs.io`);
+  let identificationUrl = new URL(`https://${prefix}api.fpjs.io`);
+
+  // Just in case we need to use a custom API URL
+  if (customApiUrl) {
+    identificationUrl = new URL(customApiUrl);
+  }
 
   // Forward all present query parameters and append the monitoring parameter
   identificationUrl.search = request.url.split('?')[1] ?? '';
-  identificationUrl.searchParams.append('ii', `custom-proxy-integration/1.0/ingress`);
+  identificationUrl.searchParams.append(
+    'ii',
+    `custom-proxy-integration/1.0/ingress`,
+  );
 
   // Copy all headers
   const headers = new Headers();
@@ -51,7 +62,7 @@ const proxyIdentificationRequest = async (request: NextRequest): Promise<Respons
   }
   headers.set('FPJS-Proxy-Secret', PROXY_SECRET);
   headers.set('FPJS-Proxy-Client-IP', parseIp(request));
-  headers.set('FPJS-Proxy-Forwarded-Host', parseHost(request));
+  // headers.set('FPJS-Proxy-Forwarded-Host', parseHost(request));
 
   console.log('sent headers', headers);
 
@@ -74,7 +85,10 @@ const proxyIdentificationRequest = async (request: NextRequest): Promise<Respons
   });
 };
 
-const getErrorResponse = (request: Request, error: unknown): Response => {
+export const getIdentificationRequestErrorResponse = (
+  request: Request,
+  error: unknown,
+): Response => {
   const message = isNativeError(error) ? error.message : error;
   const requestId = `${new Date().getTime()}.${randomShortString({ length: 6 })}`;
   return Response.json(
@@ -91,7 +105,8 @@ const getErrorResponse = (request: Request, error: unknown): Response => {
       status: 500,
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': request.headers.get('origin') ?? new URL(request.url).origin,
+        'Access-Control-Allow-Origin':
+          request.headers.get('origin') ?? new URL(request.url).origin,
         'Access-Control-Allow-Credentials': 'true',
       },
     },

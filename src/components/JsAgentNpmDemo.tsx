@@ -19,6 +19,7 @@ export type JsAgentDebugProps = {
   serverApiKey?: string;
   decryptionKey?: string;
   customServerApiUrl?: string;
+  proxySecret?: string;
 };
 
 export const NpmPackageIdentificationDemo = ({

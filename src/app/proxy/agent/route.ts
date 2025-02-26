@@ -6,7 +6,14 @@ export const dynamic = 'force-dynamic';
 /**
  * Fingerprint agent download request handler
  */
-export async function GET(request: Request) {
+export async function proxyAgentDownloadRequest(
+  request: Request,
+  customCDNUrl?: string,
+) {
+  const cdnUrl = customCDNUrl ?? 'https://fpcdn.io';
+
+  console.log({ cdnUrl });
+
   try {
     const queryParams = new URLSearchParams(request.url.split('?')[1]);
     const apiKey = queryParams.get('apiKey');
@@ -14,11 +21,16 @@ export async function GET(request: Request) {
     const loaderVersion = queryParams.get('loaderVersion');
 
     const loaderParam = loaderVersion ? `/loader_v${loaderVersion}.js` : '';
-    const agentDownloadUrl = new URL(`https://fpcdn.io/v${version}/${apiKey}${loaderParam}`);
+    const agentDownloadUrl = new URL(
+      `${cdnUrl}/v${version}/${apiKey}${loaderParam}`,
+    );
 
     // Forward all query parameters and add the monitoring parameter
     agentDownloadUrl.search = request.url.split('?')[1];
-    agentDownloadUrl.searchParams.append('ii', `custom-proxy-integration/1.0/procdn`);
+    agentDownloadUrl.searchParams.append(
+      'ii',
+      `custom-proxy-integration/1.0/procdn`,
+    );
 
     // Forward all headers except the cookie header
     const headers = new Headers();
@@ -51,8 +63,15 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     console.error(error);
-    return new Response(isNativeError(error) ? error.message : `Agent download error: ${error} `, {
-      status: 500,
-    });
+    return new Response(
+      isNativeError(error) ? error.message : `Agent download error: ${error} `,
+      {
+        status: 500,
+      },
+    );
   }
+}
+
+export async function GET(request: Request) {
+  return proxyAgentDownloadRequest(request);
 }
