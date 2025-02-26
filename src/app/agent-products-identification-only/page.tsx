@@ -22,7 +22,6 @@ export default function ExamplePage() {
       }}
       name={'JS Agent with products: ["identification"]'}
       serverApiKey={SERVER_API_KEY}
-      serverApiRegion={REGION_SDK}
     />
   );
 }

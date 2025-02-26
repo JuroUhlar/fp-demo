@@ -17,7 +17,6 @@ export default function ExamplePage() {
       }}
       name={'JS Agent default endpoints'}
       serverApiKey={SERVER_API_KEY}
-      serverApiRegion={REGION_SDK}
     />
   );
 }

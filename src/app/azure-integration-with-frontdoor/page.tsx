@@ -21,7 +21,6 @@ export default function ExamplePage() {
       }}
       name={'JS Agent NPM package, Azure integration, *with* Frontdoor'}
       serverApiKey={SERVER_API_KEY}
-      serverApiRegion={REGION_SDK}
     />
   );
 }

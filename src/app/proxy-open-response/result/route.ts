@@ -6,7 +6,7 @@ import {
   parseHost,
   parseIp,
   randomShortString,
-} from '../result/utils';
+} from '../../proxy/utils';
 
 import { unsealDataCustom, unsealDataWithNodeSDK } from './unsealUtils';
 export const dynamic = 'force-dynamic';
@@ -141,4 +141,3 @@ const getErrorResponse = (request: Request, error: unknown): Response => {
     },
   );
 };
-

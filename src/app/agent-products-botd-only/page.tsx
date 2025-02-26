@@ -1,4 +1,6 @@
-import FingerprintJS, { defaultEndpoint } from '@fingerprintjs/fingerprintjs-pro';
+import FingerprintJS, {
+  defaultEndpoint,
+} from '@fingerprintjs/fingerprintjs-pro';
 import { NpmPackageIdentificationDemo } from '../../components/JsAgentNpmDemo';
 import {
   CUSTOM_SUBDOMAIN,
@@ -23,7 +25,6 @@ export default function ExamplePage() {
       }}
       name={'JS Agent with products: ["botd"]'}
       serverApiKey={SERVER_API_KEY}
-      serverApiRegion={REGION_SDK}
     />
   );
 }

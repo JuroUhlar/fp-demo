@@ -1,11 +1,18 @@
 'use client';
 
-import { GetOptions, GetResult, LoadOptions } from '@fingerprintjs/fingerprintjs-pro';
+import {
+  GetOptions,
+  GetResult,
+  LoadOptions,
+} from '@fingerprintjs/fingerprintjs-pro';
 import { Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ServerApiResponseDemo } from './ServerApiResponseDemo';
 import { JsonViewer } from './JsonViewer';
-import { CacheLocation, FpjsClient } from '@fingerprintjs/fingerprintjs-pro-spa';
+import {
+  CacheLocation,
+  FpjsClient,
+} from '@fingerprintjs/fingerprintjs-pro-spa';
 import { UnsealedResultDemo } from './DecryptedResultDemo';
 import { JsAgentDebugProps } from './JsAgentNpmDemo';
 
@@ -14,10 +21,11 @@ export const SpaDemo = ({
   getOptions,
   name,
   serverApiKey,
-  serverApiRegion,
   decryptionKey,
 }: JsAgentDebugProps) => {
-  const [fingerprintData, setFingerprintData] = useState<GetResult | null>(null);
+  const [fingerprintData, setFingerprintData] = useState<GetResult | null>(
+    null,
+  );
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -70,9 +78,9 @@ export const SpaDemo = ({
         <>
           <h2>Server API Event Response</h2>
           <ServerApiResponseDemo
-            requestId={fingerprintData?.requestId}
-            apiKey={serverApiKey}
-            region={serverApiRegion}
+            requestId={fingerprintData?.requestId ?? ''}
+            secretApiKey={serverApiKey}
+            region={loadOptions.region ?? 'us'}
           />
         </>
       )}

@@ -12,10 +12,10 @@ export default function ExamplePage() {
       loadOptions={{
         apiKey: SUBS.main.loadOptions.apiKey,
         endpoint: `https://${host}/x8vwd7gt3387kovmx4sf?region=eu`,
+        region: SUBS.main.loadOptions.region,
         scriptUrlPattern: `https://${host}/6ger4isjyjgno3bjt3ky/?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>`,
       }}
       name={'Cloudfront Terraform New Distribution'}
-      serverApiRegion={SUBS.main.serverApiRegion}
       serverApiKey={SUBS.main.serverApiKey}
     />
   );

@@ -1,4 +1,4 @@
-import { proxyBrowserCacheRequest } from '../../proxyBrowserCacheRequest';
+import { proxyBrowserCacheRequest } from '../../../proxy/proxyBrowserCacheRequest';
 
 export const dynamic = 'force-dynamic';
 

@@ -10,11 +10,11 @@ export default function ExamplePage() {
     <NpmPackageIdentificationDemo
       loadOptions={{
         apiKey: SUBS.main.loadOptions.apiKey,
+        region: SUBS.main.loadOptions.region,
         endpoint: `https://${host}/fpjs/result?region=eu`,
         scriptUrlPattern: `https://${host}/fpjs/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>`,
       }}
       name={'Cloudfront Terraform New Distribution'}
-      serverApiRegion={SUBS.main.serverApiRegion}
       serverApiKey={SUBS.main.serverApiKey}
     />
   );

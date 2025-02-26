@@ -13,7 +13,6 @@ export default function ExamplePage() {
       }}
       name={'Fastly VCL Integration'}
       serverApiKey={SUBS.main.serverApiKey}
-      serverApiRegion={SUBS.main.serverApiRegion}
     />
   );
 }

@@ -24,6 +24,7 @@ export const SUBS = {
       region: REGION,
     },
     serverApiKey: SERVER_API_KEY,
+    serverApiRegion: REGION_SDK,
   },
   identificationOnly: {
     name: 'Identification only subscription',
@@ -51,8 +52,8 @@ export const SUBS = {
     loadOptions: {
       apiKey: 'c0cR30fx3zBIQLEAYHOV',
       scriptUrlPattern:
-        '/proxy/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
-      endpoint: '/proxy/result-open-response',
+        '/proxy-open-response/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
+      endpoint: '/proxy-open-response/result',
       region: 'us',
     },
     serverApiKey: '9faii9hhDKMmrELbeshz',

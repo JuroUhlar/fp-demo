@@ -1,22 +1,28 @@
 import { isNativeError } from 'util/types';
-import { REGION } from '../../../../constants';
-
-export const dynamic = 'force-dynamic';
+import { REGION } from '../../constants';
 
 /**
  * Browser cache request handler
  */
-export async function GET(
+export const proxyBrowserCacheRequest = async (
   request: Request,
-  { params }: { params: { randomPathSegments: string[] } }
-) {
+  params: { randomPathSegments: string[] },
+  customApiUrl?: string,
+): Promise<Response> => {
   try {
     // Call the right endpoint depending on the region parameter, with the same random path segments
     // https://api.fpjs.io, https://eu.api.fpjs.io, or https://ap.api.fpjs.io
     const region: string = REGION;
     const prefix = region === 'us' ? '' : `${region}.`;
     const randomPath = params.randomPathSegments.join('/');
-    const browserCacheUrl = new URL(`https://${prefix}api.fpjs.io/${randomPath}`);
+
+    let identificationUrl = new URL(`https://${prefix}api.fpjs.io`);
+    // Just for me to allow testing with staging environment
+    if (customApiUrl) {
+      identificationUrl = new URL(customApiUrl);
+    }
+
+    const browserCacheUrl = new URL(`${identificationUrl}/${randomPath}`);
 
     // Forward all query parameters
     browserCacheUrl.search = request.url.split('?')[1];
@@ -37,8 +43,11 @@ export async function GET(
     return browserCacheResponse;
   } catch (error) {
     console.error(error);
-    return new Response(isNativeError(error) ? error.message : `Browser cache error: ${error} `, {
-      status: 500,
-    });
+    return new Response(
+      isNativeError(error) ? error.message : `Browser cache error: ${error} `,
+      {
+        status: 500,
+      },
+    );
   }
-}
+};

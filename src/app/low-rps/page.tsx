@@ -19,7 +19,6 @@ export default function ExamplePage() {
       }}
       name={'JS Agent low RPS API key'}
       serverApiKey={SERVER_API_KEY}
-      serverApiRegion={REGION_SDK}
     />
   );
 }

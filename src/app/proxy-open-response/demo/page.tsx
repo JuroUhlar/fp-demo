@@ -2,8 +2,8 @@
 
 import { FunctionComponent } from 'react';
 
-import { NpmPackageIdentificationDemo } from '../../../../components/JsAgentNpmDemo';
-import { SUBS } from '../../../../constants';
+import { NpmPackageIdentificationDemo } from '../../../components/JsAgentNpmDemo';
+import { SUBS } from '../../../constants';
 
 const CustomProxyDemo: FunctionComponent = ({}) => {
   return (

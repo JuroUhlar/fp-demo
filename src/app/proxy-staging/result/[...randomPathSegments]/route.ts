@@ -1,4 +1,4 @@
-import { proxyBrowserCacheRequest } from '../../../proxy/result/[...randomPathSegments]/route';
+import { proxyBrowserCacheRequest } from '../../../proxy/proxyBrowserCacheRequest';
 import { STAGING_WARDEN_URL } from '../../const';
 
 export const dynamic = 'force-dynamic';
