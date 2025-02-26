@@ -1,18 +1,14 @@
 import { Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { FunctionComponent } from 'react';
-import { UseEventOptions, useServerApiEvent } from '../hooks/useEvent';
+import { useServerApiEvent } from '../hooks/useEvent';
 import { JsonViewer } from './JsonViewer';
+import { GetEventPayload } from '../app/api/get-request/route';
 
-export const ServerApiResponseDemo: FunctionComponent<UseEventOptions> = ({
-  requestId,
-  apiKey,
-  region,
-}) => {
-  const { identificationEvent, isPendingServerResponse, serverError } = useServerApiEvent({
-    requestId,
-    apiKey,
-    region,
-  });
+export const ServerApiResponseDemo: FunctionComponent<GetEventPayload> = (
+  payload: GetEventPayload,
+) => {
+  const { identificationEvent, isPendingServerResponse, serverError } =
+    useServerApiEvent(payload);
 
   if (isPendingServerResponse) {
     return <div>Loading Event from Server API...</div>;

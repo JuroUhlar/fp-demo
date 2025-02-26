@@ -1,31 +1,18 @@
-import {
-  EventsGetResponse,
-  Region,
-} from '@fingerprintjs/fingerprintjs-pro-server-api';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { EventsGetResponse } from '@fingerprintjs/fingerprintjs-pro-server-api';
+import { useQuery } from '@tanstack/react-query';
+import { GetEventPayload } from '../app/api/get-request/route';
 
-export type UseEventOptions = {
-  requestId?: string;
-  apiKey: string;
-  region?: Region;
-};
-
-export const useServerApiEvent = ({
-  requestId,
-  apiKey,
-  region = Region.Global,
-}: UseEventOptions) => {
+export const useServerApiEvent = (payload: GetEventPayload) => {
   const {
     data: identificationEvent,
     isLoading: isLoadingServerResponse,
     error: serverError,
   } = useQuery<EventsGetResponse | undefined>({
-    queryKey: ['event', requestId],
+    queryKey: ['event', payload.requestId],
     queryFn: () =>
-      fetch(`/api/getRequest`, {
+      fetch(`/api/get-request`, {
         method: 'POST',
-        body: JSON.stringify({ requestId, apiKey, region }),
+        body: JSON.stringify(payload),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -35,7 +22,7 @@ export const useServerApiEvent = ({
         }
         return res.json();
       }),
-    enabled: Boolean(requestId),
+    enabled: Boolean(payload.requestId),
     retry: false,
   });
 

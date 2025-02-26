@@ -1,7 +1,8 @@
 import { Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { JsAgentDebugProps } from './components/JsAgentNpmDemo';
 
-export const PUBLIC_API_KEY = process.env.NEXT_PUBLIC_PUBLIC_API_KEY ?? '2UZgp3skqLzfJpFUGUrw';
+export const PUBLIC_API_KEY =
+  process.env.NEXT_PUBLIC_PUBLIC_API_KEY ?? '2UZgp3skqLzfJpFUGUrw';
 export const SERVER_API_KEY =
   process.env.SERVER_API_KEY ?? 'lzXEt8ZurQNOZ9XGCeA9';
 export const CUSTOM_SUBDOMAIN = 'https://fp.jurajuhlar.eu';
@@ -9,6 +10,9 @@ export const CUSTOM_SUBDOMAIN_SCRIPT_URL =
   'https://fp.jurajuhlar.eu/web/v<version>/<apiKey>/loader_v<loaderVersion>.js';
 export const REGION = 'eu';
 export const REGION_SDK = Region.EU;
+
+// Staging env
+export const STAGING_SERVER_API = 'https://api.stage.fpjs.sh';
 
 export const SUBS = {
   main: {
@@ -20,7 +24,6 @@ export const SUBS = {
       region: REGION,
     },
     serverApiKey: SERVER_API_KEY,
-    serverApiRegion: REGION_SDK,
   },
   identificationOnly: {
     name: 'Identification only subscription',
@@ -54,6 +57,17 @@ export const SUBS = {
     },
     serverApiKey: '9faii9hhDKMmrELbeshz',
     decryptionKey: process.env.OPEN_RESPONSE_DECRYPT_KEY,
+  },
+  stagingMain: {
+    name: 'Staging env Main Global subscription',
+    loadOptions: {
+      apiKey: 'eDfRKapeDy4otXlFqxCz',
+      region: 'us',
+      endpoint: 'https://api.stage.fpjs.sh',
+      scriptUrlPattern:
+        'https://procdn.fpjs.sh/v<version>/<apiKey>/loader_v<loaderVersion>.js',
+    },
+    serverApiKey: 'iKGpQSJNXuabLw7Yy9dH',
   },
 } satisfies Record<string, JsAgentDebugProps>;
 

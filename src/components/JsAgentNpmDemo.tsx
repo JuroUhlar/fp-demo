@@ -10,14 +10,15 @@ import { Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ServerApiResponseDemo } from './ServerApiResponseDemo';
 import { JsonViewer } from './JsonViewer';
+import { STAGING_SERVER_API } from '../constants';
 
 export type JsAgentDebugProps = {
   name: string;
   loadOptions: LoadOptions;
   getOptions?: GetOptions<boolean>;
   serverApiKey?: string;
-  serverApiRegion?: Region;
   decryptionKey?: string;
+  customServerApiUrl?: string;
 };
 
 export const NpmPackageIdentificationDemo = ({
@@ -25,9 +26,11 @@ export const NpmPackageIdentificationDemo = ({
   getOptions,
   name,
   serverApiKey,
-  serverApiRegion,
+  customServerApiUrl,
 }: JsAgentDebugProps) => {
-  const [fingerprintData, setFingerprintData] = useState<GetResult | null>(null);
+  const [fingerprintData, setFingerprintData] = useState<GetResult | null>(
+    null,
+  );
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [fpAgent, setFpAgent] = useState<Agent | null>(null);
@@ -68,7 +71,9 @@ export const NpmPackageIdentificationDemo = ({
           <pre>{JSON.stringify(usedGetOptions, null, 2)}</pre>
         </>
       )}
-      <button onClick={reloadAgentAndGetVisitorData}>Reload agent and get visitor data</button>
+      <button onClick={reloadAgentAndGetVisitorData}>
+        Reload agent and get visitor data
+      </button>
       <button
         onClick={async () => {
           const result = await fpAgent?.get(usedGetOptions);
@@ -88,9 +93,10 @@ export const NpmPackageIdentificationDemo = ({
         <>
           <h2>Server API Event Response</h2>
           <ServerApiResponseDemo
-            requestId={fingerprintData?.requestId}
-            apiKey={serverApiKey}
-            region={serverApiRegion ?? Region.Global}
+            requestId={fingerprintData?.requestId ?? ''}
+            secretApiKey={serverApiKey}
+            region={loadOptions.region ?? 'us'}
+            customServerApiUrl={customServerApiUrl}
           />
         </>
       )}
