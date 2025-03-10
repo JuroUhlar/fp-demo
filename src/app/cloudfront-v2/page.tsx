@@ -1,14 +1,15 @@
 import { NpmPackageIdentificationDemo } from '../../components/JsAgentNpmDemo';
 
+const integrationUrl = 'https://d2fwmy7pay6lnr.cloudfront.net';
+
 export default function ExamplePage() {
   return (
     <NpmPackageIdentificationDemo
       loadOptions={{
         apiKey: '2UZgp3skqLzfJpFUGUrw',
         region: 'eu',
-        endpoint: 'https://cloudfront2.juraj.click/fpjs/result?region=eu',
-        scriptUrlPattern:
-          'https://d3t8v1h08ayt64.cloudfront.net/fpjs/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
+        endpoint: `${integrationUrl}/fpjs/result?region=eu`,
+        scriptUrlPattern: `${integrationUrl}/fpjs/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>`,
       }}
       name={'CloudFront V2'}
     />

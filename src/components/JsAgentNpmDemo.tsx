@@ -78,9 +78,13 @@ export const NpmPackageIdentificationDemo = ({
       </button>
       <button
         onClick={async () => {
-          const result = await fpAgent?.get(usedGetOptions);
-          if (result) {
-            setFingerprintData(result);
+          try {
+            const result = await fpAgent?.get(usedGetOptions);
+            if (result) {
+              setFingerprintData(result);
+            }
+          } catch (error) {
+            console.error('!error', error);
           }
         }}
       >

@@ -16,9 +16,12 @@ const CustomProxyDemo: FunctionComponent = ({}) => {
         '/proxy/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
       endpoint: '/proxy/result?region=eu',
     });
-    fpAgent.get({ extendedResult: true }).then((result) => {
+    try {
+      const result = await fpAgent.get({ extendedResult: true });
       setVisitorData(result);
-    });
+    } catch (error: any) {
+      console.log('!error', error?.requestId!);
+    }
   };
 
   useEffect(() => {

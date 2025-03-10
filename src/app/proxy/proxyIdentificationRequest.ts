@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { REGION } from '../../constants';
-import { parseCookies, parseIp, randomShortString } from './utils';
+import { parseCookies, parseHost, parseIp, randomShortString } from './utils';
 import { isNativeError } from 'util/types';
 
 const proxyIdentificationRequest = async (
@@ -45,9 +45,13 @@ const proxyIdentificationRequest = async (
   if (!PROXY_SECRET) {
     throw new Error('Missing PROXY_SECRET environment variable');
   }
-  headers.set('FPJS-Proxy-Secret', PROXY_SECRET);
+headers.set('FPJS-Proxy-Secret', PROXY_SECRET);
   headers.set('FPJS-Proxy-Client-IP', parseIp(request));
-  // headers.set('FPJS-Proxy-Forwarded-Host', parseHost(request));
+  headers.set('FPJS-Proxy-Forwarded-Host', parseHost(request));
+
+  // headers.set('FPJS-Proxy-Secret', PROXY_SECRET + 1);
+  // headers.set('FPJS-Proxy-Client-IP', '54.90.6.179');
+  // headers.set('FPJS-Proxy-Forwarded-Host', 'somebullshit');
 
   console.log('sent headers', headers);
 
