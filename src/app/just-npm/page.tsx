@@ -33,7 +33,7 @@ export default function ClientPage() {
       console.log(result.requestId, result.visitorId);
       setFingerprintData(result);
     } catch (error) {
-      console.error(error.message);
+      // console.error(error.message);
     }
   };
 

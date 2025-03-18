@@ -1,60 +1,12 @@
 'use client';
 
-import { useQueryState } from 'next-usequerystate';
+import { useState } from 'react';
 
 export default function SetsCalculator() {
-  const [setA, setSetA] = useQueryState<string[]>('setA', {
-    defaultValue: [],
-    parse: (value: string | null) => {
-      if (!value) return [];
-      try {
-        return JSON.parse(decodeURIComponent(value));
-      } catch {
-        return [];
-      }
-    },
-    serialize: (value: string[]) => {
-      return encodeURIComponent(JSON.stringify(value));
-    },
-  });
-  const [setB, setSetB] = useQueryState<string[]>('setB', {
-    defaultValue: [],
-    parse: (value: string | null) => {
-      if (!value) return [];
-      try {
-        return JSON.parse(decodeURIComponent(value));
-      } catch {
-        return [];
-      }
-    },
-    serialize: (value: string[]) => {
-      return encodeURIComponent(JSON.stringify(value));
-    },
-  });
-  const [setAName, setSetAName] = useQueryState('setAName', {
-    defaultValue: 'A',
-    parse: (value: string | null) => value || 'A',
-    serialize: (value: string) => value || 'A',
-  });
-  const [setBName, setSetBName] = useQueryState('setBName', {
-    defaultValue: 'B',
-    parse: (value: string | null) => value || 'B',
-    serialize: (value: string) => value || 'B',
-  });
-
-  const setAValues = new Set(setA);
-  const setBValues = new Set(setB);
-
-  const union = new Set([...setAValues, ...setBValues]);
-  const intersection = new Set(
-    [...setAValues].filter((x) => setBValues.has(x)),
-  );
-  const differenceAB = new Set(
-    [...setAValues].filter((x) => !setBValues.has(x)),
-  );
-  const differenceBA = new Set(
-    [...setBValues].filter((x) => !setAValues.has(x)),
-  );
+  const [setA, setSetA] = useState<string[]>([]);
+  const [setB, setSetB] = useState<string[]>([]);
+  const [setAName, setSetAName] = useState('A');
+  const [setBName, setSetBName] = useState('B');
 
   const handleSetAChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const values = e.target.value
@@ -72,82 +24,154 @@ export default function SetsCalculator() {
     setSetB(values);
   };
 
-  return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Sets Calculator</h1>
+  // Set operations
+  const setAValues = new Set(setA);
+  const setBValues = new Set(setB);
 
-      <div className="flex flex-row gap-4 mb-4">
-        <div className="flex">
-          <div className="flex items-center gap-2 mb-2">
-            <label className="text-sm font-medium">Set Name:</label>
+  const union = Array.from(new Set([...setA, ...setB]));
+  const intersection = setA.filter((item) => setBValues.has(item));
+  const differenceAB = setA.filter((item) => !setBValues.has(item));
+  const differenceBA = setB.filter((item) => !setAValues.has(item));
+
+  return (
+    <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
+      <h1
+        style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}
+      >
+        Sets Calculator
+      </h1>
+
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '20px',
+          marginBottom: '20px',
+        }}
+      >
+        <div>
+          <div style={{ marginBottom: '10px' }}>
+            <label>Set Name: </label>
             <input
               type="text"
-              className="border rounded px-2 py-1"
               value={setAName}
               onChange={(e) => setSetAName(e.target.value)}
             />
           </div>
           <textarea
-            className="w-full h-48 p-2 border rounded"
-            value={setA.join('\n')}
+            style={{ width: '100%', height: '200px' }}
+            // value={setA.join('\n')}
             onChange={handleSetAChange}
             placeholder="Enter values (one per line)"
           />
         </div>
 
-        <div className="flex">
-          <div className="flex items-center gap-2 mb-2">
-            <label className="text-sm font-medium">Set Name:</label>
+        <div>
+          <div style={{ marginBottom: '10px' }}>
+            <label>Set Name: </label>
             <input
               type="text"
-              className="border rounded px-2 py-1"
               value={setBName}
               onChange={(e) => setSetBName(e.target.value)}
             />
           </div>
           <textarea
-            className="w-full h-48 p-2 border rounded"
-            value={setB.join('\n')}
+            style={{ width: '100%', height: '200px' }}
+            // value={setB.join('\n')}
             onChange={handleSetBChange}
             placeholder="Enter values (one per line)"
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div className="border rounded p-4">
-          <h2 className="text-lg font-semibold mb-2">
+      <div
+        style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}
+      >
+        <div
+          style={{
+            border: '1px solid #ccc',
+            padding: '20px',
+            borderRadius: '4px',
+          }}
+        >
+          <h2>
             Union ({setAName} ∪ {setBName})
           </h2>
-          <div className="bg-gray-50 p-2 rounded min-h-[100px]">
-            {Array.from(union).join('\n')}
+          <div
+            style={{
+              backgroundColor: '#f5f5f5',
+              padding: '10px',
+              minHeight: '100px',
+              whiteSpace: 'pre-line',
+            }}
+          >
+            {union.join('\n')}
           </div>
         </div>
 
-        <div className="border rounded p-4">
-          <h2 className="text-lg font-semibold mb-2">
+        <div
+          style={{
+            border: '1px solid #ccc',
+            padding: '20px',
+            borderRadius: '4px',
+          }}
+        >
+          <h2>
             Intersection ({setAName} ∩ {setBName})
           </h2>
-          <div className="bg-gray-50 p-2 rounded min-h-[100px]">
-            {Array.from(intersection).join('\n')}
+          <div
+            style={{
+              backgroundColor: '#f5f5f5',
+              padding: '10px',
+              minHeight: '100px',
+              whiteSpace: 'pre-line',
+            }}
+          >
+            {intersection.join('\n')}
           </div>
         </div>
 
-        <div className="border rounded p-4">
-          <h2 className="text-lg font-semibold mb-2">
+        <div
+          style={{
+            border: '1px solid #ccc',
+            padding: '20px',
+            borderRadius: '4px',
+          }}
+        >
+          <h2>
             Difference ({setAName} - {setBName})
           </h2>
-          <div className="bg-gray-50 p-2 rounded min-h-[100px]">
-            {Array.from(differenceAB).join('\n')}
+          <div
+            style={{
+              backgroundColor: '#f5f5f5',
+              padding: '10px',
+              minHeight: '100px',
+              whiteSpace: 'pre-line',
+            }}
+          >
+            {differenceAB.join('\n')}
           </div>
         </div>
 
-        <div className="border rounded p-4">
-          <h2 className="text-lg font-semibold mb-2">
+        <div
+          style={{
+            border: '1px solid #ccc',
+            padding: '20px',
+            borderRadius: '4px',
+          }}
+        >
+          <h2>
             Difference ({setBName} - {setAName})
           </h2>
-          <div className="bg-gray-50 p-2 rounded min-h-[100px]">
-            {Array.from(differenceBA).join('\n')}
+          <div
+            style={{
+              backgroundColor: '#f5f5f5',
+              padding: '10px',
+              minHeight: '100px',
+              whiteSpace: 'pre-line',
+            }}
+          >
+            {differenceBA.join('\n')}
           </div>
         </div>
       </div>
