@@ -13,6 +13,7 @@ import { JsonViewer } from './JsonViewer';
 import { STAGING_SERVER_API } from '../constants';
 
 export type JsAgentDebugProps = {
+  subId?: string;
   name: string;
   loadOptions: LoadOptions;
   getOptions?: GetOptions<boolean>;

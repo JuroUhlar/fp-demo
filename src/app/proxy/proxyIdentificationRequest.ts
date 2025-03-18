@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { REGION } from '../../constants';
+import { REGION, SUBS } from '../../constants';
 import { parseCookies, parseHost, parseIp, randomShortString } from './utils';
 import { isNativeError } from 'util/types';
 
@@ -41,17 +41,21 @@ const proxyIdentificationRequest = async (
   }
 
   // Add the necessary Fingerprint headers
-  const PROXY_SECRET = process.env.PROXY_SECRET;
+  // const PROXY_SECRET = process.env.PROXY_SECRET;
+  const PROXY_SECRET = SUBS.stagingAppDevIgnoreProxyErrors.proxySecret;
   if (!PROXY_SECRET) {
     throw new Error('Missing PROXY_SECRET environment variable');
   }
-headers.set('FPJS-Proxy-Secret', PROXY_SECRET);
+  // headers.set('FPJS-Proxy-Secret', '');
   headers.set('FPJS-Proxy-Client-IP', parseIp(request));
   headers.set('FPJS-Proxy-Forwarded-Host', parseHost(request));
 
-  // headers.set('FPJS-Proxy-Secret', PROXY_SECRET + 1);
-  // headers.set('FPJS-Proxy-Client-IP', '54.90.6.179');
-  // headers.set('FPJS-Proxy-Forwarded-Host', 'somebullshit');
+  headers.set('FPJS-Proxy-Client-IP', '54.90.6.178');
+  // headers.set('FPJS-Proxy-Secret', '');
+  // headers.set('FPJS-Proxy-Client-IP', 'bullshit');
+
+  // headers.set('FPJS-Proxy-Client-IP', '2600:1f18:ede:ed04:f055:518c:b791:1dbe');
+  // headers.set('FPJS-Proxy-Forwarded-Host', '@Somebullshit');
 
   console.log('sent headers', headers);
 

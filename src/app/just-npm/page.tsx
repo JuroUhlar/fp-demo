@@ -12,13 +12,13 @@ export default function ClientPage() {
     try {
       const fpPromise = FingerprintJS.load({
         apiKey: '2UZgp3skqLzfJpFUGUrw',
-        region: 'eu',
-        // scriptUrlPattern: [
-        //   'https://fp.jurajuhlar.eu/web/v<version>/<apiKey>/loader_v<loaderVersion>.js',
-        //   // 'https://jurajuhlar.com/4kbcBcMdh7PNIl4t/fRu2ohVclZlSWEZR?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
-        //   // 'https://fingerprint.com/s2MB/?b=load-vercel&v=<version>&a=<apiKey>&l=<loaderVersion>',
-        //   // defaultScriptUrlPattern,
-        // ],
+        region: 'us',
+        scriptUrlPattern: [
+          // 'https://fp.jurajuhlar.eu/web/v<version>/<apiKey>/loader_v<loaderVersion>.js',
+          // 'https://jurajuhlar.com/4kbcBcMdh7PNIl4t/fRu2ohVclZlSWEZR?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
+          // 'https://fingerprint.com/s2MB/?b=load-vercel&v=<version>&a=<apiKey>&l=<loaderVersion>',
+          defaultScriptUrlPattern,
+        ],
         // endpoint: [
         //   'https://.jurajuhlar.eu',
         //   // 'https://jurajuhlar.com/4kbcBcMdh7PNIl4t/d7DCGmZNT3GvWo2Q?region=eu',

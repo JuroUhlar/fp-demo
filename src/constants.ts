@@ -71,6 +71,24 @@ export const SUBS = {
     serverApiKey: 'iKGpQSJNXuabLw7Yy9dH',
     proxySecret: 'zGH8K6CQ9IfVog0EjqsH',
   },
+  stagingApDev: {
+    subId: 'sub_l8Std0PkXVCqfp',
+    name: 'Staging AP Dev ',
+    loadOptions: {
+      apiKey: 's8vq6stc9wQPVX1hDVaf',
+      region: 'ap',
+    },
+    proxySecret: 'ENugyz640byJclhcYJ6V',
+  },
+  stagingAppDevIgnoreProxyErrors: {
+    subId: 'sub_djD4n3S6usMN6V',
+    name: 'Staging AP Dev Ignore Proxy Errors',
+    loadOptions: {
+      apiKey: 'gq7pCQMxlqH6Bqhqy6rc',
+      region: 'ap',
+    },
+    proxySecret: 'j7EbpKKmFTIXlqAx5vkc',
+  },
 } satisfies Record<string, JsAgentDebugProps>;
 
 export const CLOUDFRONT_ENDPOINT =
