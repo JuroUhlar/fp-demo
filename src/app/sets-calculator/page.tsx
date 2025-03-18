@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useSessionStorage } from 'react-use';
 
 export default function SetsCalculator() {
-  const [setA, setSetA] = useState<string[]>([]);
-  const [setB, setSetB] = useState<string[]>([]);
-  const [setAName, setSetAName] = useState('A');
-  const [setBName, setSetBName] = useState('B');
+  const [setA, setSetA] = useSessionStorage<string[]>('SetA', []);
+  const [setB, setSetB] = useSessionStorage<string[]>('SetB', []);
+  const [setAName, setSetAName] = useSessionStorage<string>('SetAName', '');
+  const [setBName, setSetBName] = useSessionStorage<string>('SetBName', '');
 
   const handleSetAChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const values = e.target.value
@@ -61,6 +61,7 @@ export default function SetsCalculator() {
           <textarea
             style={{ width: '100%', height: '200px' }}
             // value={setA.join('\n')}
+            defaultValue={setA.join('\n')}
             onChange={handleSetAChange}
             placeholder="Enter values (one per line)"
           />
@@ -77,7 +78,7 @@ export default function SetsCalculator() {
           </div>
           <textarea
             style={{ width: '100%', height: '200px' }}
-            // value={setB.join('\n')}
+            defaultValue={setB.join('\n')}
             onChange={handleSetBChange}
             placeholder="Enter values (one per line)"
           />
