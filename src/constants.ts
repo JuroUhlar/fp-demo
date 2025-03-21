@@ -61,6 +61,7 @@ export const SUBS = {
   },
   stagingMain: {
     name: 'Staging env Main Global subscription',
+    subId: 'sub_rRDmE6BwDcljm1',
     loadOptions: {
       apiKey: 'eDfRKapeDy4otXlFqxCz',
       region: 'us',
@@ -70,6 +71,17 @@ export const SUBS = {
     },
     serverApiKey: 'iKGpQSJNXuabLw7Yy9dH',
     proxySecret: 'zGH8K6CQ9IfVog0EjqsH',
+  },
+  stagingUSIgnoreProxyErrors: {
+    name: 'Staging US Ignore Proxy Errors',
+    subId: 'sub_6J49a2ykFD9kuI',
+    loadOptions: {
+      apiKey: 'c7hTCZ6VqVvPgP0uTr3G',
+      endpoint: 'https://api.stage.fpjs.sh',
+      scriptUrlPattern:
+        'https://procdn.fpjs.sh/v<version>/<apiKey>/loader_v<loaderVersion>.js',
+    },
+    proxySecret: 'LBPSSm40BzFrmMSz6vNV',
   },
   stagingApDev: {
     subId: 'sub_l8Std0PkXVCqfp',

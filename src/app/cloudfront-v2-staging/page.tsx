@@ -1,13 +1,15 @@
 import { NpmPackageIdentificationDemo } from '../../components/JsAgentNpmDemo';
+import { SUBS } from '../../constants';
+// todo change later
+const integrationUrl = 'https://dcmm2kwlmx499.cloudfront.net';
 
 export default function ExamplePage() {
   return (
     <NpmPackageIdentificationDemo
       loadOptions={{
-        apiKey: '8PxIlryhGKPBmCb2DBnK',
-        endpoint: 'https://d1de520979kahm.cloudfront.net/fpjs/result?region=us',
-        scriptUrlPattern:
-          'https://d1de520979kahm.cloudfront.net/fpjs/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
+        apiKey: SUBS.stagingUSIgnoreProxyErrors.loadOptions.apiKey,
+        endpoint: `${integrationUrl}/fpjs/result?region=us`,
+        scriptUrlPattern: `${integrationUrl}/fpjs/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>`,
       }}
       name={'Cloudfront V2 Staging'}
     />

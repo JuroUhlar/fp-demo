@@ -95,6 +95,72 @@ export default function SetsCalculator() {
             borderRadius: '4px',
           }}
         >
+          <h2>{setAName}</h2>
+          <div
+            style={{
+              backgroundColor: '#f5f5f5',
+              padding: '10px',
+              minHeight: '100px',
+              whiteSpace: 'pre-line',
+            }}
+          >
+            {setA.map((item) => (
+              <div
+                key={item}
+                style={{
+                  backgroundColor: intersection.includes(item)
+                    ? 'lightgreen'
+                    : '',
+                }}
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div
+          style={{
+            border: '1px solid #ccc',
+            padding: '20px',
+            borderRadius: '4px',
+          }}
+        >
+          <h2>{setBName}</h2>
+          <div
+            style={{
+              backgroundColor: '#f5f5f5',
+              padding: '10px',
+              minHeight: '100px',
+              whiteSpace: 'pre-line',
+            }}
+          >
+            {setB.map((item) => (
+              <div
+                key={item}
+                style={{
+                  backgroundColor: intersection.includes(item)
+                    ? 'lightgreen'
+                    : '',
+                }}
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div
+        style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}
+      >
+        <div
+          style={{
+            border: '1px solid #ccc',
+            padding: '20px',
+            borderRadius: '4px',
+          }}
+        >
           <h2>
             Union ({setAName} ∪ {setBName})
           </h2>

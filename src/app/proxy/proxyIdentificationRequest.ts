@@ -42,11 +42,11 @@ const proxyIdentificationRequest = async (
 
   // Add the necessary Fingerprint headers
   // const PROXY_SECRET = process.env.PROXY_SECRET;
-  const PROXY_SECRET = SUBS.stagingAppDevIgnoreProxyErrors.proxySecret;
+  const PROXY_SECRET = SUBS.stagingMain.proxySecret;
   if (!PROXY_SECRET) {
     throw new Error('Missing PROXY_SECRET environment variable');
   }
-  // headers.set('FPJS-Proxy-Secret', '');
+  headers.set('FPJS-Proxy-Secret', PROXY_SECRET);
   headers.set('FPJS-Proxy-Client-IP', parseIp(request));
   headers.set('FPJS-Proxy-Forwarded-Host', parseHost(request));
 
