@@ -2,22 +2,21 @@ import { NpmPackageIdentificationDemo } from '../../../components/JsAgentNpmDemo
 import { SUBS, STAGING_SERVER_API } from '../../../constants';
 
 export default function ExamplePage() {
-  const { apiKey, region, endpoint, scriptUrlPattern } =
+  const { apiKey, endpoint, scriptUrlPattern } =
     SUBS.stagingUSIgnoreProxyErrors.loadOptions;
   // const { serverApiKey } = SUBS.stagingEuIgnoreProxyErrors;
   return (
     <NpmPackageIdentificationDemo
       loadOptions={{
         apiKey,
-        region,
-        endpoint: '/proxy-staging/result?region=eu',
+        endpoint: '/proxy-staging/result',
         scriptUrlPattern:
           '/proxy-staging/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
       }}
       getOptions={{
-        linkedId: 'Staging custom proxy integration',
+        linkedId: 'Staging US Ignore Proxy Errors',
       }}
-      name={'Staging JavaScript Agent, Staging custom proxy integration'}
+      name={'Staging US Ignore Proxy Errors'}
       // serverApiKey={serverApiKey}
       customServerApiUrl={STAGING_SERVER_API}
     />

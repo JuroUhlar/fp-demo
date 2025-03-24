@@ -7,7 +7,7 @@ export default function ExamplePage() {
   return (
     <NpmPackageIdentificationDemo
       loadOptions={{
-        apiKey: SUBS.stagingUSIgnoreProxyErrors.loadOptions.apiKey,
+        apiKey: SUBS.stagingMain.loadOptions.apiKey,
         endpoint: `${integrationUrl}/fpjs/result?region=us`,
         scriptUrlPattern: `${integrationUrl}/fpjs/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>`,
       }}
