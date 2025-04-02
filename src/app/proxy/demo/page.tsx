@@ -1,42 +1,25 @@
 'use client';
 
-import { FunctionComponent, useEffect, useState } from 'react';
-import FingerprintJS, { ExtendedGetResult } from '@fingerprintjs/fingerprintjs-pro';
-import { PUBLIC_API_KEY } from '../../../constants';
+import { NpmPackageIdentificationDemo } from '../../../components/JsAgentNpmDemo';
+import { SUBS } from '../../../constants';
+import { DEV_WARDEN_URL } from '../../proxy-dev/const';
 
-const CustomProxyDemo: FunctionComponent = ({}) => {
-  const [visitorData, setVisitorData] = useState<ExtendedGetResult>();
-
-  const getData = async () => {
-    // Initialize an agent at application startup.
-    const fpAgent = await FingerprintJS.load({
-      apiKey: PUBLIC_API_KEY,
-      region: 'eu',
-      scriptUrlPattern:
-        '/proxy/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
-      endpoint: '/proxy/result?region=eu',
-    });
-    try {
-      const result = await fpAgent.get({ extendedResult: true });
-      setVisitorData(result);
-    } catch (error: any) {
-      console.log('!error', error?.requestId!);
-    }
-  };
-
-  useEffect(() => {
-    if (!visitorData) {
-      getData();
-    }
-  }, [visitorData]);
-
+export default function ExamplePage() {
   return (
-    <div>
-      <h1>Proxy Playground</h1>
-      <button onClick={getData}>Get visitor data</button>
-      <pre>{JSON.stringify(visitorData, null, 2)}</pre>
-    </div>
+    <NpmPackageIdentificationDemo
+      loadOptions={{
+        apiKey: SUBS.main.loadOptions.apiKey,
+        region: SUBS.main.loadOptions.region,
+        endpoint: '/proxy/result?region=eu',
+        scriptUrlPattern:
+          '/proxy/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
+      }}
+      getOptions={{
+        linkedId: 'Main Production custom proxy integration',
+      }}
+      name={'Main Production custom proxy integration'}
+      serverApiKey={SUBS.main.serverApiKey}
+      serverApiRegion={SUBS.main.serverApiRegion}
+    />
   );
-};
-
-export default CustomProxyDemo;
+}

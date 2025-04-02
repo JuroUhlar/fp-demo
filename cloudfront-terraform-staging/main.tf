@@ -75,7 +75,7 @@ resource "aws_cloudfront_distribution" "fpjs_cloudfront_distribution" {
   }
 }
 
-# Overwrite the existing secret, including 
+# Overwrite the existing secret 
 resource "aws_secretsmanager_secret_version" "updated_secret" {
   secret_id = module.fingerprint_cloudfront_integration.fpjs_secret_manager_arn
 

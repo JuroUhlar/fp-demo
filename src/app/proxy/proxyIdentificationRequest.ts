@@ -9,8 +9,8 @@ const proxyIdentificationRequest = async (
 ): Promise<Response> => {
   // Call the right endpoint depending on the region parameter:
   // https://api.fpjs.io, https://eu.api.fpjs.io, or https://ap.api.fpjs.io
-  const region: string = REGION;
-  const prefix = region === 'us' ? '' : `${region}.`;
+  const region = request.nextUrl.searchParams.get('region');
+  const prefix = region == 'eu' || region == 'ap' ? `${region}.` : '';
   let identificationUrl = new URL(`https://${prefix}api.fpjs.io`);
 
   // Just in case we need to use a custom API URL
@@ -24,6 +24,8 @@ const proxyIdentificationRequest = async (
     'ii',
     `custom-proxy-integration/1.0/ingress`,
   );
+
+  console.log('identificationUrl', identificationUrl);
 
   // Copy all headers
   const headers = new Headers();
@@ -42,8 +44,6 @@ const proxyIdentificationRequest = async (
 
   // Add the necessary Fingerprint headers
   const PROXY_SECRET = process.env.PROXY_SECRET;
-  // const PROXY_SECRET = SUBS.stagingMain.proxySecret;
-  // const PROXY_SECRET = SUBS.stagingMain.proxySecret;
   if (!PROXY_SECRET) {
     throw new Error('Missing PROXY_SECRET environment variable');
   }
@@ -51,14 +51,22 @@ const proxyIdentificationRequest = async (
   headers.set('FPJS-Proxy-Client-IP', parseIp(request));
   headers.set('FPJS-Proxy-Forwarded-Host', parseHost(request));
 
-  // headers.set('FPJS-Proxy-Client-IP', '94.60.180.11');
-  // headers.set('FPJS-Proxy-Secret', '');
-  // headers.set('FPJS-Proxy-Client-IP', 'bullshit');
+  // Use query params to override the headers for testing purposes
+  const searchParams = request.nextUrl.searchParams;
+  const proxySecretParam = searchParams.get('proxySecret');
+  const proxyClientIpParam = searchParams.get('proxyClientIp');
+  const proxyForwardedHostParam = searchParams.get('proxyForwardedHost');
+  if (proxySecretParam) {
+    headers.set('FPJS-Proxy-Secret', proxySecretParam);
+  }
 
-  // headers.set('FPJS-Proxy-Client-IP', '2600:1f18:ede:ed04:f055:518c:b791:1dbe');
-  // headers.set('FPJS-Proxy-Forwarded-Host', '@Somebullshit');
+  if (proxyClientIpParam) {
+    headers.set('FPJS-Proxy-Client-IP', proxyClientIpParam);
+  }
 
-  console.log('sent headers', headers);
+  if (proxyForwardedHostParam) {
+    headers.set('FPJS-Proxy-Forwarded-Host', proxyForwardedHostParam);
+  }
 
   // Make the identification request
   const identificationResponse = await fetch(identificationUrl, {
@@ -114,6 +122,7 @@ export const proxyIdentificationRequestHandler = async (
   try {
     return await proxyIdentificationRequest(request, customApiUrl);
   } catch (error) {
+    console.error('error', error);
     return await getIdentificationRequestErrorResponse(request, error);
   }
 };

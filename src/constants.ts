@@ -25,13 +25,16 @@ export const SUBS = {
     },
     serverApiKey: SERVER_API_KEY,
     serverApiRegion: REGION_SDK,
+
   },
   identificationOnly: {
     name: 'Identification only subscription',
     loadOptions: {
       apiKey: 'eajUlf6axysf2z89ZVWx',
+      region: 'us',
     },
     serverApiKey: process.env.NEXT_PUBLIC_IDENTIFICATION_ONLY_SERVER_API_KEY,
+    serverApiRegion: Region.Global,
   },
   zeroTrustMode: {
     name: 'Zero Trust Mode subscription',
