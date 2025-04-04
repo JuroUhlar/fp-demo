@@ -15,6 +15,7 @@ import { STAGING_SERVER_API } from '../constants';
 export type JsAgentDebugProps = {
   subId?: string;
   name: string;
+  description?: React.ReactNode;
   loadOptions: LoadOptions;
   getOptions?: GetOptions<boolean>;
   serverApiKey?: string;
@@ -30,6 +31,7 @@ export const NpmPackageIdentificationDemo = ({
   name,
   serverApiKey,
   customServerApiUrl,
+  description,
 }: JsAgentDebugProps) => {
   const [fingerprintData, setFingerprintData] = useState<GetResult | null>(
     null,
@@ -66,7 +68,7 @@ export const NpmPackageIdentificationDemo = ({
   return (
     <>
       <h1>{name}</h1>
-      <h2>JS Agent load options</h2>
+      {description && <p>{description}</p>}\<h2>JS Agent load options</h2>
       <pre>{JSON.stringify(loadOptions, null, 2)}</pre>
       {usedGetOptions && (
         <>
@@ -95,7 +97,6 @@ export const NpmPackageIdentificationDemo = ({
       <h2>JS Agent Response</h2>
       <JsonViewer data={fingerprintData} />
       {error && <pre>{error}</pre>}
-
       {serverApiKey && (
         <>
           <h2>Server API Event Response</h2>
