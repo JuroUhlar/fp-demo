@@ -11,6 +11,7 @@
     "cypress": "cypress open --e2e --browser chrome"
   },
   "dependencies": {
+    "@fingerprintjs/fingerprintjs": "^4.6.1",
     "@fingerprintjs/fingerprintjs-pro": "^3.11.8",
     "@fingerprintjs/fingerprintjs-pro-react": "^2.6.3",
     "@fingerprintjs/fingerprintjs-pro-server-api": "6.2.0-test.1",

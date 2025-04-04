@@ -153,6 +153,13 @@
   dependencies:
     tslib "^2.4.1"
 
+"@fingerprintjs/fingerprintjs@^4.6.1":
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/@fingerprintjs/fingerprintjs/-/fingerprintjs-4.6.1.tgz#af91467c4bd6b61453a6adf1a94477b71a51e7db"
+  integrity sha512-62TPnX6fXXMlxS7SOR3DJWEOKab7rCALwSWkuKWYMRrnsZ/jD9Ju4CUyy9VWDUYuhQ2ZW1RGLwOZJXTXR6K1pg==
+  dependencies:
+    tslib "^2.4.1"
+
 "@humanwhocodes/config-array@^0.11.14":
   version "0.11.14"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.14.tgz#d78e481a039f7566ecc9660b4ea7fe6b1fec442b"
