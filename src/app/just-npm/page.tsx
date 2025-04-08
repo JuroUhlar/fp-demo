@@ -19,13 +19,14 @@ export default function ClientPage() {
           // 'https://fingerprint.com/s2MB/?b=load-vercel&v=<version>&a=<apiKey>&l=<loaderVersion>',
           defaultScriptUrlPattern,
         ],
-        // endpoint: [
-        //   'https://.jurajuhlar.eu',
-        //   // 'https://jurajuhlar.com/4kbcBcMdh7PNIl4t/d7DCGmZNT3GvWo2Q?region=eu',
-        //   // 'https://cloudfront.juraj.click/ghTV3FGADFbJVSId/0FDnBHGnHdW3xKHa?region=eu',
-        //   // 'https://fingerprint.com/r4a0Rd2Xs/',
-        //   defaultEndpoint,
-        // ],
+        endpoint: [
+          //   'https://.jurajuhlar.eu',
+          //   // 'https://jurajuhlar.com/4kbcBcMdh7PNIl4t/d7DCGmZNT3GvWo2Q?region=eu',
+          //   // 'https://cloudfront.juraj.click/ghTV3FGADFbJVSId/0FDnBHGnHdW3xKHa?region=eu',
+          //   // 'https://fingerprint.com/r4a0Rd2Xs/',
+          'https://www.jurajuhlar.eu/proxy/result?region=eu&proxySecret=1234567890&proxyForwardedHost=@wrong.host',
+          // defaultEndpoint,
+        ],
       });
 
       const fp = await fpPromise;
@@ -33,7 +34,7 @@ export default function ClientPage() {
       console.log(result.requestId, result.visitorId);
       setFingerprintData(result);
     } catch (error) {
-      // console.error(error.message);
+      console.error(error);
     }
   };
 
