@@ -6,9 +6,9 @@ export default function ExamplePage() {
   return (
     <NpmPackageIdentificationDemo
       loadOptions={{
-        apiKey: SUBS.stagingAppDevIgnoreProxyErrors.loadOptions.apiKey,
-        region: SUBS.stagingAppDevIgnoreProxyErrors.loadOptions.region,
-        endpoint: '/proxy-dev/result',
+        apiKey: SUBS.stagingApDev.loadOptions.apiKey,
+        region: 'us',
+        endpoint: `/proxy-dev/result?proxySecret=${SUBS.stagingApDev.proxySecret}`,
         scriptUrlPattern:
           '/proxy-dev/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
       }}

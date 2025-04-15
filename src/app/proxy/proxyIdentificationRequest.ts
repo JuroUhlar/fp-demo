@@ -56,6 +56,7 @@ const proxyIdentificationRequest = async (
   const proxySecretParam = searchParams.get('proxySecret');
   const proxyClientIpParam = searchParams.get('proxyClientIp');
   const proxyForwardedHostParam = searchParams.get('proxyForwardedHost');
+
   if (proxySecretParam) {
     headers.set('FPJS-Proxy-Secret', proxySecretParam);
   }
@@ -67,6 +68,7 @@ const proxyIdentificationRequest = async (
   if (proxyForwardedHostParam) {
     headers.set('FPJS-Proxy-Forwarded-Host', proxyForwardedHostParam);
   }
+
 
   // Make the identification request
   const identificationResponse = await fetch(identificationUrl, {
