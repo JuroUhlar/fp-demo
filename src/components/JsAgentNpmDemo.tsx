@@ -54,6 +54,7 @@ export const NpmPackageIdentificationDemo = ({
       setFingerprintData(result);
       setError(null);
     } catch (error) {
+      // @ts-ignore
       setError(String(error + ' ' + error.requestId));
     } finally {
       setLoading(false);
