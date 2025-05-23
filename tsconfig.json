@@ -20,6 +20,13 @@
       }
     ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/tampering-article/good/validate.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/app/tampering-article/good/validate.js",
+    "src/scripts/unsealResult.js"
+  ],
   "exclude": ["node_modules"]
 }
