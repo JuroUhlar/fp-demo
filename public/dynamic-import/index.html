@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FP Demo</title>
+  </head>
+  <body>
+    <h1>Dynamic import test</h1>
+
+    <script type="module" src="index.js"></script>
+    <!-- <script>
+      const fpPromise = import(
+        'https://fpjscdn.net/v3/eajUlf6axysf2z89ZVWx'
+      ).then((FingerprintJS) => FingerprintJS.load({ region: 'us' }));
+
+      // Get the visitor identifier when you need it.
+      fpPromise
+        .then((fp) => fp.get())
+        .then((result) => console.log(result.visitorId, result.requestId));
+    </script> -->
+  </body>
+</html>
