@@ -16,6 +16,7 @@ export type JsAgentDebugProps = {
   subId?: string;
   name: string;
   description?: React.ReactNode;
+  differentEnvPublicApiKey?: string;
   loadOptions: LoadOptions;
   getOptions?: GetOptions<boolean>;
   serverApiKey?: string;

@@ -69,6 +69,7 @@ const proxyIdentificationRequest = async (
     headers.set('FPJS-Proxy-Forwarded-Host', proxyForwardedHostParam);
   }
 
+  console.log('headers', headers);
 
   // Make the identification request
   const identificationResponse = await fetch(identificationUrl, {

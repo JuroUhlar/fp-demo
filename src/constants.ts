@@ -25,7 +25,6 @@ export const SUBS = {
     },
     serverApiKey: SERVER_API_KEY,
     serverApiRegion: REGION_SDK,
-
   },
   identificationOnly: {
     name: 'Identification only subscription',
@@ -35,6 +34,15 @@ export const SUBS = {
     },
     serverApiKey: process.env.NEXT_PUBLIC_IDENTIFICATION_ONLY_SERVER_API_KEY,
     serverApiRegion: Region.Global,
+  },
+  prodApRegion: {
+    name: 'AP Region',
+    loadOptions: {
+      apiKey: 'wUIJJzwMvGftMqErFUeu',
+      region: 'ap',
+    },
+    serverApiKey: process.env.NEXT_PUBLIC_AP_PROD_SERVER_API_KEY,
+    serverApiRegion: Region.AP,
   },
   zeroTrustMode: {
     name: 'Zero Trust Mode subscription',
@@ -65,6 +73,7 @@ export const SUBS = {
   stagingMain: {
     name: 'Staging env Main Global subscription',
     subId: 'sub_rRDmE6BwDcljm1',
+    differentEnvPublicApiKey: 'sqaaHiIwZMv2AHldaITE',
     loadOptions: {
       apiKey: 'eDfRKapeDy4otXlFqxCz',
       region: 'us',

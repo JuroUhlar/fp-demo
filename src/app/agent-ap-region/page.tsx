@@ -2,18 +2,18 @@ import { NpmPackageIdentificationDemo } from '../../components/JsAgentNpmDemo';
 import {
   CUSTOM_SUBDOMAIN,
   CUSTOM_SUBDOMAIN_SCRIPT_URL,
+  PUBLIC_API_KEY,
+  REGION,
+  REGION_SDK,
   SERVER_API_KEY,
-  SUBS,
 } from '../../constants';
 
 export default function ExamplePage() {
-  const { loadOptions, serverApiKey, serverApiRegion } = SUBS.prodApRegion;
-  const { apiKey, region } = loadOptions;
   return (
     <NpmPackageIdentificationDemo
       loadOptions={{
-        apiKey,
-        region,
+        apiKey: 'XSpWBBUesOp5R1n5x5Se',
+        region: REGION,
         endpoint: CUSTOM_SUBDOMAIN,
         scriptUrlPattern: CUSTOM_SUBDOMAIN_SCRIPT_URL,
       }}
