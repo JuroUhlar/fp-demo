@@ -1,0 +1,62 @@
+name: Playwright Tests
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    # Run every hour at minute 0
+    - cron: '0 * * * *'
+  # Allow manual workflow runs
+  workflow_dispatch:
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+    
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+    
+    - name: Install Playwright Browsers
+      run: yarn playwright install --with-deps
+    
+    - name: Set environment for local testing (push trigger)
+      if: github.event_name == 'push'
+      run: echo "E2E_BASE_URL=http://localhost:3000" >> $GITHUB_ENV
+    
+    - name: Set environment for production testing (scheduled trigger)
+      if: github.event_name == 'schedule'
+      run: echo "E2E_BASE_URL=https://jurajuhlar.eu" >> $GITHUB_ENV
+    
+    - name: Set environment for manual testing (workflow_dispatch)
+      if: github.event_name == 'workflow_dispatch'
+      run: echo "E2E_BASE_URL=http://localhost:3000" >> $GITHUB_ENV
+    
+    - name: Build Next.js app
+      if: env.E2E_BASE_URL == 'http://localhost:3000'
+      run: yarn build
+    
+    - name: Start Next.js app
+      if: env.E2E_BASE_URL == 'http://localhost:3000'
+      run: yarn start &
+      
+    - name: Wait for app to be ready
+      if: env.E2E_BASE_URL == 'http://localhost:3000'
+      run: |
+        timeout 60 bash -c 'until curl -f http://localhost:3000; do sleep 2; done'
+    
+    - name: Run Playwright tests
+      run: yarn test
+    
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-report-${{ github.event_name }}
+        path: playwright-report/
+        retention-days: 30 
