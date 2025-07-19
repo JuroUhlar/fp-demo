@@ -13,14 +13,18 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.54.0-noble
-      options: --ipc=host
     steps:
     - uses: actions/checkout@v4
     
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+    
     - name: Install dependencies
       run: yarn install --frozen-lockfile
+    
+    - name: Install Playwright Chromium Browser
+      run: yarn playwright install chromium --with-deps
     
     - name: Set environment for local testing (push trigger)
       if: github.event_name == 'push'
@@ -32,7 +36,7 @@ jobs:
     
     - name: Set environment for manual testing (workflow_dispatch)
       if: github.event_name == 'workflow_dispatch'
-      run: echo "E2E_BASE_URL=http://localhost:3000" >> $GITHUB_ENV
+      run: echo "E2E_BASE_URL=https://jurajuhlar.eu" >> $GITHUB_ENV
     
     - name: Build Next.js app
       if: env.E2E_BASE_URL == 'http://localhost:3000'
