@@ -10,7 +10,7 @@ import { Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ServerApiResponseDemo } from './ServerApiResponseDemo';
 import { JsonViewer } from './JsonViewer';
-import { STAGING_SERVER_API } from '../constants';
+import { TEST_IDS } from '../../tests/test_ids';
 
 export type JsAgentDebugProps = {
   subId?: string;
@@ -96,7 +96,10 @@ export const NpmPackageIdentificationDemo = ({
       </button>
       <p>{loading ? 'Loading...' : ''}</p>
       <h2>JS Agent Response</h2>
-      <JsonViewer data={fingerprintData} />
+      <JsonViewer
+        data={fingerprintData}
+        data_test_id={TEST_IDS.AGENT_RESPONSE}
+      />
       {error && <pre>{error}</pre>}
       {serverApiKey && (
         <>
