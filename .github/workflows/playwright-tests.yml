@@ -13,18 +13,14 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.54.0-noble
+      options: --ipc=host
     steps:
     - uses: actions/checkout@v4
     
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-    
     - name: Install dependencies
       run: yarn install --frozen-lockfile
-    
-    - name: Install Playwright Browsers
-      run: yarn playwright install --with-deps
     
     - name: Set environment for local testing (push trigger)
       if: github.event_name == 'push'
