@@ -6,6 +6,7 @@ const demoUrls = [
   '/cloudflare-production',
   '/cloudflare-manual-setup',
   '/cloudflare-staging',
+  '/cloudflare-staging-diff-env',
 ];
 
 // Generate a test for each demo URL

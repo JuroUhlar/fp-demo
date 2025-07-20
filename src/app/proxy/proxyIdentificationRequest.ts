@@ -3,10 +3,17 @@ import { REGION, SUBS } from '../../constants';
 import { parseCookies, parseHost, parseIp, randomShortString } from './utils';
 import { isNativeError } from 'util/types';
 
+type ProxyIdentificationRequestOptions = {
+  proxySecret: string;
+  customApiUrl?: string;
+};
+
 const proxyIdentificationRequest = async (
   request: NextRequest,
-  customApiUrl?: string,
+  options: ProxyIdentificationRequestOptions,
 ): Promise<Response> => {
+  const { proxySecret, customApiUrl } = options;
+
   // Call the right endpoint depending on the region parameter:
   // https://api.fpjs.io, https://eu.api.fpjs.io, or https://ap.api.fpjs.io
   const region = request.nextUrl.searchParams.get('region');
@@ -20,10 +27,7 @@ const proxyIdentificationRequest = async (
 
   // Forward all present query parameters and append the monitoring parameter
   identificationUrl.search = request.url.split('?')[1] ?? '';
-  identificationUrl.searchParams.append(
-    'ii',
-    `custom-proxy-integration/1.0/ingress`,
-  );
+  identificationUrl.searchParams.append('ii', `custom-proxy-integration/1.0/ingress`);
 
   console.log('identificationUrl', identificationUrl);
 
@@ -43,11 +47,7 @@ const proxyIdentificationRequest = async (
   }
 
   // Add the necessary Fingerprint headers
-  const PROXY_SECRET = process.env.PROXY_SECRET;
-  if (!PROXY_SECRET) {
-    throw new Error('Missing PROXY_SECRET environment variable');
-  }
-  headers.set('FPJS-Proxy-Secret', PROXY_SECRET);
+  headers.set('FPJS-Proxy-Secret', proxySecret);
   headers.set('FPJS-Proxy-Client-IP', parseIp(request));
   headers.set('FPJS-Proxy-Forwarded-Host', parseHost(request));
 
@@ -90,10 +90,7 @@ const proxyIdentificationRequest = async (
   });
 };
 
-const getIdentificationRequestErrorResponse = (
-  request: Request,
-  error: unknown,
-): Response => {
+const getIdentificationRequestErrorResponse = (request: Request, error: unknown): Response => {
   const message = isNativeError(error) ? error.message : error;
   const requestId = `${new Date().getTime()}.${randomShortString({ length: 6 })}`;
   return Response.json(
@@ -110,8 +107,7 @@ const getIdentificationRequestErrorResponse = (
       status: 500,
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin':
-          request.headers.get('origin') ?? new URL(request.url).origin,
+        'Access-Control-Allow-Origin': request.headers.get('origin') ?? new URL(request.url).origin,
         'Access-Control-Allow-Credentials': 'true',
       },
     },
@@ -120,10 +116,10 @@ const getIdentificationRequestErrorResponse = (
 
 export const proxyIdentificationRequestHandler = async (
   request: NextRequest,
-  customApiUrl?: string,
+  options: ProxyIdentificationRequestOptions,
 ): Promise<Response> => {
   try {
-    return await proxyIdentificationRequest(request, customApiUrl);
+    return await proxyIdentificationRequest(request, options);
   } catch (error) {
     console.error('error', error);
     return await getIdentificationRequestErrorResponse(request, error);
