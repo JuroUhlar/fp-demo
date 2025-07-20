@@ -9,6 +9,12 @@ on:
   # Allow manual workflow runs
   workflow_dispatch:
 
+# Global environment variables available to all jobs
+env:
+  CUSTOM_PROXY_SECRET: ${{ secrets.CUSTOM_PROXY_SECRET }}
+  CUSTOM_PROXY_SECRET_STAGING: ${{ secrets.CUSTOM_PROXY_SECRET_STAGING }}
+  CUSTOM_PROXY_SECRET_DEV: ${{ secrets.CUSTOM_PROXY_SECRET_DEV }}
+
 jobs:
   test:
     timeout-minutes: 60
