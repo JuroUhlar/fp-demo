@@ -10,6 +10,7 @@ const demoUrls = [
   '/proxy/demo',
   '/proxy-staging/demo',
   '/proxy-staging/demo-diff-env',
+  '/proxy-staging/demo-diff-env-2',
 ];
 
 // Generate a test for each demo URL

@@ -62,8 +62,7 @@ export const SUBS = {
     name: 'Open response subscription',
     loadOptions: {
       apiKey: 'c0cR30fx3zBIQLEAYHOV',
-      scriptUrlPattern:
-        '/proxy-open-response/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
+      scriptUrlPattern: '/proxy-open-response/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
       endpoint: '/proxy-open-response/result',
       region: 'us',
     },
@@ -73,13 +72,12 @@ export const SUBS = {
   stagingMain: {
     name: 'Staging env Main Global subscription',
     subId: 'sub_rRDmE6BwDcljm1',
-    differentEnvPublicApiKey: 'sqaaHiIwZMv2AHldaITE',
+    differentEnvPublicApiKeys: ['sqaaHiIwZMv2AHldaITE', 'TcexjRIi5v0Fu9RK2zZf'],
     loadOptions: {
       apiKey: 'eDfRKapeDy4otXlFqxCz',
       region: 'us',
       endpoint: 'https://api.stage.fpjs.sh',
-      scriptUrlPattern:
-        'https://procdn.fpjs.sh/v<version>/<apiKey>/loader_v<loaderVersion>.js',
+      scriptUrlPattern: 'https://procdn.fpjs.sh/v<version>/<apiKey>/loader_v<loaderVersion>.js',
     },
     serverApiKey: 'iKGpQSJNXuabLw7Yy9dH',
     proxySecret: 'zGH8K6CQ9IfVog0EjqsH',
@@ -90,8 +88,7 @@ export const SUBS = {
     loadOptions: {
       apiKey: 'c7hTCZ6VqVvPgP0uTr3G',
       endpoint: 'https://api.stage.fpjs.sh',
-      scriptUrlPattern:
-        'https://procdn.fpjs.sh/v<version>/<apiKey>/loader_v<loaderVersion>.js',
+      scriptUrlPattern: 'https://procdn.fpjs.sh/v<version>/<apiKey>/loader_v<loaderVersion>.js',
     },
     proxySecret: 'LBPSSm40BzFrmMSz6vNV',
   },

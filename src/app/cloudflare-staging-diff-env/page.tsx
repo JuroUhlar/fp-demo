@@ -10,11 +10,11 @@ export default function CloudflareIntegrationStaging() {
   const sub = SUBS.stagingMain;
 
   const { apiKey, region } = sub.loadOptions;
-  const { serverApiKey, differentEnvPublicApiKey } = sub;
+  const { serverApiKey, differentEnvPublicApiKeys } = sub;
   return (
     <NpmPackageIdentificationDemo
       loadOptions={{
-        apiKey: differentEnvPublicApiKey,
+        apiKey: differentEnvPublicApiKeys[0],
         region,
         endpoint: `https://jurajuhlar.com/SM06tiFRZxMER8wp/isnS18MoIYKsQigO`,
         scriptUrlPattern: `https://jurajuhlar.com/SM06tiFRZxMER8wp/N3eRdnD9riVoQpMy?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>`,

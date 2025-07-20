@@ -9,7 +9,7 @@ export default function ExamplePage() {
   return (
     <NpmPackageIdentificationDemo
       loadOptions={{
-        apiKey: differentEnvPublicApiKeys[0],
+        apiKey: differentEnvPublicApiKeys[1],
         region,
         endpoint: `/proxy-staging/result?region=${region}${spoofedIp ? `&proxyClientIp=${spoofedIp}` : ''}`,
         scriptUrlPattern: '/proxy-staging/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
@@ -17,7 +17,7 @@ export default function ExamplePage() {
       getOptions={{
         linkedId: 'Staging custom proxy integration',
       }}
-      name={'Staging JavaScript Agent, Staging custom proxy integration'}
+      name={'Staging JavaScript Agent, Staging custom proxy integration, RC workspace env public api key'}
       serverApiKey={serverApiKey}
       customServerApiUrl={STAGING_SERVER_API}
     />

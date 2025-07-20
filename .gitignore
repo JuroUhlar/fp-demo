@@ -83,4 +83,5 @@ terraform.rc
 
 
 # playwright
-playwright-report/
+playwright-report
+test-results
