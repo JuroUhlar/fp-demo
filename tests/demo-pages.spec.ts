@@ -1,5 +1,5 @@
 import { test } from '@playwright/test';
-import { checkDemoPageVisitorIds } from './check_demo_page';
+import { checkDemoPageVisitorIds } from './test_utils';
 
 // Array of all demo URLs to test
 const demoUrls = [
@@ -7,6 +7,8 @@ const demoUrls = [
   '/cloudflare-manual-setup',
   '/cloudflare-staging',
   '/cloudflare-staging-diff-env',
+  '/proxy/demo',
+  '/proxy-staging/demo',
 ];
 
 // Generate a test for each demo URL

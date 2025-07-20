@@ -2,7 +2,8 @@
 
 import { NpmPackageIdentificationDemo } from '../../../components/JsAgentNpmDemo';
 import { SUBS } from '../../../constants';
-import { DEV_WARDEN_URL } from '../../proxy-dev/const';
+
+const spoofedIp = '54.90.6.179';
 
 export default function ExamplePage() {
   return (
@@ -10,9 +11,8 @@ export default function ExamplePage() {
       loadOptions={{
         apiKey: SUBS.main.loadOptions.apiKey,
         region: SUBS.main.loadOptions.region,
-        endpoint: '/proxy/result?region=eu',
-        scriptUrlPattern:
-          '/proxy/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
+        endpoint: `/proxy/result?region=eu${spoofedIp ? `&proxyClientIp=${spoofedIp}` : ''}`,
+        scriptUrlPattern: '/proxy/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
       }}
       getOptions={{
         linkedId: 'Main Production custom proxy integration',
