@@ -9,6 +9,7 @@ const demoUrls = [
   '/cloudflare-staging-diff-env',
   '/proxy/demo',
   '/proxy-staging/demo',
+  '/proxy-staging/demo-diff-env',
 ];
 
 // Generate a test for each demo URL
