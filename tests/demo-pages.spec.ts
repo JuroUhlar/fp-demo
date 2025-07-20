@@ -7,6 +7,7 @@ const demoUrls = [
   '/cloudflare-manual-setup',
   '/cloudflare-staging',
   '/cloudflare-staging-diff-env',
+  '/cloudflare-staging-diff-env-2',
   '/proxy/demo',
   '/proxy-staging/demo',
   '/proxy-staging/demo-diff-env',

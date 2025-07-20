@@ -2,10 +2,6 @@ import { NpmPackageIdentificationDemo } from '../../components/JsAgentNpmDemo';
 import { SUBS } from '../../constants';
 import { STAGING_WARDEN_URL } from '../proxy-dev/const';
 
-// const host = 'd3cu7lsl52iiaf.cloudfront.net';
-// const host = 'fingerprint-proxy-integration.juraj-uhlar.workers.dev';
-const host = 'manual-cf.jurajuhlar.site';
-
 export default function CloudflareIntegrationStaging() {
   const sub = SUBS.stagingMain;
 
