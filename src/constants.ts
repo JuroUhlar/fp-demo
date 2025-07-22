@@ -1,10 +1,8 @@
 import { Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { JsAgentDebugProps } from './components/JsAgentNpmDemo';
 
-export const PUBLIC_API_KEY =
-  process.env.NEXT_PUBLIC_PUBLIC_API_KEY ?? '2UZgp3skqLzfJpFUGUrw';
-export const SERVER_API_KEY =
-  process.env.SERVER_API_KEY ?? 'lzXEt8ZurQNOZ9XGCeA9';
+export const PUBLIC_API_KEY = process.env.NEXT_PUBLIC_PUBLIC_API_KEY ?? '2UZgp3skqLzfJpFUGUrw';
+export const SERVER_API_KEY = process.env.SERVER_API_KEY ?? 'lzXEt8ZurQNOZ9XGCeA9';
 export const CUSTOM_SUBDOMAIN = 'https://fp.jurajuhlar.eu';
 export const CUSTOM_SUBDOMAIN_SCRIPT_URL =
   'https://fp.jurajuhlar.eu/web/v<version>/<apiKey>/loader_v<loaderVersion>.js';
@@ -72,7 +70,7 @@ export const SUBS = {
   stagingMain: {
     name: 'Staging env Main Global subscription',
     subId: 'sub_rRDmE6BwDcljm1',
-    differentEnvPublicApiKeys: ['sqaaHiIwZMv2AHldaITE', 'TcexjRIi5v0Fu9RK2zZf'],
+    differentEnvPublicApiKeys: ['sqaaHiIwZMv2AHldaITE', 'W9BGoe48OVRHIbNeqmvK'],
     loadOptions: {
       apiKey: 'eDfRKapeDy4otXlFqxCz',
       region: 'us',
@@ -81,6 +79,15 @@ export const SUBS = {
     },
     serverApiKey: 'iKGpQSJNXuabLw7Yy9dH',
     proxySecret: 'zGH8K6CQ9IfVog0EjqsH',
+    integrations: {
+      cloudflare: {
+        name: 'Cloudflare',
+        environment: null,
+        endpoint: 'https://jurajuhlar.com/YlJN60dTr6yLInXD/YYtH5IZ345UfHdRc',
+        scriptUrlPattern:
+          'https://jurajuhlar.com/YlJN60dTr6yLInXD/qHSv4BNQVjPTwdfC?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
+      },
+    },
   },
   stagingUSIgnoreProxyErrors: {
     name: 'Staging US Ignore Proxy Errors',
@@ -112,8 +119,7 @@ export const SUBS = {
   },
 } satisfies Record<string, JsAgentDebugProps>;
 
-export const CLOUDFRONT_ENDPOINT =
-  'https://cloudfront.juraj.click/ghTV3FGADFbJVSId/0FDnBHGnHdW3xKHa?region=eu';
+export const CLOUDFRONT_ENDPOINT = 'https://cloudfront.juraj.click/ghTV3FGADFbJVSId/0FDnBHGnHdW3xKHa?region=eu';
 export const CLOUDFRONT_SCRIPT_URL =
   'https://cloudfront.juraj.click/ghTV3FGADFbJVSId/buc1pMANm4wmx5j1?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>';
 

@@ -24,6 +24,15 @@ export type JsAgentDebugProps = {
   customServerApiUrl?: string;
   proxySecret?: string;
   serverApiRegion?: Region;
+  integrations?: Record<
+    string,
+    {
+      name: string;
+      environment: string | null;
+      endpoint: string;
+      scriptUrlPattern: string;
+    }
+  >;
 };
 
 export const NpmPackageIdentificationDemo = ({
