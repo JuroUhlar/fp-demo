@@ -7,11 +7,8 @@ locals {
   fpjs_agent_download_path = "agent"
   fpjs_get_result_path     = "result"
 
-  // Main
-  // fpjs_shared_secret       = "zGH8K6CQ9IfVog0EjqsH"
-  // Ignore Proxy Errors
-  fpjs_pre_shared_secret       = "LBPSSm40BzFrmMSz6vNV"
-  // Staging CDN and API
+  // Staging main
+  fpjs_pre_shared_secret       = "yprQCCYJ8WzLw5xHiRSK"
   fpjs_cdn_url_override           = "procdn.fpjs.sh"
   fpjs_ingress_base_host_override = "api.stage.fpjs.sh"
 }

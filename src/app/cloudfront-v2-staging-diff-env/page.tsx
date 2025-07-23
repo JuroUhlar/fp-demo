@@ -5,13 +5,13 @@ import { STAGING_WARDEN_URL } from '../proxy-dev/const';
 export default function CloudflareIntegrationStaging() {
   const sub = SUBS.stagingMain;
 
-  const { apiKey, region } = sub.loadOptions;
+  const { region } = sub.loadOptions;
   const { serverApiKey } = sub;
   const { cloudfront } = sub.integrations;
   return (
     <NpmPackageIdentificationDemo
       loadOptions={{
-        apiKey,
+        apiKey: sub.differentEnvPublicApiKeys[0],
         region,
         endpoint: cloudfront.endpoint,
         scriptUrlPattern: cloudfront.scriptUrlPattern,

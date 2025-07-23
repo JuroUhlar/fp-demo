@@ -87,6 +87,13 @@ export const SUBS = {
         scriptUrlPattern:
           'https://jurajuhlar.com/YlJN60dTr6yLInXD/qHSv4BNQVjPTwdfC?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
       },
+      cloudfront: {
+        name: 'Cloudfront',
+        environment: null,
+        endpoint: 'https://d3pjfkdb7cupan.cloudfront.net/result',
+        scriptUrlPattern:
+          'https://d3pjfkdb7cupan.cloudfront.net/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
+      },
     },
   },
   stagingUSIgnoreProxyErrors: {
