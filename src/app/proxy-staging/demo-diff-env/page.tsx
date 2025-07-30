@@ -17,7 +17,9 @@ export default function ExamplePage() {
       getOptions={{
         linkedId: 'Staging custom proxy integration',
       }}
-      name={'Staging JavaScript Agent, Staging custom proxy integration'}
+      name={
+        'Staging JavaScript Agent, Staging custom proxy integration, global proxy secret, different env public api key'
+      }
       serverApiKey={serverApiKey}
       customServerApiUrl={STAGING_SERVER_API}
     />

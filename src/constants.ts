@@ -95,6 +95,16 @@ export const SUBS = {
           'https://d3pjfkdb7cupan.cloudfront.net/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
       },
     },
+    environments: {
+      default: {
+        publicApiKey: 'eDfRKapeDy4otXlFqxCz',
+        proxySecret: 'LsV7ua5VMFIy7dYNDBYE',
+      },
+      dev: {
+        publicApiKey: 'sqaaHiIwZMv2AHldaITE',
+        proxySecret: 'dgZ3OoY3TtpgfCK9VNM8',
+      },
+    },
   },
   stagingUSIgnoreProxyErrors: {
     name: 'Staging US Ignore Proxy Errors',
