@@ -24,6 +24,14 @@ export type JsAgentDebugProps = {
   customServerApiUrl?: string;
   proxySecret?: string;
   serverApiRegion?: Region;
+  environments?: Record<
+    string,
+    {
+      publicApiKey?: string;
+      proxySecret?: string;
+      serverApiKey?: string;
+    }
+  >;
   integrations?: Record<
     string,
     {

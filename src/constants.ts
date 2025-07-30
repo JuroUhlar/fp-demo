@@ -110,10 +110,22 @@ export const SUBS = {
     subId: 'sub_l8Std0PkXVCqfp',
     name: 'Staging AP Dev ',
     loadOptions: {
-      apiKey: 's8vq6stc9wQPVX1hDVaf',
+      apiKey: 's8vq6stc9wQPVX1hDVaf', // Default environment public api key
       region: 'ap',
     },
     proxySecret: 'ENugyz640byJclhcYJ6V',
+    environments: {
+      default: {
+        publicApiKey: 's8vq6stc9wQPVX1hDVaf',
+        proxySecret: 'ENugyz640byJclhcYJ6V',
+        serverApiKey: 'dZ2D20uCbU0T9tlVc8PA',
+      },
+      anotherEnvironment: {
+        publicApiKey: 'DZcQeHGFRNPmmaGNH4IB',
+        proxySecret: '0bAd0Mpm9qY4V9bwkeVX',
+      },
+    },
+    serverApiKey: 'dZ2D20uCbU0T9tlVc8PA',
   },
   stagingAppDevIgnoreProxyErrors: {
     subId: 'sub_djD4n3S6usMN6V',
