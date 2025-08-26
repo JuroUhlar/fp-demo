@@ -11,7 +11,7 @@ export default function CloudflareIntegrationStaging() {
   return (
     <NpmPackageIdentificationDemo
       loadOptions={{
-        apiKey: sub.differentEnvPublicApiKeys[0],
+        apiKey: 'bJZc9CKuc4syDoGpTupm',
         region,
         endpoint: cloudfront.endpoint,
         scriptUrlPattern: cloudfront.scriptUrlPattern,

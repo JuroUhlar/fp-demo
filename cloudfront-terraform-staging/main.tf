@@ -8,7 +8,7 @@ locals {
   fpjs_get_result_path     = "result"
 
   // Staging main
-  fpjs_pre_shared_secret       = "yprQCCYJ8WzLw5xHiRSK"
+  fpjs_pre_shared_secret       = "CsDzNeF6FL02q7B07MFs"
   fpjs_cdn_url_override           = "procdn.fpjs.sh"
   fpjs_ingress_base_host_override = "api.stage.fpjs.sh"
 }

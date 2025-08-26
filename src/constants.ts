@@ -123,11 +123,11 @@ export const SUBS = {
       apiKey: 's8vq6stc9wQPVX1hDVaf', // Default environment public api key
       region: 'ap',
     },
-    proxySecret: 'ENugyz640byJclhcYJ6V',
+    proxySecret: 'bS6EGget7KoMtNuLqSRj',
     environments: {
       default: {
         publicApiKey: 's8vq6stc9wQPVX1hDVaf',
-        proxySecret: 'ENugyz640byJclhcYJ6V',
+        proxySecret: 'gQNmuCpoPXuNAg62U0Lu',
         serverApiKey: 'dZ2D20uCbU0T9tlVc8PA',
       },
       anotherEnvironment: {
@@ -145,6 +145,26 @@ export const SUBS = {
       region: 'ap',
     },
     proxySecret: 'j7EbpKKmFTIXlqAx5vkc',
+  },
+  environmentsTestStaging: {
+    name: 'Environments Test Staging',
+    proxySecret: 'P3UFpDPCHgBYN4HNHeIn',
+    loadOptions: {
+      apiKey: 'rWM0aBD6amhWEfSt37fh',
+      region: 'us',
+    },
+    environments: {
+      default: {
+        publicApiKey: 'rWM0aBD6amhWEfSt37fh',
+        serverApiKey: 'NGtc03NlEgQcVTtcSCno',
+        proxySecret: '6pGAkeCcldUf3CkrdHgt',
+      },
+      custom: {
+        publicApiKey: 'nND4eJzLfDJjdxy5hNc9',
+        serverApiKey: 'gVDurnQNPFFWU2L1TbEm',
+        proxySecret: 'MTcojQU3f3SgbMlxBRIl',
+      },
+    },
   },
 } satisfies Record<string, JsAgentDebugProps>;
 

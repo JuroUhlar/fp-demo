@@ -9,17 +9,15 @@ export default function ExamplePage() {
   return (
     <NpmPackageIdentificationDemo
       loadOptions={{
-        apiKey: environments.dev.publicApiKey,
+        apiKey: environments.default.publicApiKey,
         region,
-        endpoint: `/proxy-staging/result?region=${region}&proxySecret=${environments.dev.proxySecret}${spoofedIp ? `&proxyClientIp=${spoofedIp}` : ''}`,
+        endpoint: `/proxy-staging/result?region=${region}&proxySecret=${environments.default.proxySecret}_invalid${spoofedIp ? `&proxyClientIp=${spoofedIp}` : ''}`,
         scriptUrlPattern: '/proxy-staging/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
       }}
       getOptions={{
         linkedId: 'Staging custom proxy integration',
       }}
-      name={
-        'Staging JavaScript Agent, Staging custom proxy integration, dev proxy secret, dev public api key'
-      }
+      name={'Staging JavaScript Agent, Staging custom proxy integration, dev proxy secret, dev public api key'}
       serverApiKey={serverApiKey}
       customServerApiUrl={STAGING_SERVER_API}
     />
