@@ -82,6 +82,10 @@ const proxyIdentificationRequest = async (
   // If your app needs to work using HTTP, remove the `strict-transport-security` header
   // updatedHeaders.delete('strict-transport-security');
 
+  // Remove content-encoding headers to prevent double decoding (same fix as in proxyBrowserCacheRequest)
+  updatedHeaders.delete('content-encoding');
+  updatedHeaders.delete('content-length'); // Remove this too as the length may change after decoding
+
   // Return the response to the client
   return new Response(await identificationResponse.blob(), {
     status: identificationResponse.status,

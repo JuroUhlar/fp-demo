@@ -39,8 +39,16 @@ export const proxyBrowserCacheRequest = async (
       headers,
     });
 
-    // Forward the response unchanged
-    return browserCacheResponse;
+    // Forward the response but remove content-encoding headers to prevent double decoding
+    const responseHeaders = new Headers(browserCacheResponse.headers);
+    responseHeaders.delete('content-encoding');
+    responseHeaders.delete('content-length'); // Remove this too as the length may change after decoding
+
+    return new Response(browserCacheResponse.body, {
+      status: browserCacheResponse.status,
+      statusText: browserCacheResponse.statusText,
+      headers: responseHeaders,
+    });
   } catch (error) {
     console.error(error);
     return new Response(
