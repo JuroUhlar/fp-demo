@@ -1,0 +1,27 @@
+import { NpmPackageIdentificationDemo } from '../../../components/JsAgentNpmDemo';
+import { SUBS, STAGING_SERVER_API } from '../../../constants';
+
+const spoofedIp = '54.90.6.179';
+
+export default function ExamplePage() {
+  const { region } = SUBS.stagingMain.loadOptions;
+  const { serverApiKey, environments } = SUBS.stagingMain;
+  return (
+    <NpmPackageIdentificationDemo
+      loadOptions={{
+        apiKey: SUBS.environmentsTestStaging.environments.default.publicApiKey,
+        region,
+        endpoint: `/proxy-staging/result?region=${region}&proxySecret=${environments.default.proxySecret}${spoofedIp ? `&proxyClientIp=${spoofedIp}` : ''}`,
+        scriptUrlPattern: '/proxy-staging/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
+      }}
+      getOptions={{
+        linkedId: 'Staging custom proxy integration',
+      }}
+      name={
+        'Staging JavaScript Agent, Staging custom proxy integration, default proxy secret, different env public api key'
+      }
+      serverApiKey={serverApiKey}
+      customServerApiUrl={STAGING_SERVER_API}
+    />
+  );
+}
