@@ -1,23 +1,14 @@
 'use client';
 
-import {
-  FingerprintJSPro,
-  FpjsProvider,
-  useVisitorData,
-} from '@fingerprintjs/fingerprintjs-pro-react';
+import { FingerprintProvider, useVisitorData } from '@fingerprint/react';
 
 function ReactSdkSimpleDemo() {
-  const { isLoading, error, data, getData } = useVisitorData(
-    { extendedResult: true, timeout: 100 },
-    { immediate: true },
-  );
+  const { isLoading, error, data, getData } = useVisitorData({ immediate: true });
 
   return (
     <div>
-      <button onClick={() => getData({ ignoreCache: true, timeout: 10000 })}>
-        Reload data
-      </button>
-      <p>VisitorId: {isLoading ? 'Loading...' : data?.visitorId}</p>
+      <button onClick={() => getData()}>Reload data</button>
+      <p>VisitorId: {isLoading ? 'Loading...' : data?.visitor_id}</p>
       <p>Full visitor data:</p>
       <pre>{error ? error.message : JSON.stringify(data, null, 2)}</pre>
     </div>
@@ -26,21 +17,11 @@ function ReactSdkSimpleDemo() {
 
 export default function WithProvider() {
   return (
-    <FpjsProvider
-      loadOptions={{
-        apiKey: '2UZgp3skqLzfJpFUGUrw',
-        endpoint: [
-          'https://jurajuhlar.com/SecExUMwEmvMmeoq/zJlUakSrf61FAWS1?region=eu',
-          FingerprintJSPro.defaultEndpoint,
-        ],
-        scriptUrlPattern: [
-          'https://jurajuhlar.com/SecExUMwEmvMmeoq/MZyHobvHDyS0fYzi?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
-          FingerprintJSPro.defaultScriptUrlPattern,
-        ],
-        region: 'eu',
-      }}
+    <FingerprintProvider
+      apiKey="2UZgp3skqLzfJpFUGUrw"
+      endpoints={['https://jurajuhlar.com/SecExUMwEmvMmeoq/zJlUakSrf61FAWS1?region=eu']}
     >
       <ReactSdkSimpleDemo />
-    </FpjsProvider>
+    </FingerprintProvider>
   );
 }

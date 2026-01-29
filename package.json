@@ -13,6 +13,7 @@
     "test:headed": "playwright test --headed"
   },
   "dependencies": {
+    "@fingerprint/react": "^3.0.0-test.3",
     "@fingerprintjs/fingerprintjs": "^4.6.1",
     "@fingerprintjs/fingerprintjs-pro": "3.11.6",
     "@fingerprintjs/fingerprintjs-pro-react": "^2.6.3",
