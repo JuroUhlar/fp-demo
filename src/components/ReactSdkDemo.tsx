@@ -1,24 +1,27 @@
 'use client';
 
 import {
-  FingerprintJSPro,
   useVisitorData,
-  FpjsProvider,
+  FingerprintProvider,
   UseVisitorDataOptions,
-} from '@fingerprintjs/fingerprintjs-pro-react';
+} from '@fingerprint/react';
 import { FunctionComponent } from 'react';
 
 export type JsAgentDemoProps = {
   name: string;
-  getOptions?: FingerprintJSPro.GetOptions<boolean>;
-  loadOptions: FingerprintJSPro.LoadOptions;
+  getOptions?: Omit<UseVisitorDataOptions, 'linkedId'>;
+  loadOptions: {
+    apiKey: string;
+    endpoints?: string[];
+  };
 };
 
 const VisitorData: FunctionComponent<JsAgentDemoProps> = ({ name, getOptions, loadOptions }) => {
-  const usedGetOptions: UseVisitorDataOptions<boolean> = {
+  const usedGetOptions: UseVisitorDataOptions = {
     linkedId: name,
-    ignoreCache: true,
-    ...getOptions,
+    immediate: getOptions?.immediate ?? true,
+    ...(getOptions?.timeout !== undefined && { timeout: getOptions.timeout }),
+    ...(getOptions?.tag !== undefined && { tag: getOptions.tag }),
   };
 
   const { data: visitorData, error, isLoading, getData } = useVisitorData(usedGetOptions);
@@ -48,8 +51,8 @@ const VisitorData: FunctionComponent<JsAgentDemoProps> = ({ name, getOptions, lo
 
 export const ReactIdentificationDemo = ({ name, getOptions, loadOptions }: JsAgentDemoProps) => {
   return (
-    <FpjsProvider loadOptions={loadOptions}>
+    <FingerprintProvider apiKey={loadOptions.apiKey} endpoints={loadOptions.endpoints}>
       <VisitorData name={name} getOptions={getOptions} loadOptions={loadOptions} />
-    </FpjsProvider>
+    </FingerprintProvider>
   );
 };

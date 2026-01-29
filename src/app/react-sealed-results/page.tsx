@@ -1,6 +1,6 @@
 'use client';
 
-import { FpjsProvider, useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react';
+import { FingerprintProvider, useVisitorData } from '@fingerprint/react';
 import { useUnsealedResult } from '../../hooks/useUnsealedResult';
 import { JsonViewer } from '../../components/JsonViewer';
 
@@ -9,8 +9,14 @@ const ReactIdentificationDemo = () => {
     data: visitorData,
     error,
     isLoading,
-  } = useVisitorData({ extendedResult: true, ignoreCache: true });
-  const { data: unsealedResult } = useUnsealedResult(visitorData?.sealedResult);
+  } = useVisitorData({ immediate: true });
+  const sealedResultString =
+    visitorData?.sealed_result && typeof visitorData.sealed_result === 'string'
+      ? visitorData.sealed_result
+      : visitorData?.sealed_result
+        ? String(visitorData.sealed_result)
+        : undefined;
+  const { data: unsealedResult } = useUnsealedResult(sealedResultString);
 
   if (isLoading) {
     return 'Loading...';
@@ -32,8 +38,8 @@ const ReactIdentificationDemo = () => {
 
 export default function ExamplePage() {
   return (
-    <FpjsProvider loadOptions={{ apiKey: 'XkSle8LOYBYgKZco5978' }}>
+    <FingerprintProvider apiKey="XkSle8LOYBYgKZco5978">
       <ReactIdentificationDemo />
-    </FpjsProvider>
+    </FingerprintProvider>
   );
 }
