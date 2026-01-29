@@ -1,0 +1,40 @@
+,<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent v4</title>
+</head>
+<body>
+    <h1>Agent v4</h1>
+    <button onclick="getVisitorData()">Get visitor data</button>
+    <p id="visitorId"></p>
+    <p id="eventId"></p>
+    <script>
+        // Initialize the agent once at web application startup.
+        // Alternatively initialize as early on the page as possible.
+      
+        const fpPromise = import('https://fpjscdn.net/v4/2UZgp3skqLzfJpFUGUrw')
+          .then(Fingerprint => Fingerprint.start())
+      
+        // Analyze the visitor when necessary.
+        fpPromise
+          .then(fp => fp.get())
+          .then(result => {
+            console.log(result.event_id, result.visitor_id)
+            document.getElementById('visitorId').innerHTML = result.visitor_id
+            document.getElementById('eventId').innerHTML = result.event_id
+          })
+
+        function getVisitorData() {
+          fpPromise
+            .then(fp => fp.get())
+            .then(result => {
+              console.log(result.event_id, result.visitor_id)
+              document.getElementById('visitorId').innerHTML = result.visitor_id
+              document.getElementById('eventId').innerHTML = result.event_id
+            })
+        }
+      </script>
+</body>
+</html>

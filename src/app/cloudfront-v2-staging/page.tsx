@@ -3,18 +3,17 @@ import { SUBS } from '../../constants';
 import { STAGING_WARDEN_URL } from '../proxy-dev/const';
 
 export default function CloudflareIntegrationStaging() {
-  const sub = SUBS.stagingMain;
+  const mainSub = SUBS.stagingMain;
+  const sub = SUBS.environmentsTestStaging;
 
-  const { apiKey, region } = sub.loadOptions;
-  const { serverApiKey } = sub;
-  const { cloudfront } = sub.integrations;
+  const { serverApiKey, publicApiKey } = sub.environments.default;
   return (
     <NpmPackageIdentificationDemo
       loadOptions={{
-        apiKey: 'bJZc9CKuc4syDoGpTupm',
-        region,
-        endpoint: cloudfront.endpoint,
-        scriptUrlPattern: cloudfront.scriptUrlPattern,
+        apiKey: publicApiKey,
+        region: 'us',
+        endpoint: mainSub.integrations.cloudfront.endpoint,
+        scriptUrlPattern: mainSub.integrations.cloudfront.scriptUrlPattern,
       }}
       name={'Cloudfront Terraform Staging'}
       serverApiKey={serverApiKey}
