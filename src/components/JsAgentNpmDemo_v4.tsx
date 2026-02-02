@@ -4,7 +4,7 @@ import * as Fingerprint from '@fingerprint/agent';
 import type { Agent, GetOptions, GetResult, StartOptions } from '@fingerprint/agent';
 import { Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { ServerApiResponseDemo } from './ServerApiResponseDemo';
+import { ServerApiResponseDemoV4 } from './ServerApiResponseDemoV4';
 import { JsonViewer } from './JsonViewer';
 import { TEST_IDS } from '../../tests/test_ids';
 
@@ -109,9 +109,9 @@ export const NpmPackageIdentificationDemoV4 = ({
       {error && <pre>{error}</pre>}
       {serverApiKey && (
         <>
-          <h2>Server API Event Response</h2>
-          <ServerApiResponseDemo
-            requestId={fingerprintData?.event_id ?? ''}
+          <h2>Server API v4 Event Response</h2>
+          <ServerApiResponseDemoV4
+            eventId={fingerprintData?.event_id ?? ''}
             secretApiKey={serverApiKey}
             region={startOptions.region ?? 'us'}
             customServerApiUrl={customServerApiUrl}
