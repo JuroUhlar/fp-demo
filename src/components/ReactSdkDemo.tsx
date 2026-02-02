@@ -1,10 +1,6 @@
 'use client';
 
-import {
-  useVisitorData,
-  FingerprintProvider,
-  UseVisitorDataOptions,
-} from '@fingerprint/react';
+import { useVisitorData, FingerprintProvider, UseVisitorDataOptions } from '@fingerprint/react';
 import { FunctionComponent } from 'react';
 
 export type JsAgentDemoProps = {
