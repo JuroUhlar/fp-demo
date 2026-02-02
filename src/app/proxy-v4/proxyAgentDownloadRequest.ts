@@ -1,21 +1,22 @@
 import { URLSearchParams } from 'url';
 import { isNativeError } from 'util/types';
+import { sl } from 'zod/v4/locales';
 
 export async function proxyAgentDownloadRequest(request: Request, customCDNUrl?: string): Promise<Response> {
-  // Just for me to allow testing with staging environment
-  let CDN_URL = 'https://fpcdn.io';
-  if (customCDNUrl) {
-    CDN_URL = customCDNUrl;
-  }
-
   try {
     const queryParams = new URLSearchParams(request.url.split('?')[1]);
-    const apiKey = queryParams.get('apiKey');
-    const version = queryParams.get('version');
-    const loaderVersion = queryParams.get('loaderVersion');
+    const url = new URL(request.url);
+    console.log(url.pathname);
+    // turn /proxy-v4/web/v4/<apiKey> into /v4/<apiKey>
+    const path = url.pathname
+      .split('/')
+      .filter((segment) => Boolean(segment))
+      .slice(2)
+      .join('/');
 
-    const loaderParam = loaderVersion ? `/loader_v${loaderVersion}.js` : '';
-    const agentDownloadUrl = new URL(`${CDN_URL}/v${version}/${apiKey}${loaderParam}`);
+    console.log(path);
+
+    const agentDownloadUrl = new URL(`https://fpjscdn.net/${path}`);
 
     // Forward all query parameters and add the monitoring parameter
     agentDownloadUrl.search = request.url.split('?')[1];

@@ -1,4 +1,4 @@
-import { proxyAgentDownloadRequest } from '../proxyAgentDownloadRequest';
+import { proxyAgentDownloadRequest } from '../../proxyAgentDownloadRequest';
 
 export const dynamic = 'force-dynamic';
 
