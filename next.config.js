@@ -10,6 +10,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  rewrites: async () => {
+    return [
+      {
+        source: '/custom-subdomain/:path*',
+        destination: 'https://fp.jurajuhlar.eu/:path*',
+      },
+    ];
+  },
   // async headers() {
   //   return [
   //     {

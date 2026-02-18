@@ -1,5 +1,3 @@
-import { NextRequest } from 'next/server';
-import { REGION, SUBS } from '../../constants';
 import { parseCookies, parseHost, parseIp, randomShortString } from '../proxy/utils';
 import { isNativeError } from 'util/types';
 
@@ -9,37 +7,26 @@ type ProxyIdentificationRequestOptions = {
 };
 
 const proxyIdentificationRequest = async (
-  request: NextRequest,
+  request: Request,
   options: ProxyIdentificationRequestOptions,
 ): Promise<Response> => {
-  const { proxySecret, customApiUrl } = options;
+  const { proxySecret } = options;
 
-  // Call the right endpoint depending on the region parameter:
-  // https://api.fpjs.io, https://eu.api.fpjs.io, or https://ap.api.fpjs.io
-  const region = request.nextUrl.searchParams.get('region');
-  const prefix = region == 'eu' || region == 'ap' ? `${region}.` : '';
-  let identificationUrl = new URL(`https://${prefix}api.fpjs.io`);
-
-  // Just in case we need to use a custom API URL
-  if (customApiUrl) {
-    identificationUrl = new URL(customApiUrl);
-  }
+  // Call the right endpoint depending on the region:
+  const identificationUrl = new URL(`https://eu.api.fpjs.io`);
 
   // Forward all present query parameters and append the monitoring parameter
   identificationUrl.search = request.url.split('?')[1] ?? '';
   identificationUrl.searchParams.append('ii', `custom-proxy-integration/1.0/ingress`);
 
-  console.log('identificationUrl', identificationUrl);
-
-  // Copy all headers
+  // Forward all headers except the cookie header
   const headers = new Headers();
   for (const [key, value] of request.headers.entries()) {
     headers.set(key, value);
-    console.log('received header', key, value);
   }
-
-  // Delete all cookies from the Cookie header but keep `_iidt` if present
   headers.delete('cookie');
+
+  // Only keep the _iidt cookie
   const cookieMap = parseCookies(request.headers.get('cookie'));
   const _iidtCookie = cookieMap['_iidt'];
   if (_iidtCookie) {
@@ -52,24 +39,11 @@ const proxyIdentificationRequest = async (
   headers.set('FPJS-Proxy-Forwarded-Host', parseHost(request));
 
   // Use query params to override the headers for testing purposes
-  const searchParams = request.nextUrl.searchParams;
-  const proxySecretParam = searchParams.get('proxySecret');
-  const proxyClientIpParam = searchParams.get('proxyClientIp');
-  const proxyForwardedHostParam = searchParams.get('proxyForwardedHost');
-
-  if (proxySecretParam) {
-    headers.set('FPJS-Proxy-Secret', proxySecretParam);
-  }
-
-  if (proxyClientIpParam) {
-    headers.set('FPJS-Proxy-Client-IP', proxyClientIpParam);
-  }
-
-  if (proxyForwardedHostParam) {
-    headers.set('FPJS-Proxy-Forwarded-Host', proxyForwardedHostParam);
-  }
-
-  console.log('headers', headers);
+  // const searchParams = new URL(request.url).searchParams;
+  // const proxyClientIpParam = searchParams.get('proxyClientIp');
+  // const proxySecretParam = searchParams.get('proxySecret');
+  // const proxyForwardedHostParam = searchParams.get('proxyForwardedHost');
+  headers.set('FPJS-Proxy-Client-IP', '54.90.6.179');
 
   // Make the identification request
   const identificationResponse = await fetch(identificationUrl, {
@@ -78,13 +52,13 @@ const proxyIdentificationRequest = async (
     body: await request.blob(),
   });
 
+  // Remove the HSTS header to allow HTTP requests if necessary (e.g. for localhost debugging purposes)
   const updatedHeaders = new Headers(identificationResponse.headers);
-  // If your app needs to work using HTTP, remove the `strict-transport-security` header
-  // updatedHeaders.delete('strict-transport-security');
+  updatedHeaders.delete('strict-transport-security');
 
-  // Remove content-encoding headers to prevent double decoding (same fix as in proxyBrowserCacheRequest)
-  updatedHeaders.delete('content-encoding');
-  updatedHeaders.delete('content-length'); // Remove this too as the length may change after decoding
+  // // Remove content-encoding headers to prevent double decoding (same fix as in proxyBrowserCacheRequest)
+  // updatedHeaders.delete('content-encoding');
+  // updatedHeaders.delete('content-length'); // Remove this too as the length may change after decoding
 
   // Return the response to the client
   return new Response(await identificationResponse.blob(), {
@@ -119,7 +93,7 @@ const getIdentificationRequestErrorResponse = (request: Request, error: unknown)
 };
 
 export const proxyIdentificationRequestHandler = async (
-  request: NextRequest,
+  request: Request,
   options: ProxyIdentificationRequestOptions,
 ): Promise<Response> => {
   try {

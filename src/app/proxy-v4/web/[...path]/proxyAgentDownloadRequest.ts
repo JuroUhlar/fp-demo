@@ -1,23 +1,13 @@
 import { URLSearchParams } from 'url';
 import { isNativeError } from 'util/types';
-import { sl } from 'zod/v4/locales';
 
-export async function proxyAgentDownloadRequest(request: Request, customCDNUrl?: string): Promise<Response> {
+export async function proxyAgentDownloadRequest(request: Request): Promise<Response> {
   try {
-    const queryParams = new URLSearchParams(request.url.split('?')[1]);
-    const url = new URL(request.url);
-    console.log(url.pathname);
-    // turn /proxy-v4/web/v4/<apiKey> into /v4/<apiKey>
-    const path = url.pathname
-      .split('/')
-      .filter((segment) => Boolean(segment))
-      .slice(2)
-      .join('/');
-
-    console.log(path);
-
-    // const agentDownloadUrl = new URL(`https://fpjscdn.net/${path}`);
-    const agentDownloadUrl = new URL(`https://fpnpmcdn.net/${path}`);
+    // Extract the path segment after "web"
+    const regex = /\/web(\/.*)?/;
+    const path = new URL(request.url).pathname.match(regex)?.[1];
+    // Construct the agent download URL
+    const agentDownloadUrl = new URL(`https://api.fpjs.io/web/${path}`);
 
     // Forward all query parameters and add the monitoring parameter
     agentDownloadUrl.search = request.url.split('?')[1];
@@ -35,18 +25,16 @@ export async function proxyAgentDownloadRequest(request: Request, customCDNUrl?:
       headers,
     });
 
+    // If you cannot properly forward the cache-control header, add one manually with low max-age values
     const updatedHeaders = new Headers(agentResponse.headers);
-    // If you cannot properly forward the cache-control header because your existing cache infra gets in the way,
-    //  add one manually with low max-age values
     updatedHeaders.set('cache-control', 'public, max-age=3600, s-maxage=60');
 
     // If your http library decompresses the response automatically (as `fetch` does here), you need to remove these headers
     // to tell the client the response is not compressed
-    // Alternatively, depending on your http library, you might be able to disable the automatic decompression and keep the headers.
     updatedHeaders.delete('content-encoding');
     updatedHeaders.delete('transfer-encoding');
 
-    // Create a new Response object with the updated headers
+    // Return the response to the client
     return new Response(agentResponse.body, {
       status: agentResponse.status,
       statusText: agentResponse.statusText,
