@@ -1,18 +1,26 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { NpmPackageIdentificationDemoV4 } from '../../../components/JsAgentNpmDemo_v4';
 import { SUBS } from '../../../constants';
-import * as Fingerprint from '@fingerprint/agent';
-
-const spoofedIp = '54.90.6.179';
 
 export default function ExamplePage() {
+  const [endpoints, setEndpoints] = useState<string | null>(null);
+
+  useEffect(() => {
+    setEndpoints(new URL('/proxy-v4', window.location.origin).toString());
+  }, []);
+
+  if (!endpoints) {
+    return null;
+  }
+
   return (
     <NpmPackageIdentificationDemoV4
       startOptions={{
         apiKey: SUBS.main.loadOptions.apiKey,
         region: SUBS.main.loadOptions.region,
-        endpoints: Fingerprint.withoutDefault(new URL('/proxy-v4', window.location.origin).toString()),
+        endpoints,
       }}
       getOptions={{
         linkedId: 'Main Production custom proxy integration',

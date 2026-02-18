@@ -43,7 +43,9 @@ const proxyIdentificationRequest = async (
   // const proxyClientIpParam = searchParams.get('proxyClientIp');
   // const proxySecretParam = searchParams.get('proxySecret');
   // const proxyForwardedHostParam = searchParams.get('proxyForwardedHost');
-  headers.set('FPJS-Proxy-Client-IP', '54.90.6.179');
+  if (headers.get('FPJS-Proxy-Client-IP') === '::1' || process.env.NODE_ENV === 'development') {
+    headers.set('FPJS-Proxy-Client-IP', '54.90.6.179');
+  }
 
   // Make the identification request
   const identificationResponse = await fetch(identificationUrl, {
