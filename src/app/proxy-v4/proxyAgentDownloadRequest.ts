@@ -16,7 +16,8 @@ export async function proxyAgentDownloadRequest(request: Request, customCDNUrl?:
 
     console.log(path);
 
-    const agentDownloadUrl = new URL(`https://fpjscdn.net/${path}`);
+    // const agentDownloadUrl = new URL(`https://fpjscdn.net/${path}`);
+    const agentDownloadUrl = new URL(`https://fpnpmcdn.net/${path}`);
 
     // Forward all query parameters and add the monitoring parameter
     agentDownloadUrl.search = request.url.split('?')[1];

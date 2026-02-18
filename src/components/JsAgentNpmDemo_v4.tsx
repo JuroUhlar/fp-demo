@@ -79,7 +79,7 @@ export const NpmPackageIdentificationDemoV4 = ({
   return (
     <>
       <h1>{name}</h1>
-      {description && <p>{description}</p>}
+      {description && <div>{description}</div>}
       <h2>JS Agent start options</h2>
       <pre>{JSON.stringify(startOptions, null, 2)}</pre>
       {Object.keys(usedGetOptions).length > 0 && (
