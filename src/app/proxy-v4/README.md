@@ -19,3 +19,4 @@ Custom Fingerprint proxy integration using Next.js App Router.
 ## Demo
 
 - [demo/page.tsx](./demo/page.tsx) - Demo page using the proxy
+- [demo-v3-agent/page.tsx](./demo-v3-agent/page.tsx) - Demo page using the proxy with V3 agent
