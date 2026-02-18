@@ -23,25 +23,9 @@ export default function ExamplePage() {
         endpoints,
       }}
       getOptions={{
-        linkedId: 'Main Production custom proxy integration',
+        linkedId: 'Main Production Proxy V4 custom proxy integration',
       }}
-      name={'Main Production custom proxy integration'}
-      description={
-        <div>
-          You can use these query params to debug the proxy integration:
-          <ul>
-            <li>
-              <code>proxySecret</code> - The secret key for the proxy
-            </li>
-            <li>
-              <code>proxyClientIp</code> - The client IP address for the proxy
-            </li>
-            <li>
-              <code>proxyForwardedHost</code> - The forwarded host for the proxy
-            </li>
-          </ul>
-        </div>
-      }
+      name={'Main Production Proxy V4 custom proxy integration'}
       serverApiKey={SUBS.main.serverApiKey}
       serverApiRegion={SUBS.main.serverApiRegion}
     />
