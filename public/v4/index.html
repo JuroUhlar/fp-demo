@@ -1,40 +1,38 @@
-,<!DOCTYPE html>
+,<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Agent v4</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Agent v4</h1>
     <button onclick="getVisitorData()">Get visitor data</button>
     <p id="visitorId"></p>
     <p id="eventId"></p>
     <script>
-        // Initialize the agent once at web application startup.
-        // Alternatively initialize as early on the page as possible.
-      
-        const fpPromise = import('https://fpjscdn.net/v4/2UZgp3skqLzfJpFUGUrw')
-          .then(Fingerprint => Fingerprint.start())
-      
-        // Analyze the visitor when necessary.
-        fpPromise
-          .then(fp => fp.get())
-          .then(result => {
-            console.log(result.event_id, result.visitor_id)
-            document.getElementById('visitorId').innerHTML = result.visitor_id
-            document.getElementById('eventId').innerHTML = result.event_id
-          })
+      // Initialize the agent at application startup.
+      // Some ad blockers or browsers will block Fingerprint CDN URL.
+      // To fix this, use a custom subdomain or a proxy integration.
+      // (see info box below)
+      const fpPromise = import('https://fpjscdn.net/v4/eQdnLxibK6dGFAe7Ah0T').then((Fingerprint) =>
+        Fingerprint.start({ region: 'eu' }),
+      );
 
-        function getVisitorData() {
-          fpPromise
-            .then(fp => fp.get())
-            .then(result => {
-              console.log(result.event_id, result.visitor_id)
-              document.getElementById('visitorId').innerHTML = result.visitor_id
-              document.getElementById('eventId').innerHTML = result.event_id
-            })
-        }
-      </script>
-</body>
+      fpPromise.then((fp) => fp.get()).then((result) => console.log(result.event_id, result.visitor_id));
+
+      // Get the visitor identifier when you need it.
+      function getVisitorData() {
+        fpPromise
+          .then((fp) => fp.get())
+          .then((result) => {
+            console.log(result.event_id, result.visitor_id);
+            document.getElementById('visitorId').innerHTML = result.visitor_id;
+            document.getElementById('eventId').innerHTML = result.event_id;
+          });
+      }
+
+      getVisitorData();
+    </script>
+  </body>
 </html>
