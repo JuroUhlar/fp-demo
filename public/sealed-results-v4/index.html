@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sealed results v4</title>
+  </head>
+  <body>
+    <h1>Sealed results v4</h1>
+    <button onclick="getVisitorData()">Get visitor data</button>
+    <pre id="output"></pre>
+    <pre id="sealedResult"></pre>
+    <script>
+      const apiKey = 'FGTBDHI17hSo39au6Kor';
+      const fpPromise = import('https://fpjscdn.net/v4/' + apiKey).then((Fingerprint) =>
+        Fingerprint.start({ region: 'eu' }),
+      );
+
+      function getVisitorData() {
+        document.getElementById('output').textContent = 'Loading...';
+        fpPromise
+          .then((fp) => fp.get())
+          .then((result) => {
+            document.getElementById('output').textContent = JSON.stringify(result, null, 2);
+            document.getElementById('sealedResult').textContent =
+              'response.sealed_result.base64(): ' + result.sealed_result.base64();
+          })
+          .catch((err) => {
+            document.getElementById('output').textContent = 'Error: ' + err.message;
+          });
+      }
+
+      getVisitorData();
+    </script>
+  </body>
+</html>

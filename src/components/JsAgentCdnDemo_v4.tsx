@@ -4,6 +4,7 @@ import type { Agent, GetOptions, GetResult, StartOptions } from '@fingerprint/ag
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ServerApiResponseDemoV4 } from './ServerApiResponseDemoV4';
 import { JsonViewer } from './JsonViewer';
+import { UnsealedResultDemo } from './DecryptedResultDemo';
 import { TEST_IDS } from '../../tests/test_ids';
 
 export type CdnStartOptions = Omit<StartOptions, 'apiKey'> & { apiKey?: string };
@@ -101,6 +102,12 @@ export const CdnIdentificationDemoV4 = ({
             region={startOptions.region ?? 'us'}
             customServerApiUrl={customServerApiUrl}
           />
+        </>
+      )}
+      {fingerprintData?.sealed_result != null && (
+        <>
+          <h2>Decrypted Event Response</h2>
+          <UnsealedResultDemo sealedResult={fingerprintData.sealed_result.base64()} />
         </>
       )}
     </>

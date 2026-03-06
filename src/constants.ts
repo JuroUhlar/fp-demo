@@ -52,7 +52,8 @@ export const SUBS = {
   sealedResults: {
     name: 'Sealed results subscription',
     loadOptions: {
-      apiKey: 'XkSle8LOYBYgKZco5978',
+      apiKey: 'FGTBDHI17hSo39au6Kor',
+      region: 'eu',
     },
     decryptionKey: process.env.SEALED_RESULTS_DECRYPT_KEY,
   },

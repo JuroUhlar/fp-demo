@@ -18,11 +18,20 @@ function getAllFiles(dir: string, fileList: string[] = []) {
   return fileList;
 }
 
-function convertCamelToNormal(camelCaseString: string) {
-  return camelCaseString.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
+function getPublicHtmlDemos(publicDir: string): { href: string; label: string }[] {
+  const files = getAllFiles(publicDir).filter((f) => f.endsWith('.html'));
+  return files.map((filePath) => {
+    const relative = path.relative(publicDir, filePath).replaceAll(path.sep, '/');
+    const href = '/' + relative;
+    const label = relative.endsWith('/index.html') || relative === 'index.html'
+      ? path.dirname(relative) === '.' ? 'index' : path.dirname(relative)
+      : relative;
+    return { href, label };
+  });
 }
 
 const appPath = 'src/app/';
+const publicPath = 'public';
 
 export default function Index() {
   const files = getAllFiles(appPath);
@@ -31,10 +40,7 @@ export default function Index() {
     .map((file) => file.replace(appPath, ''))
     .map((file) => file.replace('page.tsx', ''));
 
-  // .map((file) => convertCamelToNormal(file))
-  // .map((file) => file.replace('-', ' '));
-
-  console.log(pages);
+  const publicDemos = getPublicHtmlDemos(publicPath);
 
   return (
     <>
@@ -45,6 +51,19 @@ export default function Index() {
           </li>
         ))}
       </ul>
+
+      {publicDemos.length > 0 && (
+        <>
+          <h2>Public HTML demos</h2>
+          <ul>
+            {publicDemos.map(({ href, label }) => (
+              <li key={href}>
+                <a href={href}>{label}</a>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
 
       <MyFpjsProvider>
         <VisitorData />

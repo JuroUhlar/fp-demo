@@ -6,6 +6,7 @@ import { Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ServerApiResponseDemoV4 } from './ServerApiResponseDemoV4';
 import { JsonViewer } from './JsonViewer';
+import { UnsealedResultDemo } from './DecryptedResultDemo';
 import { TEST_IDS } from '../../tests/test_ids';
 
 export type JsAgentV4DebugProps = {
@@ -59,6 +60,11 @@ export const NpmPackageIdentificationDemoV4 = ({
       const agent = Fingerprint.start(startOptions);
       setFpAgent(agent);
       const result = await agent.get(usedGetOptions);
+      console.log('result', result);
+      console.log('typeof result.sealed_result', typeof result.sealed_result);
+      console.log('JSON.stringify(result)', JSON.stringify(result, null, 2));
+      console.log('result.sealed_result', result.sealed_result);
+      console.log('result.sealed_result.base64()', result.sealed_result?.base64());
       setFingerprintData(result);
       setError(null);
     } catch (err) {
@@ -116,6 +122,12 @@ export const NpmPackageIdentificationDemoV4 = ({
             region={startOptions.region ?? 'us'}
             customServerApiUrl={customServerApiUrl}
           />
+        </>
+      )}
+      {fingerprintData?.sealed_result != null && (
+        <>
+          <h2>Decrypted Event Response</h2>
+          <UnsealedResultDemo sealedResult={fingerprintData.sealed_result.base64()} />
         </>
       )}
     </>
