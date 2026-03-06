@@ -1,10 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 
-export const useUnsealedResult = (sealedResult?: string) => {
+const DECRYPT_V4_ENDPOINT = '/api/decrypt-v4';
+
+export const useUnsealedResult = (
+  sealedResult?: string,
+  endpoint = DECRYPT_V4_ENDPOINT,
+) => {
   return useQuery({
-    queryKey: ['event', sealedResult],
+    queryKey: ['event', sealedResult, endpoint],
     queryFn: async () => {
-      return fetch('/api/decrypt', {
+      return fetch(endpoint, {
         method: 'POST',
         body: JSON.stringify({ sealedResult }),
       }).then((res) => res.json());
