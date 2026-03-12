@@ -8,7 +8,7 @@ export default function ExamplePage() {
   const [endpoints, setEndpoints] = useState<string | null>(null);
 
   useEffect(() => {
-    setEndpoints(new URL('/proxy-v4', window.location.origin).toString());
+    setEndpoints(new URL('/proxy-v4/', window.location.origin).toString());
   }, []);
 
   if (!endpoints) {

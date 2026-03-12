@@ -1,14 +1,25 @@
-# Example CloudFront Distribution. DO NOT USE AS-IS, and make sure to follow best practices before releasing to the production.
+
+provider "aws" {
+  region = "us-east-1"
+}
+
+locals {
+  fpjs_agent_download_path = "agent"
+  fpjs_get_result_path     = "result"
+  fpjs_pre_shared_secret       = "broken"
+}
+
+module "fingerprint_cloudfront_integration" {
+  source = "fingerprintjs/fingerprint-cloudfront-proxy-integration/aws"
+
+  fpjs_agent_download_path = local.fpjs_agent_download_path
+  fpjs_get_result_path     = local.fpjs_get_result_path
+  fpjs_shared_secret       = local.fpjs_pre_shared_secret
+}
+
 resource "aws_cloudfront_distribution" "fpjs_cloudfront_distribution" {
-  comment = "Fingerprint proxy integration distribution (created via Terraform)"
+  comment = "Proxy integration simple prod (created via Terraform)"
 
-  enabled = true
-
-  http_version = "http1.1"
-
-  price_class = "PriceClass_100"
-
-  #region Fingerprint CloudFront Integration start
   origin {
     domain_name = module.fingerprint_cloudfront_integration.fpjs_origin_name
     origin_id   = module.fingerprint_cloudfront_integration.fpjs_origin_id
@@ -23,6 +34,12 @@ resource "aws_cloudfront_distribution" "fpjs_cloudfront_distribution" {
       value = module.fingerprint_cloudfront_integration.fpjs_secret_manager_arn
     }
   }
+
+  enabled = true
+
+  http_version = "http1.1"
+
+  price_class = "PriceClass_100"
 
   default_cache_behavior {
     allowed_methods          = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
@@ -39,7 +56,6 @@ resource "aws_cloudfront_distribution" "fpjs_cloudfront_distribution" {
       include_body = true
     }
   }
-  #endregion
 
   restrictions {
     geo_restriction {
@@ -47,26 +63,20 @@ resource "aws_cloudfront_distribution" "fpjs_cloudfront_distribution" {
     }
   }
 
-  # aliases = [var.proxy_subdomain_domain]
-  # viewer_certificate {
-  #   acm_certificate_arn = var.certificate_arn
-  #   ssl_support_method  = "sni-only"
-  # }
-
-  # If don't want to serve the distribution from a subdomain for now, use the default certificate instead
-  # (comment out `viewer_certificate` and `aliases` above and use the `viewer_certificate` below)
-
   viewer_certificate {
     cloudfront_default_certificate = true
   }
 }
 
-# You can make the distribution available on a subdomain of your website
-# (comment this out if you don't want to do that for now)
-# resource "aws_route53_record" "cloudfront_terraform_new_distribution_record" {
-#   zone_id = var.domain_zone_id
-#   name    = var.proxy_subdomain_domain
-#   type    = "CNAME"
-#   ttl     = 300
-#   records = [aws_cloudfront_distribution.fpjs_cloudfront_distribution.domain_name]
+# # Overwrite the existing secret 
+# resource "aws_secretsmanager_secret_version" "updated_secret" {
+#   secret_id = module.fingerprint_cloudfront_integration.fpjs_secret_manager_arn
+
+#   secret_string = jsonencode({
+#     fpjs_agent_download_path = local.fpjs_agent_download_path
+#     fpjs_get_result_path     = local.fpjs_get_result_path
+#     fpjs_pre_shared_secret   = local.fpjs_pre_shared_secret
+#     FPJS_CDN_URL             = local.fpjs_cdn_url_override
+#     FPJS_INGRESS_BASE_HOST   = local.fpjs_ingress_base_host_override
+#   })
 # }
