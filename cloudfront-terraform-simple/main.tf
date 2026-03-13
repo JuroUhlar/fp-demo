@@ -6,7 +6,7 @@ provider "aws" {
 locals {
   fpjs_agent_download_path = "agent"
   fpjs_get_result_path     = "result"
-  fpjs_pre_shared_secret       = "broken"
+  fpjs_pre_shared_secret       = "znYGLC2S6jcfp0P7BDuL"
 }
 
 module "fingerprint_cloudfront_integration" {
