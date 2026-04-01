@@ -10,6 +10,7 @@ import { Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ServerApiResponseDemo } from './ServerApiResponseDemo';
 import { JsonViewer } from './JsonViewer';
+import { UnsealedResultDemo } from './DecryptedResultDemo';
 import { TEST_IDS } from '../../tests/test_ids';
 
 export type JsAgentDebugProps = {
@@ -127,6 +128,12 @@ export const NpmPackageIdentificationDemo = ({
             region={loadOptions.region ?? 'us'}
             customServerApiUrl={customServerApiUrl}
           />
+        </>
+      )}
+      {fingerprintData?.sealedResult && (
+        <>
+          <h2>Decrypted Event Response</h2>
+          <UnsealedResultDemo sealedResult={fingerprintData.sealedResult} endpoint="/api/decrypt" />
         </>
       )}
     </>
