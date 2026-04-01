@@ -95,20 +95,20 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.57.0.tgz#a5417ae8427873f1dd08b70b3574b453e67b5f7f"
   integrity sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==
 
-"@fingerprint/agent@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@fingerprint/agent/-/agent-4.0.0.tgz#e046103297ab5385f1f3b6f4ddf8c53971a10ed0"
-  integrity sha512-GdFdBeaDqLc3hVQLcxPwckk+1217raR/ouxBkGXSykxAswl1xxrt6GLaR93cKY8ehjp7ZFYSjSu4aLKUesgvIg==
+"@fingerprint/agent@^4.0.0", "@fingerprint/agent@^4.0.3":
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/@fingerprint/agent/-/agent-4.0.3.tgz#2a206551d04b7c617d0c5ba3424172a544f7a80c"
+  integrity sha512-hYAk8gPKgW3i1zkZm62wPp31ibGwHao0QXU5F7ydiQwxhxPhfd4IjPIPxDkuQJgH3GaBkYn7Hgkgrq38K9aJzw==
 
 "@fingerprint/node-sdk@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@fingerprint/node-sdk/-/node-sdk-7.0.0.tgz#7ebc564a3020a5036372444a7f36f010e6a18b7f"
   integrity sha512-v+8A+hZacJNn5hFj5HHKabm76IpLbRULnY5Jc0JTTsjsRyxiXN9YGYGPYMNGBpqPACtLWAs/yK2WlnGt9+6I4w==
 
-"@fingerprint/react@^3.0.0-test.3":
-  version "3.0.0-test.3"
-  resolved "https://registry.yarnpkg.com/@fingerprint/react/-/react-3.0.0-test.3.tgz#bb294a17de86ae368ba45024c03989a223558216"
-  integrity sha512-dOuoKouo3VTfy0j72b9fQm5PxHql+vXvy3vwg2VFsqkaS2SYlgdA2Jct9F/ZUdFhjKJkPxqEZXhd8BzPTePNQw==
+"@fingerprint/react@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@fingerprint/react/-/react-3.0.0.tgz#416f3b8dc541ae385e861e8b2e299bb704f92a5c"
+  integrity sha512-pnf31eSxKcRBDWLVi8Z3SkHJDO3nzk4yLkprQ1BqLQ6PPBkabAtY/v1JrhCz8pyuL3KxgnZGJGv5Z8htMNZy7g==
   dependencies:
     "@fingerprint/agent" "^4.0.0"
     fast-deep-equal "3.1.3"
