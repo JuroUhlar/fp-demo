@@ -5,7 +5,7 @@ import { NpmPackageIdentificationDemoV4 } from '../../components/JsAgentNpmDemo_
 import { SUBS } from '../../constants';
 import { NpmPackageIdentificationDemo } from '../../components/JsAgentNpmDemo';
 
-const integrationUrl = 'https://d52resu41f7dd.cloudfront.net';
+const integrationUrl = 'https://d2k5z5yz74262w.cloudfront.net/';
 
 export default function ExamplePage() {
   return (
