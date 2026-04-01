@@ -52,12 +52,19 @@ export const NpmPackageIdentificationDemoV4 = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [fpAgent, setFpAgent] = useState<Agent | null>(null);
 
+  const usedStartOptions = useMemo(() => {
+    const { endpoints, ...rest } = startOptions;
+    if (typeof endpoints === 'string' || Array.isArray(endpoints)) {
+      return { ...rest, endpoints: Fingerprint.withoutDefault(endpoints) };
+    }
+    return startOptions;
+  }, [startOptions]);
   const usedGetOptions = useMemo(() => ({ linkedId: name, ...getOptions }), [name, getOptions]);
 
   const reloadAgentAndGetVisitorData = useCallback(async () => {
     setLoading(true);
     try {
-      const agent = Fingerprint.start(startOptions);
+      const agent = Fingerprint.start(usedStartOptions);
       setFpAgent(agent);
       const result = await agent.get(usedGetOptions);
       console.log('result', result);
@@ -76,7 +83,7 @@ export const NpmPackageIdentificationDemoV4 = ({
     } finally {
       setLoading(false);
     }
-  }, [startOptions, usedGetOptions]);
+  }, [usedStartOptions, usedGetOptions]);
 
   useEffect(() => {
     reloadAgentAndGetVisitorData();

@@ -1,4 +1,5 @@
 import { NpmPackageIdentificationDemo } from '../../components/JsAgentNpmDemo';
+import { NpmPackageIdentificationDemoV4 } from '../../components/JsAgentNpmDemo_v4';
 import { SUBS } from '../../constants';
 
 export default function CloudflareIntegrationProduction() {
@@ -6,14 +7,13 @@ export default function CloudflareIntegrationProduction() {
   const { apiKey, region } = sub.loadOptions;
   const { serverApiKey } = sub;
   return (
-    <NpmPackageIdentificationDemo
-      loadOptions={{
+    <NpmPackageIdentificationDemoV4
+      startOptions={{
         apiKey,
         region,
-        endpoint: `https://jurajuhlar.com/SecExUMwEmvMmeoq/zJlUakSrf61FAWS1?region=eu`,
-        scriptUrlPattern: `https://jurajuhlar.com/SecExUMwEmvMmeoq/MZyHobvHDyS0fYzi?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>`,
+        endpoints: `https://jurajuhlar.com/SecExUMwEmvMmeoq?region=eu`,
       }}
-      name={'Cloudflare Integration Production Agent V3'}
+      name={'Cloudflare Integration Production Agent V4'}
       serverApiKey={serverApiKey}
     />
   );
