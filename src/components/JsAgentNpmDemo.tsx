@@ -1,11 +1,6 @@
 'use client';
 
-import FingerprintJS, {
-  Agent,
-  GetOptions,
-  GetResult,
-  LoadOptions,
-} from '@fingerprintjs/fingerprintjs-pro';
+import FingerprintJS, { Agent, GetOptions, GetResult, LoadOptions } from '@fingerprintjs/fingerprintjs-pro';
 import { Region } from '@fingerprintjs/fingerprintjs-pro-server-api';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ServerApiResponseDemo } from './ServerApiResponseDemo';
@@ -38,6 +33,7 @@ export type JsAgentDebugProps = {
     {
       name: string;
       environment: string | null;
+      worker?: string;
       endpoint: string;
       scriptUrlPattern: string;
     }
@@ -52,17 +48,12 @@ export const NpmPackageIdentificationDemo = ({
   customServerApiUrl,
   description,
 }: JsAgentDebugProps) => {
-  const [fingerprintData, setFingerprintData] = useState<GetResult | null>(
-    null,
-  );
+  const [fingerprintData, setFingerprintData] = useState<GetResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [fpAgent, setFpAgent] = useState<Agent | null>(null);
 
-  const usedGetOptions = useMemo(
-    () => ({ linkedId: name, extendedResult: true, ...getOptions }),
-    [name, getOptions],
-  );
+  const usedGetOptions = useMemo(() => ({ linkedId: name, extendedResult: true, ...getOptions }), [name, getOptions]);
 
   const reloadAgentAndGetVisitorData = useCallback(async () => {
     setLoading(true);
@@ -95,9 +86,7 @@ export const NpmPackageIdentificationDemo = ({
           <pre>{JSON.stringify(usedGetOptions, null, 2)}</pre>
         </>
       )}
-      <button onClick={reloadAgentAndGetVisitorData}>
-        Reload agent and get visitor data
-      </button>
+      <button onClick={reloadAgentAndGetVisitorData}>Reload agent and get visitor data</button>
       <button
         onClick={async () => {
           try {
@@ -114,10 +103,7 @@ export const NpmPackageIdentificationDemo = ({
       </button>
       <p>{loading ? 'Loading...' : ''}</p>
       <h2>JS Agent Response</h2>
-      <JsonViewer
-        data={fingerprintData}
-        data_test_id={TEST_IDS.AGENT_RESPONSE}
-      />
+      <JsonViewer data={fingerprintData} data_test_id={TEST_IDS.AGENT_RESPONSE} />
       {error && <pre>{error}</pre>}
       {serverApiKey && (
         <>

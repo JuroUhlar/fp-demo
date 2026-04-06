@@ -73,7 +73,8 @@ export const SUBS = {
     subId: 'sub_rRDmE6BwDcljm1',
     differentEnvPublicApiKeys: ['sqaaHiIwZMv2AHldaITE', 'W9BGoe48OVRHIbNeqmvK'],
     loadOptions: {
-      apiKey: 'eDfRKapeDy4otXlFqxCz',
+      // RC env
+      apiKey: 'FQeyxZsBTzliwDVsGlf8',
       region: 'us',
       endpoint: 'https://api.stage.fpjs.sh',
       scriptUrlPattern: 'https://procdn.fpjs.sh/v<version>/<apiKey>/loader_v<loaderVersion>.js',
@@ -84,9 +85,10 @@ export const SUBS = {
       cloudflare: {
         name: 'Cloudflare',
         environment: null,
-        endpoint: 'https://jurajuhlar.com/YlJN60dTr6yLInXD/YYtH5IZ345UfHdRc',
+        worker: 'https://jurajuhlar.site/fE1G4yHeCpRnlQtk',
+        endpoint: 'https://jurajuhlar.site/fE1G4yHeCpRnlQtk/1Y9Qo2Z1xhUccxwH',
         scriptUrlPattern:
-          'https://jurajuhlar.com/YlJN60dTr6yLInXD/qHSv4BNQVjPTwdfC?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
+          'https://jurajuhlar.site/fE1G4yHeCpRnlQtk/ORoXUass9E5fdsWF?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>',
       },
       cloudfront: {
         name: 'Cloudfront',
