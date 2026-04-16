@@ -1,0 +1,10 @@
+{
+  "name": "vue-sandbox-root",
+  "private": true,
+  "packageManager": "pnpm@10.18.2",
+  "scripts": {
+    "dev:spa": "pnpm --filter vue-sandbox-spa dev",
+    "dev:nuxt": "pnpm --filter vue-sandbox-nuxt dev",
+    "typecheck": "pnpm --filter vue-sandbox-spa typecheck && pnpm --filter vue-sandbox-nuxt typecheck"
+  }
+}
