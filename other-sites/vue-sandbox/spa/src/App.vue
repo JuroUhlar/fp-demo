@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import ScenarioCard from '@shared/ScenarioCard.vue'
+import ScenarioCardComposition from '@shared/ScenarioCardComposition.vue'
+import ScenarioCardOptions from '@shared/ScenarioCardOptions.vue'
 import { globalCacheOptions, startOptionsScenarios } from '@shared/config'
 </script>
 
@@ -11,9 +12,16 @@ import { globalCacheOptions, startOptionsScenarios } from '@shared/config'
     </p>
 
     <div class="grid">
-      <ScenarioCard
+      <ScenarioCardComposition
         v-for="scenario in startOptionsScenarios"
-        :key="scenario.key"
+        :key="`composition-${scenario.key}`"
+        :title="scenario.title"
+        :subtitle="scenario.subtitle"
+        :start-options="scenario.startOptions"
+      />
+      <ScenarioCardOptions
+        v-for="scenario in startOptionsScenarios"
+        :key="`options-${scenario.key}`"
         :title="scenario.title"
         :subtitle="scenario.subtitle"
         :start-options="scenario.startOptions"
@@ -45,7 +53,7 @@ h1 {
 }
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 }
 code {

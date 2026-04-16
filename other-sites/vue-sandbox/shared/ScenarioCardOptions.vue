@@ -1,46 +1,41 @@
 <script lang="ts">
-import { defineComponent } from 'vue'
-import type { Fingerprint } from '@fingerprint/vue'
+import { defineComponent, type PropType } from 'vue'
+import { Fingerprint } from '@fingerprint/vue'
+import type { Fingerprint as FingerprintTypes } from '@fingerprint/vue'
 import DemoCard from './DemoCard.vue'
 import { summarizeVisitorData } from './config'
 
 export default defineComponent({
-  name: 'IncrementalOptions',
+  name: 'ScenarioCardOptions',
   components: { DemoCard },
+  props: {
+    title: { type: String, required: true },
+    subtitle: { type: String, required: true },
+    startOptions: {
+      type: Object as PropType<FingerprintTypes.StartOptions>,
+      required: true,
+    },
+  },
   data() {
     return {
-      currentAction: 'login',
-      result: undefined as Fingerprint.GetResult | undefined,
+      result: undefined as FingerprintTypes.GetResult | undefined,
       isLoading: false,
       error: undefined as Error | undefined,
     }
   },
   computed: {
     view(): unknown {
-      if (!this.result) {
-        return undefined
-      }
-
-      return {
-        request: this.currentAction,
-        ...summarizeVisitorData(this.result),
-      }
+      return summarizeVisitorData(this.result)
     },
   },
   methods: {
-    async identify(action: string) {
-      this.currentAction = action
+    async identify() {
       this.isLoading = true
       this.error = undefined
 
       try {
-        this.result = await this.$fingerprint.getVisitorData({
-          linkedId: 'vue-sandbox-options',
-          tag: {
-            surface: 'options',
-            action,
-          },
-        })
+        const agent = Fingerprint.start(this.startOptions)
+        this.result = await agent.get()
       } catch (error) {
         this.error = error instanceof Error ? error : new Error('Identification failed')
       } finally {
@@ -53,16 +48,16 @@ export default defineComponent({
 
 <template>
   <DemoCard
-    title="Linking + Tagging · Options API"
-    subtitle="this.$fingerprint.getVisitorData({ linkedId, tag })"
+    :title="`${title} · Options API`"
+    :subtitle="subtitle"
+    :options="startOptions"
     :is-loading="isLoading"
     :error="error"
     :data="view"
   >
     <template #actions>
       <div class="row">
-        <button @click="identify('login')">login</button>
-        <button @click="identify('checkout')">checkout</button>
+        <button @click="identify">Identify</button>
       </div>
     </template>
   </DemoCard>

@@ -22,7 +22,7 @@ async function identify() {
   error.value = undefined
 
   try {
-    const agent = await Fingerprint.start(props.startOptions)
+    const agent = Fingerprint.start(props.startOptions)
     result.value = await agent.get()
   } catch (nextError) {
     error.value = nextError instanceof Error ? nextError : new Error('Identification failed')
@@ -34,7 +34,7 @@ async function identify() {
 
 <template>
   <DemoCard
-    :title="title"
+    :title="`${title} · Composition API`"
     :subtitle="subtitle"
     :options="startOptions"
     :is-loading="isLoading"

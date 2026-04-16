@@ -1,14 +1,14 @@
 # Fingerprint Vue SDK sandbox
 
-Two apps share six `.vue` demo components and use `@fingerprint/vue@2.0.0-rc.0`.
+Two apps share two scenario card components (Composition + Options API) and use `@fingerprint/vue@2.0.0-rc.0`. Each app renders 6 boxes: every StartOptions config is shown twice, once per Vue API style.
 
 ## Coverage per app
 
-| Scenario | StartOptions source |
-| --- | --- |
-| Default | `defaultStartOptions` |
-| Sealed result | `sealedResultsStartOptions` |
-| Incremental identification | `incrementalIdentificationStartOptions` |
+| Scenario | StartOptions source | Composition API | Options API |
+| --- | --- | --- | --- |
+| Default | `defaultStartOptions` | ✓ | ✓ |
+| Sealed result | `sealedResultsStartOptions` | ✓ | ✓ |
+| Incremental identification | `incrementalIdentificationStartOptions` | ✓ | ✓ |
 
 - SPA: Vite + Vue 3
 - Nuxt: Nuxt 3 with `ClientOnly` around the browser-only cards
