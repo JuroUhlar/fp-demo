@@ -155,16 +155,3 @@ export const startOptionsScenarios = [
   },
 ] as const
 
-export function summarizeVisitorData(result?: Fingerprint.GetResult) {
-  if (!result) {
-    return undefined
-  }
-
-  return {
-    event_id: result.event_id,
-    visitor_id: result.visitor_id ?? '(absent)',
-    suspect_score: result.suspect_score ?? null,
-    sealed_result: result.sealed_result ? 'available' : null,
-    cache_hit: result.cache_hit ?? null,
-  }
-}

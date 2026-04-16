@@ -3,7 +3,7 @@ import { Fingerprint } from '@fingerprint/vue'
 import { computed, ref } from 'vue'
 import type { Fingerprint as FingerprintTypes } from '@fingerprint/vue'
 import DemoCard from './DemoCard.vue'
-import { summarizeVisitorData, withCache } from './config'
+import { withCache } from './config'
 
 const props = defineProps<{
   title: string
@@ -11,12 +11,11 @@ const props = defineProps<{
   startOptions: FingerprintTypes.StartOptions
 }>()
 
-const result = ref<FingerprintTypes.GetResult>()
+const result = ref<Omit<FingerprintTypes.GetResult, 'sealed_result'> & { sealed_result: string | null }>()
 const error = ref<Error>()
 const isLoading = ref(false)
 
 const effectiveStartOptions = computed(() => withCache(props.startOptions))
-const view = computed(() => summarizeVisitorData(result.value))
 
 async function identify() {
   isLoading.value = true
@@ -24,7 +23,8 @@ async function identify() {
 
   try {
     const agent = Fingerprint.start(effectiveStartOptions.value)
-    result.value = await agent.get()
+    const raw = await agent.get()
+    result.value = { ...raw, sealed_result: raw.sealed_result ? raw.sealed_result.base64() : null }
   } catch (nextError) {
     error.value = nextError instanceof Error ? nextError : new Error('Identification failed')
   } finally {
@@ -40,7 +40,7 @@ async function identify() {
     :options="effectiveStartOptions"
     :is-loading="isLoading"
     :error="error"
-    :data="view"
+    :data="result"
   >
     <template #actions>
       <div class="row">

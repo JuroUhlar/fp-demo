@@ -3,7 +3,7 @@ import { defineComponent, type PropType } from 'vue'
 import { Fingerprint } from '@fingerprint/vue'
 import type { Fingerprint as FingerprintTypes } from '@fingerprint/vue'
 import DemoCard from './DemoCard.vue'
-import { summarizeVisitorData, withCache } from './config'
+import { withCache } from './config'
 
 export default defineComponent({
   name: 'ScenarioCardOptions',
@@ -18,7 +18,9 @@ export default defineComponent({
   },
   data() {
     return {
-      result: undefined as FingerprintTypes.GetResult | undefined,
+      result: undefined as
+        | (Omit<FingerprintTypes.GetResult, 'sealed_result'> & { sealed_result: string | null })
+        | undefined,
       isLoading: false,
       error: undefined as Error | undefined,
     }
@@ -26,9 +28,6 @@ export default defineComponent({
   computed: {
     effectiveStartOptions(): FingerprintTypes.StartOptions {
       return withCache(this.startOptions)
-    },
-    view(): unknown {
-      return summarizeVisitorData(this.result)
     },
   },
   methods: {
@@ -38,7 +37,8 @@ export default defineComponent({
 
       try {
         const agent = Fingerprint.start(this.effectiveStartOptions)
-        this.result = await agent.get()
+        const raw = await agent.get()
+        this.result = { ...raw, sealed_result: raw.sealed_result ? raw.sealed_result.base64() : null }
       } catch (error) {
         this.error = error instanceof Error ? error : new Error('Identification failed')
       } finally {
@@ -56,7 +56,7 @@ export default defineComponent({
     :options="effectiveStartOptions"
     :is-loading="isLoading"
     :error="error"
-    :data="view"
+    :data="result"
   >
     <template #actions>
       <div class="row">
