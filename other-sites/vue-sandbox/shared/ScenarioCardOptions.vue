@@ -3,7 +3,7 @@ import { defineComponent, type PropType } from 'vue'
 import { Fingerprint } from '@fingerprint/vue'
 import type { Fingerprint as FingerprintTypes } from '@fingerprint/vue'
 import DemoCard from './DemoCard.vue'
-import { summarizeVisitorData } from './config'
+import { summarizeVisitorData, withCache } from './config'
 
 export default defineComponent({
   name: 'ScenarioCardOptions',
@@ -24,6 +24,9 @@ export default defineComponent({
     }
   },
   computed: {
+    effectiveStartOptions(): FingerprintTypes.StartOptions {
+      return withCache(this.startOptions)
+    },
     view(): unknown {
       return summarizeVisitorData(this.result)
     },
@@ -34,7 +37,7 @@ export default defineComponent({
       this.error = undefined
 
       try {
-        const agent = Fingerprint.start(this.startOptions)
+        const agent = Fingerprint.start(this.effectiveStartOptions)
         this.result = await agent.get()
       } catch (error) {
         this.error = error instanceof Error ? error : new Error('Identification failed')
@@ -50,7 +53,7 @@ export default defineComponent({
   <DemoCard
     :title="`${title} · Options API`"
     :subtitle="subtitle"
-    :options="startOptions"
+    :options="effectiveStartOptions"
     :is-loading="isLoading"
     :error="error"
     :data="view"

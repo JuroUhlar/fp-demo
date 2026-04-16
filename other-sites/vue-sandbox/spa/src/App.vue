@@ -1,14 +1,40 @@
 <script setup lang="ts">
 import ScenarioCardComposition from '@shared/ScenarioCardComposition.vue'
 import ScenarioCardOptions from '@shared/ScenarioCardOptions.vue'
-import { globalCacheOptions, startOptionsScenarios } from '@shared/config'
+import {
+  cacheDuration,
+  cacheDurationOptions,
+  cacheEnabled,
+  cacheStorage,
+  cacheStorageOptions,
+  startOptionsScenarios,
+} from '@shared/config'
 </script>
 
 <template>
   <main>
     <h1>Fingerprint Vue SDK — SPA</h1>
     <p class="meta">
-      Global cache: <code>{{ JSON.stringify(globalCacheOptions) }}</code>
+      <label class="toggle">
+        <input type="checkbox" v-model="cacheEnabled" />
+        Enable cache
+      </label>
+      <label class="field">
+        storage:
+        <select v-model="cacheStorage" :disabled="!cacheEnabled">
+          <option v-for="option in cacheStorageOptions" :key="option" :value="option">
+            {{ option }}
+          </option>
+        </select>
+      </label>
+      <label class="field">
+        duration:
+        <select v-model="cacheDuration" :disabled="!cacheEnabled">
+          <option v-for="option in cacheDurationOptions" :key="option" :value="option">
+            {{ option }}
+          </option>
+        </select>
+      </label>
     </p>
 
     <div class="grid">
@@ -49,6 +75,23 @@ h1 {
 .meta {
   margin: 0 0 16px;
   color: #555;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.field {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.field select {
   font-size: 12px;
 }
 .grid {

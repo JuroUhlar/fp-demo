@@ -3,7 +3,7 @@ import { Fingerprint } from '@fingerprint/vue'
 import { computed, ref } from 'vue'
 import type { Fingerprint as FingerprintTypes } from '@fingerprint/vue'
 import DemoCard from './DemoCard.vue'
-import { summarizeVisitorData } from './config'
+import { summarizeVisitorData, withCache } from './config'
 
 const props = defineProps<{
   title: string
@@ -15,6 +15,7 @@ const result = ref<FingerprintTypes.GetResult>()
 const error = ref<Error>()
 const isLoading = ref(false)
 
+const effectiveStartOptions = computed(() => withCache(props.startOptions))
 const view = computed(() => summarizeVisitorData(result.value))
 
 async function identify() {
@@ -22,7 +23,7 @@ async function identify() {
   error.value = undefined
 
   try {
-    const agent = Fingerprint.start(props.startOptions)
+    const agent = Fingerprint.start(effectiveStartOptions.value)
     result.value = await agent.get()
   } catch (nextError) {
     error.value = nextError instanceof Error ? nextError : new Error('Identification failed')
@@ -36,7 +37,7 @@ async function identify() {
   <DemoCard
     :title="`${title} · Composition API`"
     :subtitle="subtitle"
-    :options="startOptions"
+    :options="effectiveStartOptions"
     :is-loading="isLoading"
     :error="error"
     :data="view"
