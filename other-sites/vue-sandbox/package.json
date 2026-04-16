@@ -3,6 +3,7 @@
   "private": true,
   "packageManager": "pnpm@10.18.2",
   "scripts": {
+    "dev": "pnpm --parallel --filter vue-sandbox-spa --filter vue-sandbox-nuxt dev",
     "dev:spa": "pnpm --filter vue-sandbox-spa dev",
     "dev:nuxt": "pnpm --filter vue-sandbox-nuxt dev",
     "typecheck": "pnpm --filter vue-sandbox-spa typecheck && pnpm --filter vue-sandbox-nuxt typecheck"

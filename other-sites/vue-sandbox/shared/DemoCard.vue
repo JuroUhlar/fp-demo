@@ -4,10 +4,19 @@ import { computed } from 'vue'
 const props = defineProps<{
   title: string
   subtitle?: string
+  options?: unknown
   isLoading?: boolean
   error?: Error | null
   data?: unknown
 }>()
+
+const formattedOptions = computed(() => {
+  if (props.options === undefined || props.options === null) {
+    return ''
+  }
+
+  return JSON.stringify(props.options, null, 2)
+})
 
 const formattedData = computed(() => {
   if (props.data === undefined || props.data === null) {
@@ -31,9 +40,17 @@ const formattedData = computed(() => {
 
     <slot name="actions" />
 
+    <div v-if="formattedOptions" class="section">
+      <strong>StartOptions</strong>
+      <pre class="config">{{ formattedOptions }}</pre>
+    </div>
+
     <p v-if="isLoading" class="status">Loading…</p>
     <p v-else-if="error" class="status error">{{ error.message }}</p>
-    <pre v-else-if="formattedData" class="result">{{ formattedData }}</pre>
+    <div v-else-if="formattedData" class="section">
+      <strong>Result</strong>
+      <pre class="result">{{ formattedData }}</pre>
+    </div>
     <p v-else class="status muted">No data yet.</p>
 
     <slot />
@@ -63,12 +80,18 @@ small {
   margin: 0;
   font-size: 12px;
 }
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 .muted {
   color: #888;
 }
 .error {
   color: #b00020;
 }
+.config,
 .result {
   margin: 0;
   font-size: 11px;

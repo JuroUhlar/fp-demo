@@ -4,21 +4,21 @@ Two apps share six `.vue` demo components and use `@fingerprint/vue@2.0.0-rc.0`.
 
 ## Coverage per app
 
-| Scenario | Composition API | Options API |
-| --- | --- | --- |
-| Basic identification | `BasicComposition.vue` | `BasicOptions.vue` |
-| Result field summary | `SealedComposition.vue` | `SealedOptions.vue` |
-| Linking and tagging | `IncrementalComposition.vue` | `IncrementalOptions.vue` |
+| Scenario | StartOptions source |
+| --- | --- |
+| Default | `defaultStartOptions` |
+| Sealed result | `sealedResultsStartOptions` |
+| Incremental identification | `incrementalIdentificationStartOptions` |
 
-- SPA: Vite + Vue 3, `FingerprintPlugin`, cache storage `localStorage`, duration `1800`.
-- Nuxt: Nuxt 3 with a `.client` plugin, `FingerprintPlugin`, cache storage `sessionStorage`, duration `1800`.
-
-`SealedOptions.vue` uses `fingerprintGetVisitorDataMixin` to keep one mixin-based example in the sandbox. The other Options API cards use the injected `$fingerprint` client directly.
+- SPA: Vite + Vue 3
+- Nuxt: Nuxt 3 with `ClientOnly` around the browser-only cards
+- Global cache options are configured once in `shared/config.ts` and reused by all three StartOptions presets.
 
 ## Run
 
 ```bash
 pnpm install
+pnpm run dev       # starts both apps
 pnpm run dev:spa   # http://localhost:5175
 pnpm run dev:nuxt  # http://localhost:3002
 ```
@@ -26,6 +26,8 @@ pnpm run dev:nuxt  # http://localhost:3002
 ## Notes
 
 - This sandbox intentionally follows the Vue SDK v2 surface area. Old v1 concepts such as `loadOptions`, `ignoreCache`, `extendedResult`, and `products` are not used.
-- All demos use the main subscription from [`shared/config.ts`](./shared/config.ts): API key `2UZgp3skqLzfJpFUGUrw`, region `eu`.
-- The default Fingerprint endpoint is used for localhost testing. The custom subdomain is intentionally omitted because it blocks localhost origins.
-- Result field summaries use the v4 snake_case field names: `event_id`, `visitor_id`, `sealed_result`, `suspect_score`, and `cache_hit`.
+- All Fingerprint credentials and scenario presets live in [`shared/config.ts`](./shared/config.ts). Public keys are stored there in plaintext.
+- Server-only secrets are loaded from `other-sites/vue-sandbox/.env` via `FP_SECRET_API_KEY` and `FP_SEALED_RESULTS_SECRET_KEY`.
+- Each card displays the exact `Fingerprint.StartOptions` object it uses.
+- The default and incremental scenarios use the normal public API key. The sealed result scenario uses the sealed-results public API key.
+- The default Fingerprint endpoint is used for localhost testing.

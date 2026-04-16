@@ -1,28 +1,24 @@
 <script setup lang="ts">
-import BasicComposition from '@shared/BasicComposition.vue'
-import BasicOptions from '@shared/BasicOptions.vue'
-import SealedComposition from '@shared/SealedComposition.vue'
-import SealedOptions from '@shared/SealedOptions.vue'
-import IncrementalComposition from '@shared/IncrementalComposition.vue'
-import IncrementalOptions from '@shared/IncrementalOptions.vue'
+import ScenarioCard from '@shared/ScenarioCard.vue'
+import { globalCacheOptions, startOptionsScenarios } from '@shared/config'
 </script>
 
 <template>
   <main>
     <h1>Fingerprint Vue SDK — Nuxt</h1>
     <p class="meta">
-      Plugin: <code>FingerprintPlugin</code> (client-only) · cache.storage:
-      <code>sessionStorage</code> · cache.duration: <code>1800</code>
+      Global cache: <code>{{ JSON.stringify(globalCacheOptions) }}</code>
     </p>
 
     <ClientOnly>
       <div class="grid">
-        <BasicComposition />
-        <BasicOptions />
-        <SealedComposition />
-        <SealedOptions />
-        <IncrementalComposition />
-        <IncrementalOptions />
+        <ScenarioCard
+          v-for="scenario in startOptionsScenarios"
+          :key="scenario.key"
+          :title="scenario.title"
+          :subtitle="scenario.subtitle"
+          :start-options="scenario.startOptions"
+        />
       </div>
       <template #fallback>
         <p class="meta">Hydrating…</p>
@@ -54,7 +50,7 @@ h1 {
 }
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 12px;
 }
 code {
