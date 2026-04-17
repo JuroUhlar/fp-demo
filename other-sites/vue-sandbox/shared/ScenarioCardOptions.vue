@@ -48,6 +48,7 @@ export default defineComponent({
   <DemoCard
     title="Options API"
     subtitle="this.$fingerprint.getVisitorData()"
+    is-fetched-note="No isFetched available for Options API."
     :is-loading="isLoading"
     :error="error"
     :data="displayed"

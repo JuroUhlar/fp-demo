@@ -5,6 +5,7 @@ const props = defineProps<{
   title: string
   subtitle?: string
   isFetched?: boolean
+  isFetchedNote?: string
   isLoading?: boolean
   error?: Error | null
   data?: unknown
@@ -34,7 +35,8 @@ const formattedServerData = computed(() => format(props.serverData))
 
     <div class="result-block">
       <strong>Client result</strong>
-      <p v-if="isFetched !== undefined" class="status muted">isFetched: {{ isFetched ? 'true' : 'false' }}</p>
+      <p v-if="isFetchedNote" class="status muted">{{ isFetchedNote }}</p>
+      <p v-else class="status muted">isFetched: {{ isFetched ? 'true' : 'false' }}</p>
       <p v-if="isLoading" class="status">Loading…</p>
       <p v-else-if="error" class="status error">{{ error.message }}</p>
       <pre v-else-if="formattedData" class="result">{{ formattedData }}</pre>
