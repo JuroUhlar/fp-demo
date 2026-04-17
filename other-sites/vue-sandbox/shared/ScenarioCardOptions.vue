@@ -1,24 +1,39 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
+import type { Fingerprint } from '@fingerprint/vue'
 import DemoCard from './DemoCard.vue'
 import { toDisplayResult } from './config'
+import { loadServerResult } from './serverClient'
 
 export default defineComponent({
   name: 'ScenarioCardOptions',
   components: { DemoCard },
   data() {
     return {
-      result: undefined as ReturnType<typeof toDisplayResult>,
+      raw: null as Fingerprint.GetResult | null,
       isLoading: false,
       error: undefined as Error | undefined,
+      serverData: undefined as unknown,
+      serverError: null as Error | null,
+      serverLoading: false,
     }
+  },
+  computed: {
+    displayed(): ReturnType<typeof toDisplayResult> {
+      return toDisplayResult(this.raw)
+    },
+  },
+  watch: {
+    raw(result: Fingerprint.GetResult | null) {
+      return loadServerResult(this, result)
+    },
   },
   methods: {
     async identify() {
       this.isLoading = true
       this.error = undefined
       try {
-        this.result = toDisplayResult(await this.$fingerprint.getVisitorData())
+        this.raw = await this.$fingerprint.getVisitorData()
       } catch (error) {
         this.error = error instanceof Error ? error : new Error('Identification failed')
       } finally {
@@ -35,7 +50,10 @@ export default defineComponent({
     subtitle="this.$fingerprint.getVisitorData()"
     :is-loading="isLoading"
     :error="error"
-    :data="result"
+    :data="displayed"
+    :server-loading="serverLoading"
+    :server-error="serverError"
+    :server-data="serverData"
   >
     <template #actions>
       <div class="row">

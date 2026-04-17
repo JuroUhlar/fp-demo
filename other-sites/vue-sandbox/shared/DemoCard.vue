@@ -7,13 +7,19 @@ const props = defineProps<{
   isLoading?: boolean
   error?: Error | null
   data?: unknown
+  serverLoading?: boolean
+  serverError?: Error | null
+  serverData?: unknown
 }>()
 
-const formattedData = computed(() => {
-  if (props.data === undefined || props.data === null) return ''
-  if (typeof props.data === 'string') return props.data
-  return JSON.stringify(props.data, null, 2)
-})
+const format = (value: unknown): string => {
+  if (value === undefined || value === null) return ''
+  if (typeof value === 'string') return value
+  return JSON.stringify(value, null, 2)
+}
+
+const formattedData = computed(() => format(props.data))
+const formattedServerData = computed(() => format(props.serverData))
 </script>
 
 <template>
@@ -25,13 +31,21 @@ const formattedData = computed(() => {
 
     <slot name="actions" />
 
-    <p v-if="isLoading" class="status">Loading…</p>
-    <p v-else-if="error" class="status error">{{ error.message }}</p>
-    <div v-else-if="formattedData" class="section">
-      <strong>Result</strong>
-      <pre class="result">{{ formattedData }}</pre>
+    <div class="result-block">
+      <strong>Client result</strong>
+      <p v-if="isLoading" class="status">Loading…</p>
+      <p v-else-if="error" class="status error">{{ error.message }}</p>
+      <pre v-else-if="formattedData" class="result">{{ formattedData }}</pre>
+      <p v-else class="status muted">No data yet.</p>
     </div>
-    <p v-else class="status muted">No data yet.</p>
+
+    <div class="result-block">
+      <strong>Server result</strong>
+      <p v-if="serverLoading" class="status">Loading…</p>
+      <p v-else-if="serverError" class="status error">{{ serverError.message }}</p>
+      <pre v-else-if="formattedServerData" class="result">{{ formattedServerData }}</pre>
+      <p v-else class="status muted">No data yet.</p>
+    </div>
   </section>
 </template>
 
@@ -58,7 +72,7 @@ small {
   margin: 0;
   font-size: 12px;
 }
-.section {
+.result-block {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -68,16 +82,6 @@ small {
 }
 .error {
   color: #b00020;
-}
-:slotted(.row) {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-:slotted(button) {
-  font-size: 12px;
-  padding: 4px 8px;
-  cursor: pointer;
 }
 .result {
   margin: 0;
@@ -89,5 +93,15 @@ small {
   max-height: 220px;
   white-space: pre-wrap;
   word-break: break-all;
+}
+:slotted(.row) {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+:slotted(button) {
+  font-size: 12px;
+  padding: 4px 8px;
+  cursor: pointer;
 }
 </style>

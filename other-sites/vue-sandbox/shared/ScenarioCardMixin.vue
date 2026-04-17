@@ -1,16 +1,30 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { fingerprintGetVisitorDataMixin } from '@fingerprint/vue'
+import type { Fingerprint } from '@fingerprint/vue'
 import DemoCard from './DemoCard.vue'
 import { toDisplayResult } from './config'
+import { loadServerResult } from './serverClient'
 
 export default defineComponent({
   name: 'ScenarioCardMixin',
   components: { DemoCard },
   mixins: [fingerprintGetVisitorDataMixin],
+  data() {
+    return {
+      serverData: undefined as unknown,
+      serverError: null as Error | null,
+      serverLoading: false,
+    }
+  },
   computed: {
-    displayedResult(): ReturnType<typeof toDisplayResult> {
+    displayed(): ReturnType<typeof toDisplayResult> {
       return toDisplayResult(this.visitorData.data)
+    },
+  },
+  watch: {
+    'visitorData.data'(result: Fingerprint.GetResult | null | undefined) {
+      return loadServerResult(this, result)
     },
   },
   methods: {
@@ -27,7 +41,10 @@ export default defineComponent({
     subtitle="fingerprintGetVisitorDataMixin"
     :is-loading="visitorData.isLoading"
     :error="visitorData.error"
-    :data="displayedResult"
+    :data="displayed"
+    :server-loading="serverLoading"
+    :server-error="serverError"
+    :server-data="serverData"
   >
     <template #actions>
       <div class="row">
