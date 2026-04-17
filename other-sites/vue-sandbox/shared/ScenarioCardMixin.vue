@@ -4,7 +4,7 @@ import { fingerprintGetVisitorDataMixin } from '@fingerprint/vue'
 import type { Fingerprint } from '@fingerprint/vue'
 import DemoCard from './DemoCard.vue'
 import { getCommonGetOptions, toDisplayResult } from './config'
-import { loadServerResultIfNew } from './serverClient'
+import { loadServerResultIfNew, serverResultDisabled, serverResultDisabledNote } from './serverClient'
 
 export default defineComponent({
   name: 'ScenarioCardMixin',
@@ -43,6 +43,7 @@ export default defineComponent({
     :is-loading="visitorData.isLoading"
     :error="visitorData.error"
     :data="displayed"
+    :server-note="serverResultDisabled ? serverResultDisabledNote : undefined"
     :server-loading="serverLoading"
     :server-error="serverError"
     :server-data="serverData"

@@ -1,6 +1,13 @@
 import type { Fingerprint } from '@fingerprint/vue'
 import { selectedScenarioKey } from './config'
 
+export const serverResultDisabled =
+  typeof import.meta !== 'undefined' &&
+  Boolean((import.meta as ImportMeta & { env?: Record<string, string | undefined> }).env?.VITE_DISABLE_SERVER_RESULT)
+
+export const serverResultDisabledNote =
+  'Server result unavailable in static SPA deployment.'
+
 export type ServerState = {
   serverData: unknown
   serverError: Error | null
@@ -18,6 +25,7 @@ export function loadServerResultIfNew(
   state: ServerState,
   result: Fingerprint.GetResult | null | undefined,
 ): void {
+  if (serverResultDisabled) return
   if (!result) return
   const lastEventId = (state.serverData as { event_id?: string } | undefined)?.event_id
   if (lastEventId === result.event_id) return
@@ -28,6 +36,12 @@ export async function loadServerResult(
   state: ServerState,
   result: Fingerprint.GetResult | null | undefined,
 ): Promise<void> {
+  if (serverResultDisabled) {
+    state.serverData = undefined
+    state.serverError = null
+    state.serverLoading = false
+    return
+  }
   if (!result) {
     state.serverData = undefined
     state.serverError = null

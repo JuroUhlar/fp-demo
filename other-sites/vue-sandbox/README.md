@@ -11,6 +11,16 @@ pnpm run dev:spa   # http://localhost:5175
 pnpm run dev:nuxt  # http://localhost:3002
 ```
 
+### Cloudflare Pages (SPA only)
+
+```bash
+cd spa
+pnpm run build:cloudflare
+pnpm dlx wrangler pages deploy dist
+```
+
+The SPA Cloudflare build disables the dev-only server mirror UI because `/api/identification/*` and `/api/unseal` only exist in the local Vite middleware, not in a static Pages deployment.
+
 ## Notes
 
 - Scenario + cache selection is persisted to `localStorage`; changing it reloads the page so the plugin re-installs with the new `StartOptions`. See [`AGENTS.md`](./AGENTS.md) for why.

@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
+    "build:cloudflare": "VITE_DISABLE_SERVER_RESULT=true pnpm build",
+    "deploy:cloudflare": "pnpm build:cloudflare && pnpm dlx wrangler pages deploy dist",
     "preview": "vite preview",
     "typecheck": "vue-tsc --noEmit"
   },

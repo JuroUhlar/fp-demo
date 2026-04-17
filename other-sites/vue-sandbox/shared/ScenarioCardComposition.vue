@@ -3,7 +3,12 @@ import { computed, reactive, watch } from 'vue'
 import { useVisitorData } from '@fingerprint/vue'
 import DemoCard from './DemoCard.vue'
 import { getCommonGetOptions, toDisplayResult } from './config'
-import { loadServerResultIfNew, type ServerState } from './serverClient'
+import {
+  loadServerResultIfNew,
+  serverResultDisabled,
+  serverResultDisabledNote,
+  type ServerState,
+} from './serverClient'
 
 const { data, error, isFetched, isLoading, getData } = useVisitorData({ immediate: false })
 const displayedResult = computed(() => toDisplayResult(data.value))
@@ -26,6 +31,7 @@ const identify = () => getData(getCommonGetOptions()).catch(() => {})
     :is-loading="isLoading"
     :error="error"
     :data="displayedResult"
+    :server-note="serverResultDisabled ? serverResultDisabledNote : undefined"
     :server-loading="server.serverLoading"
     :server-error="server.serverError"
     :server-data="server.serverData"

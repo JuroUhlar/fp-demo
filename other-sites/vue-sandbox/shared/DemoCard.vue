@@ -9,6 +9,7 @@ const props = defineProps<{
   isLoading?: boolean
   error?: Error | null
   data?: unknown
+  serverNote?: string
   serverLoading?: boolean
   serverError?: Error | null
   serverData?: unknown
@@ -45,7 +46,8 @@ const formattedServerData = computed(() => format(props.serverData))
 
     <div class="result-block">
       <strong>Server result</strong>
-      <p v-if="serverLoading" class="status">Loading…</p>
+      <p v-if="serverNote" class="status muted">{{ serverNote }}</p>
+      <p v-else-if="serverLoading" class="status">Loading…</p>
       <p v-else-if="serverError" class="status error">{{ serverError.message }}</p>
       <pre v-else-if="formattedServerData" class="result">{{ formattedServerData }}</pre>
       <p v-else class="status muted">No data yet.</p>
