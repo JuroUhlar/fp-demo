@@ -1,46 +1,34 @@
 <script setup lang="ts">
-import { Fingerprint } from '@fingerprint/vue'
-import { computed, ref } from 'vue'
-import type { Fingerprint as FingerprintTypes } from '@fingerprint/vue'
+import { computed } from 'vue'
+import { useVisitorData } from '@fingerprint/vue'
 import DemoCard from './DemoCard.vue'
-import { withCache } from './config'
 
-const props = defineProps<{
-  title: string
-  subtitle: string
-  startOptions: FingerprintTypes.StartOptions
-}>()
+const { data, error, isLoading, getData } = useVisitorData({ immediate: false })
 
-const result = ref<Omit<FingerprintTypes.GetResult, 'sealed_result'> & { sealed_result: string | null }>()
-const error = ref<Error>()
-const isLoading = ref(false)
-
-const effectiveStartOptions = computed(() => withCache(props.startOptions))
+const displayedResult = computed(() => {
+  if (!data.value) return undefined
+  return {
+    ...data.value,
+    sealed_result: data.value.sealed_result ? data.value.sealed_result.base64() : null,
+  }
+})
 
 async function identify() {
-  isLoading.value = true
-  error.value = undefined
-
   try {
-    const agent = Fingerprint.start(effectiveStartOptions.value)
-    const raw = await agent.get()
-    result.value = { ...raw, sealed_result: raw.sealed_result ? raw.sealed_result.base64() : null }
-  } catch (nextError) {
-    error.value = nextError instanceof Error ? nextError : new Error('Identification failed')
-  } finally {
-    isLoading.value = false
+    await getData()
+  } catch {
+    // useVisitorData exposes the error ref.
   }
 }
 </script>
 
 <template>
   <DemoCard
-    :title="`${title} · Composition API`"
-    :subtitle="subtitle"
-    :options="effectiveStartOptions"
+    title="Composition API"
+    subtitle="useVisitorData({ immediate: false })"
     :is-loading="isLoading"
     :error="error"
-    :data="result"
+    :data="displayedResult"
   >
     <template #actions>
       <div class="row">

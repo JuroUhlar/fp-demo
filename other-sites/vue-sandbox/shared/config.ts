@@ -155,3 +155,36 @@ export const startOptionsScenarios = [
   },
 ] as const
 
+export type ScenarioKey = typeof startOptionsScenarios[number]['key']
+
+const SCENARIO_KEY_STORAGE = 'fp-sandbox-scenario-key'
+
+function readSelectedScenarioKey(): ScenarioKey {
+  if (typeof localStorage === 'undefined') return startOptionsScenarios[0].key
+  const stored = localStorage.getItem(SCENARIO_KEY_STORAGE) as ScenarioKey | null
+  return startOptionsScenarios.some((s) => s.key === stored)
+    ? (stored as ScenarioKey)
+    : startOptionsScenarios[0].key
+}
+
+export const selectedScenarioKey = ref<ScenarioKey>(readSelectedScenarioKey())
+
+if (typeof window !== 'undefined') {
+  watch(
+    selectedScenarioKey,
+    (value) => localStorage.setItem(SCENARIO_KEY_STORAGE, value),
+    { flush: 'sync' },
+  )
+}
+
+export function getSelectedScenario() {
+  return (
+    startOptionsScenarios.find((s) => s.key === selectedScenarioKey.value) ??
+    startOptionsScenarios[0]
+  )
+}
+
+export function getBootStartOptions(): Fingerprint.StartOptions {
+  return withCache(getSelectedScenario().startOptions)
+}
+

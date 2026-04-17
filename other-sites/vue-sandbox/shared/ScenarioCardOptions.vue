@@ -1,34 +1,23 @@
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue'
-import { Fingerprint } from '@fingerprint/vue'
+import { defineComponent } from 'vue'
 import type { Fingerprint as FingerprintTypes } from '@fingerprint/vue'
 import DemoCard from './DemoCard.vue'
-import { withCache } from './config'
+
+type DisplayResult =
+  | (Omit<FingerprintTypes.GetResult, 'sealed_result'> & {
+      sealed_result: string | null
+    })
+  | undefined
 
 export default defineComponent({
   name: 'ScenarioCardOptions',
   components: { DemoCard },
-  props: {
-    title: { type: String, required: true },
-    subtitle: { type: String, required: true },
-    startOptions: {
-      type: Object as PropType<FingerprintTypes.StartOptions>,
-      required: true,
-    },
-  },
   data() {
     return {
-      result: undefined as
-        | (Omit<FingerprintTypes.GetResult, 'sealed_result'> & { sealed_result: string | null })
-        | undefined,
+      result: undefined as DisplayResult,
       isLoading: false,
       error: undefined as Error | undefined,
     }
-  },
-  computed: {
-    effectiveStartOptions(): FingerprintTypes.StartOptions {
-      return withCache(this.startOptions)
-    },
   },
   methods: {
     async identify() {
@@ -36,9 +25,11 @@ export default defineComponent({
       this.error = undefined
 
       try {
-        const agent = Fingerprint.start(this.effectiveStartOptions)
-        const raw = await agent.get()
-        this.result = { ...raw, sealed_result: raw.sealed_result ? raw.sealed_result.base64() : null }
+        const raw = await this.$fingerprint.getVisitorData()
+        this.result = {
+          ...raw,
+          sealed_result: raw.sealed_result ? raw.sealed_result.base64() : null,
+        }
       } catch (error) {
         this.error = error instanceof Error ? error : new Error('Identification failed')
       } finally {
@@ -51,9 +42,8 @@ export default defineComponent({
 
 <template>
   <DemoCard
-    :title="`${title} · Options API`"
-    :subtitle="subtitle"
-    :options="effectiveStartOptions"
+    title="Options API"
+    subtitle="this.$fingerprint.getVisitorData()"
     :is-loading="isLoading"
     :error="error"
     :data="result"
