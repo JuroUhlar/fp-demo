@@ -2,10 +2,10 @@
 import { computed, reactive, watch } from 'vue'
 import { useVisitorData } from '@fingerprint/vue'
 import DemoCard from './DemoCard.vue'
-import { toDisplayResult } from './config'
+import { getCommonGetOptions, toDisplayResult } from './config'
 import { loadServerResultIfNew, type ServerState } from './serverClient'
 
-const { data, error, isLoading, getData } = useVisitorData({ immediate: false })
+const { data, error, isFetched, isLoading, getData } = useVisitorData({ immediate: false })
 const displayedResult = computed(() => toDisplayResult(data.value))
 
 const server = reactive<ServerState>({
@@ -15,13 +15,14 @@ const server = reactive<ServerState>({
 })
 watch(data, (result) => loadServerResultIfNew(server, result))
 
-const identify = () => getData().catch(() => {})
+const identify = () => getData(getCommonGetOptions()).catch(() => {})
 </script>
 
 <template>
   <DemoCard
     title="Composition API"
     subtitle="useVisitorData({ immediate: false })"
+    :is-fetched="isFetched"
     :is-loading="isLoading"
     :error="error"
     :data="displayedResult"

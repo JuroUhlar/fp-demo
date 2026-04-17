@@ -2,7 +2,7 @@
 import { defineComponent } from 'vue'
 import type { Fingerprint } from '@fingerprint/vue'
 import DemoCard from './DemoCard.vue'
-import { toDisplayResult } from './config'
+import { getCommonGetOptions, toDisplayResult } from './config'
 import { loadServerResultIfNew } from './serverClient'
 
 export default defineComponent({
@@ -33,7 +33,7 @@ export default defineComponent({
       this.isLoading = true
       this.error = undefined
       try {
-        this.raw = await this.$fingerprint.getVisitorData()
+        this.raw = await this.$fingerprint.getVisitorData(getCommonGetOptions())
       } catch (error) {
         this.error = error instanceof Error ? error : new Error('Identification failed')
       } finally {

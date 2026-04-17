@@ -4,6 +4,8 @@ import type { Fingerprint } from '@fingerprint/vue'
 const MAIN_API_KEY = '2UZgp3skqLzfJpFUGUrw'
 const SEALED_API_KEY = 'Xxcooa8Yc0MaSEo9VQDy'
 const REGION = 'eu' as const
+export const DEFAULT_LINKED_ID = 'user_1234'
+export const DEFAULT_TAG = 'signup'
 
 export type CacheStorage = 'localStorage' | 'sessionStorage' | 'agent'
 export type CacheDurationPreset = 'optimize-cost' | 'aggressive'
@@ -36,6 +38,7 @@ function persistedRef<T>(key: string, fallback: T, isValid: (v: unknown) => v is
 }
 
 const isBool = (v: unknown): v is boolean => typeof v === 'boolean'
+const isString = (v: unknown): v is string => typeof v === 'string'
 const isOneOf =
   <T extends string>(options: readonly T[]) =>
   (v: unknown): v is T =>
@@ -52,6 +55,8 @@ export const cacheDuration = persistedRef<CacheDurationPreset>(
   'optimize-cost',
   isOneOf(cacheDurationOptions),
 )
+export const commonLinkedId = persistedRef('fp-sandbox-linked-id', DEFAULT_LINKED_ID, isString)
+export const commonTag = persistedRef('fp-sandbox-tag', DEFAULT_TAG, isString)
 
 export const startOptionsScenarios = [
   {
@@ -97,6 +102,16 @@ export function getBootStartOptions(): Fingerprint.StartOptions {
   return {
     ...base,
     cache: { storage: cacheStorage.value, duration: cacheDuration.value },
+  }
+}
+
+export function getCommonGetOptions(): Fingerprint.GetOptions {
+  const linkedId = commonLinkedId.value.trim()
+  const tag = commonTag.value.trim()
+
+  return {
+    ...(linkedId ? { linkedId } : {}),
+    ...(tag ? { tag } : {}),
   }
 }
 

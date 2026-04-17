@@ -44,8 +44,10 @@ Rules for agents:
 ## Current structure
 
 - Three scenario presets in `shared/config.ts` (`default`, `sealed-results`, `incremental-identification`). Only one is active per page load; the dropdown at the top switches the active one and reloads.
+- `incremental-identification` intentionally uses the non-public `optimizeRepeatedVisits` start option. Keep it in scope even though it is not typed/documented, because some real users do use it and this sandbox is meant to cover that path explicitly.
 - Three cards in `shared/` (`ScenarioCardComposition.vue`, `ScenarioCardOptions.vue`, `ScenarioCardMixin.vue`), each using exactly one SDK surface.
 - Cache controls (enable / storage / duration) also reload on change because they feed into the bootstrap `StartOptions`.
+- `linkedId` and `tag` are shared text inputs in the shell and are passed to every identify call across all three SDK surfaces, so the sandbox covers both bootstrap-time `StartOptions` and call-time `GetOptions`.
 
 ## Server-side mirror
 

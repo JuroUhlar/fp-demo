@@ -3,7 +3,7 @@ import { defineComponent } from 'vue'
 import { fingerprintGetVisitorDataMixin } from '@fingerprint/vue'
 import type { Fingerprint } from '@fingerprint/vue'
 import DemoCard from './DemoCard.vue'
-import { toDisplayResult } from './config'
+import { getCommonGetOptions, toDisplayResult } from './config'
 import { loadServerResultIfNew } from './serverClient'
 
 export default defineComponent({
@@ -29,7 +29,7 @@ export default defineComponent({
   },
   methods: {
     async identify() {
-      await this.$getVisitorData().catch(() => {})
+      await this.$getVisitorData(getCommonGetOptions()).catch(() => {})
     },
   },
 })
@@ -39,6 +39,7 @@ export default defineComponent({
   <DemoCard
     title="Mixin API"
     subtitle="fingerprintGetVisitorDataMixin"
+    :is-fetched="visitorData.isFetched"
     :is-loading="visitorData.isLoading"
     :error="visitorData.error"
     :data="displayed"

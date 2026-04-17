@@ -1,21 +1,28 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import ScenarioCardComposition from './ScenarioCardComposition.vue'
 import ScenarioCardMixin from './ScenarioCardMixin.vue'
 import ScenarioCardOptions from './ScenarioCardOptions.vue'
 import {
   cacheDuration,
   cacheDurationOptions,
+  commonLinkedId,
+  commonTag,
   cacheEnabled,
   cacheStorage,
   cacheStorageOptions,
+  DEFAULT_LINKED_ID,
+  DEFAULT_TAG,
   getBootStartOptions,
+  getCommonGetOptions,
   selectedScenarioKey,
   startOptionsScenarios,
 } from './config'
 
 defineProps<{ appName: string }>()
 
-const bootStartOptions = getBootStartOptions()
+const bootStartOptions = computed(() => getBootStartOptions())
+const commonGetOptions = computed(() => getCommonGetOptions())
 const reload = () => typeof window !== 'undefined' && window.location.reload()
 </script>
 
@@ -52,11 +59,24 @@ const reload = () => typeof window !== 'undefined' && window.location.reload()
           </option>
         </select>
       </label>
+      <label class="field">
+        linkedId:
+        <input v-model="commonLinkedId" type="text" :placeholder="DEFAULT_LINKED_ID" />
+      </label>
+      <label class="field">
+        tag:
+        <input v-model="commonTag" type="text" :placeholder="DEFAULT_TAG" />
+      </label>
     </p>
 
     <section class="start-options">
       <strong>Plugin StartOptions (installed at bootstrap)</strong>
       <pre>{{ JSON.stringify(bootStartOptions, null, 2) }}</pre>
+    </section>
+
+    <section class="start-options">
+      <strong>Common GetOptions (passed on every identify)</strong>
+      <pre>{{ JSON.stringify(commonGetOptions, null, 2) }}</pre>
     </section>
 
     <div class="grid">
@@ -105,6 +125,10 @@ h1 {
 }
 .field select {
   font-size: 12px;
+}
+.field input {
+  font-size: 12px;
+  padding: 2px 6px;
 }
 .start-options {
   margin: 0 0 16px;
