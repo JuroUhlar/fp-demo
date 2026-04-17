@@ -2,24 +2,11 @@
 import { computed } from 'vue'
 import { useVisitorData } from '@fingerprint/vue'
 import DemoCard from './DemoCard.vue'
+import { toDisplayResult } from './config'
 
 const { data, error, isLoading, getData } = useVisitorData({ immediate: false })
-
-const displayedResult = computed(() => {
-  if (!data.value) return undefined
-  return {
-    ...data.value,
-    sealed_result: data.value.sealed_result ? data.value.sealed_result.base64() : null,
-  }
-})
-
-async function identify() {
-  try {
-    await getData()
-  } catch {
-    // useVisitorData exposes the error ref.
-  }
-}
+const displayedResult = computed(() => toDisplayResult(data.value))
+const identify = () => getData().catch(() => {})
 </script>
 
 <template>
@@ -37,16 +24,3 @@ async function identify() {
     </template>
   </DemoCard>
 </template>
-
-<style scoped>
-.row {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-button {
-  font-size: 12px;
-  padding: 4px 8px;
-  cursor: pointer;
-}
-</style>

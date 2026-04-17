@@ -4,29 +4,14 @@ import { computed } from 'vue'
 const props = defineProps<{
   title: string
   subtitle?: string
-  options?: unknown
   isLoading?: boolean
   error?: Error | null
   data?: unknown
 }>()
 
-const formattedOptions = computed(() => {
-  if (props.options === undefined || props.options === null) {
-    return ''
-  }
-
-  return JSON.stringify(props.options, null, 2)
-})
-
 const formattedData = computed(() => {
-  if (props.data === undefined || props.data === null) {
-    return ''
-  }
-
-  if (typeof props.data === 'string') {
-    return props.data
-  }
-
+  if (props.data === undefined || props.data === null) return ''
+  if (typeof props.data === 'string') return props.data
   return JSON.stringify(props.data, null, 2)
 })
 </script>
@@ -40,11 +25,6 @@ const formattedData = computed(() => {
 
     <slot name="actions" />
 
-    <div v-if="formattedOptions" class="section">
-      <strong>StartOptions</strong>
-      <pre class="config">{{ formattedOptions }}</pre>
-    </div>
-
     <p v-if="isLoading" class="status">Loading…</p>
     <p v-else-if="error" class="status error">{{ error.message }}</p>
     <div v-else-if="formattedData" class="section">
@@ -52,8 +32,6 @@ const formattedData = computed(() => {
       <pre class="result">{{ formattedData }}</pre>
     </div>
     <p v-else class="status muted">No data yet.</p>
-
-    <slot />
   </section>
 </template>
 
@@ -91,7 +69,16 @@ small {
 .error {
   color: #b00020;
 }
-.config,
+:slotted(.row) {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+:slotted(button) {
+  font-size: 12px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
 .result {
   margin: 0;
   font-size: 11px;

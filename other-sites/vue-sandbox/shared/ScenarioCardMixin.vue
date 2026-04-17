@@ -2,28 +2,20 @@
 import { defineComponent } from 'vue'
 import { fingerprintGetVisitorDataMixin } from '@fingerprint/vue'
 import DemoCard from './DemoCard.vue'
+import { toDisplayResult } from './config'
 
 export default defineComponent({
   name: 'ScenarioCardMixin',
   components: { DemoCard },
   mixins: [fingerprintGetVisitorDataMixin],
   computed: {
-    displayedResult(): unknown {
-      const data = this.visitorData.data
-      if (!data) return undefined
-      return {
-        ...data,
-        sealed_result: data.sealed_result ? data.sealed_result.base64() : null,
-      }
+    displayedResult(): ReturnType<typeof toDisplayResult> {
+      return toDisplayResult(this.visitorData.data)
     },
   },
   methods: {
     async identify() {
-      try {
-        await this.$getVisitorData()
-      } catch {
-        // The mixin exposes the error on visitorData.error.
-      }
+      await this.$getVisitorData().catch(() => {})
     },
   },
 })
@@ -44,16 +36,3 @@ export default defineComponent({
     </template>
   </DemoCard>
 </template>
-
-<style scoped>
-.row {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-button {
-  font-size: 12px;
-  padding: 4px 8px;
-  cursor: pointer;
-}
-</style>

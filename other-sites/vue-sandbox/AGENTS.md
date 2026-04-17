@@ -4,6 +4,19 @@
 
 Test the `@fingerprint/vue` SDK as close to the way a real user would use it as possible.
 
+## Codebase philosophy
+
+Keep this sandbox small, minimal, and boring. A human should be able to open any file and confirm it works in seconds.
+
+- Every line, file, and doc must earn its place. If it's unused, unclear, or not load-bearing, delete it.
+- Prefer deleting over adding. Prefer editing an existing file over creating a new one.
+- No duplication that isn't intentional (the three SDK-surface cards are — see below). Factor shared UI/logic into one place.
+- No dead code, dead props, dead config fields, or aspirational scaffolding "for later."
+- Docs are minimum viable: the main goal, the non-obvious constraints, the known bugs. No status logs, plans, or migration checklists — `git log` already has those.
+- Comments only for non-obvious *why*. Skip anything a well-named identifier already tells you.
+
+When in doubt: fewer lines, fewer files, fewer abstractions.
+
 That means:
 
 - Install `FingerprintPlugin` once at app bootstrap with a single `StartOptions` (same as an app user following the docs).

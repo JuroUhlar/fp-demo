@@ -1,44 +1,9 @@
-import { ref, watch } from 'vue'
+import { ref, watch, type Ref } from 'vue'
 import type { Fingerprint } from '@fingerprint/vue'
 
-declare const process:
-  | {
-      env: Record<string, string | undefined>
-    }
-  | undefined
-
-type ServerEnvName = 'FP_SECRET_API_KEY' | 'FP_SEALED_RESULTS_SECRET_KEY'
-
-function readServerEnv(name: ServerEnvName): string {
-  if (typeof process === 'undefined') {
-    throw new Error(`${name} is only available in a server environment`)
-  }
-
-  const value = process.env[name]
-
-  if (!value) {
-    throw new Error(`Missing ${name}. Add it to other-sites/vue-sandbox/.env`)
-  }
-
-  return value
-}
-
-export const fingerprintConfig = {
-  main: {
-    publicApiKey: '2UZgp3skqLzfJpFUGUrw',
-    region: 'eu' as const,
-    get secretApiKey() {
-      return readServerEnv('FP_SECRET_API_KEY')
-    },
-  },
-  sealedResults: {
-    publicApiKey: 'Xxcooa8Yc0MaSEo9VQDy',
-    region: 'eu' as const,
-    get secretKey() {
-      return readServerEnv('FP_SEALED_RESULTS_SECRET_KEY')
-    },
-  },
-} as const
+const MAIN_API_KEY = '2UZgp3skqLzfJpFUGUrw'
+const SEALED_API_KEY = 'Xxcooa8Yc0MaSEo9VQDy'
+const REGION = 'eu' as const
 
 export type CacheStorage = 'localStorage' | 'sessionStorage' | 'agent'
 export type CacheDurationPreset = 'optimize-cost' | 'aggressive'
@@ -54,137 +19,88 @@ export const cacheDurationOptions: readonly CacheDurationPreset[] = [
   'aggressive',
 ] as const
 
-const CACHE_ENABLED_KEY = 'fp-sandbox-cache-enabled'
-const CACHE_STORAGE_KEY = 'fp-sandbox-cache-storage'
-const CACHE_DURATION_KEY = 'fp-sandbox-cache-duration'
-
-function readCacheEnabled(): boolean {
-  if (typeof localStorage === 'undefined') return false
-  return localStorage.getItem(CACHE_ENABLED_KEY) === 'true'
-}
-
-function readCacheStorage(): CacheStorage {
-  if (typeof localStorage === 'undefined') return 'localStorage'
-  const value = localStorage.getItem(CACHE_STORAGE_KEY)
-  return cacheStorageOptions.includes(value as CacheStorage)
-    ? (value as CacheStorage)
-    : 'localStorage'
-}
-
-function readCacheDuration(): CacheDurationPreset {
-  if (typeof localStorage === 'undefined') return 'optimize-cost'
-  const value = localStorage.getItem(CACHE_DURATION_KEY)
-  return cacheDurationOptions.includes(value as CacheDurationPreset)
-    ? (value as CacheDurationPreset)
-    : 'optimize-cost'
-}
-
-export const cacheEnabled = ref(readCacheEnabled())
-export const cacheStorage = ref<CacheStorage>(readCacheStorage())
-export const cacheDuration = ref<CacheDurationPreset>(readCacheDuration())
-
-if (typeof window !== 'undefined') {
-  watch(
-    cacheEnabled,
-    (value) => localStorage.setItem(CACHE_ENABLED_KEY, String(value)),
-    { flush: 'sync' },
-  )
-  watch(
-    cacheStorage,
-    (value) => localStorage.setItem(CACHE_STORAGE_KEY, value),
-    { flush: 'sync' },
-  )
-  watch(
-    cacheDuration,
-    (value) => localStorage.setItem(CACHE_DURATION_KEY, value),
-    { flush: 'sync' },
-  )
-}
-
-export function withCache(
-  base: Fingerprint.StartOptions,
-): Fingerprint.StartOptions {
-  if (!cacheEnabled.value) {
-    const { cache: _cache, ...rest } = base
-    return rest
+function persistedRef<T>(key: string, fallback: T, isValid: (v: unknown) => v is T): Ref<T> {
+  const initial =
+    typeof localStorage === 'undefined'
+      ? fallback
+      : (() => {
+          const raw = localStorage.getItem(key)
+          const parsed = raw === 'true' ? true : raw === 'false' ? false : raw
+          return isValid(parsed) ? parsed : fallback
+        })()
+  const r = ref(initial) as Ref<T>
+  if (typeof window !== 'undefined') {
+    watch(r, (v) => localStorage.setItem(key, String(v)), { flush: 'sync' })
   }
-  return {
-    ...base,
-    cache: {
-      storage: cacheStorage.value,
-      duration: cacheDuration.value,
-    },
-  }
+  return r
 }
 
-export const defaultStartOptions: Fingerprint.StartOptions = {
-  apiKey: fingerprintConfig.main.publicApiKey,
-  region: fingerprintConfig.main.region,
-}
+const isBool = (v: unknown): v is boolean => typeof v === 'boolean'
+const isOneOf =
+  <T extends string>(options: readonly T[]) =>
+  (v: unknown): v is T =>
+    typeof v === 'string' && (options as readonly string[]).includes(v)
 
-export const sealedResultsStartOptions: Fingerprint.StartOptions = {
-  apiKey: fingerprintConfig.sealedResults.publicApiKey,
-  region: fingerprintConfig.sealedResults.region,
-}
-
-export const incrementalIdentificationStartOptions: Fingerprint.StartOptions = {
-  apiKey: fingerprintConfig.main.publicApiKey,
-  region: fingerprintConfig.main.region,
-  // @ts-expect-error Experimental option used for sandbox testing.
-  optimizeRepeatedVisits: true,
-}
+export const cacheEnabled = persistedRef('fp-sandbox-cache-enabled', false, isBool)
+export const cacheStorage = persistedRef<CacheStorage>(
+  'fp-sandbox-cache-storage',
+  'localStorage',
+  isOneOf(cacheStorageOptions),
+)
+export const cacheDuration = persistedRef<CacheDurationPreset>(
+  'fp-sandbox-cache-duration',
+  'optimize-cost',
+  isOneOf(cacheDurationOptions),
+)
 
 export const startOptionsScenarios = [
   {
     key: 'default',
     title: 'Default',
-    subtitle: 'normal API key',
-    startOptions: defaultStartOptions,
+    startOptions: { apiKey: MAIN_API_KEY, region: REGION },
   },
   {
     key: 'sealed-results',
     title: 'Sealed result',
-    subtitle: 'sealed API key',
-    startOptions: sealedResultsStartOptions,
+    startOptions: { apiKey: SEALED_API_KEY, region: REGION },
   },
   {
     key: 'incremental-identification',
     title: 'Incremental identification',
-    subtitle: 'normal API key + optimizeRepeatedVisits',
-    startOptions: incrementalIdentificationStartOptions,
+    startOptions: {
+      apiKey: MAIN_API_KEY,
+      region: REGION,
+      // @ts-expect-error Experimental option used for sandbox testing.
+      optimizeRepeatedVisits: true,
+    },
   },
-] as const
+] as const satisfies readonly {
+  key: string
+  title: string
+  startOptions: Fingerprint.StartOptions
+}[]
 
 export type ScenarioKey = typeof startOptionsScenarios[number]['key']
 
-const SCENARIO_KEY_STORAGE = 'fp-sandbox-scenario-key'
-
-function readSelectedScenarioKey(): ScenarioKey {
-  if (typeof localStorage === 'undefined') return startOptionsScenarios[0].key
-  const stored = localStorage.getItem(SCENARIO_KEY_STORAGE) as ScenarioKey | null
-  return startOptionsScenarios.some((s) => s.key === stored)
-    ? (stored as ScenarioKey)
-    : startOptionsScenarios[0].key
-}
-
-export const selectedScenarioKey = ref<ScenarioKey>(readSelectedScenarioKey())
-
-if (typeof window !== 'undefined') {
-  watch(
-    selectedScenarioKey,
-    (value) => localStorage.setItem(SCENARIO_KEY_STORAGE, value),
-    { flush: 'sync' },
-  )
-}
-
-export function getSelectedScenario() {
-  return (
-    startOptionsScenarios.find((s) => s.key === selectedScenarioKey.value) ??
-    startOptionsScenarios[0]
-  )
-}
+const scenarioKeys = startOptionsScenarios.map((s) => s.key) as readonly ScenarioKey[]
+export const selectedScenarioKey = persistedRef<ScenarioKey>(
+  'fp-sandbox-scenario-key',
+  startOptionsScenarios[0].key,
+  isOneOf(scenarioKeys),
+)
 
 export function getBootStartOptions(): Fingerprint.StartOptions {
-  return withCache(getSelectedScenario().startOptions)
+  const base =
+    startOptionsScenarios.find((s) => s.key === selectedScenarioKey.value)?.startOptions ??
+    startOptionsScenarios[0].startOptions
+  if (!cacheEnabled.value) return { ...base }
+  return {
+    ...base,
+    cache: { storage: cacheStorage.value, duration: cacheDuration.value },
+  }
 }
 
+export function toDisplayResult(raw: Fingerprint.GetResult | null | undefined) {
+  if (!raw) return undefined
+  return { ...raw, sealed_result: raw.sealed_result?.base64() ?? null }
+}
