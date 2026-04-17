@@ -33,3 +33,7 @@ Rules for agents:
 - Three scenario presets in `shared/config.ts` (`default`, `sealed-results`, `incremental-identification`). Only one is active per page load; the dropdown at the top switches the active one and reloads.
 - Three cards in `shared/` (`ScenarioCardComposition.vue`, `ScenarioCardOptions.vue`, `ScenarioCardMixin.vue`), each using exactly one SDK surface.
 - Cache controls (enable / storage / duration) also reload on change because they feed into the bootstrap `StartOptions`.
+
+## Known SDK bug — sealed_result lost across `localStorage`/`sessionStorage` cache
+
+`@fingerprint/agent` JSON-serializes the visitor result when `cache.storage` is `localStorage` or `sessionStorage` and does not rehydrate `BinaryOutput` on read. On a cache hit, `sealed_result.base64()` throws `raw.sealed_result.base64 is not a function`. The serialization happens inside the agent — the sandbox never touches the cached payload. `cache.storage: agent` (in-memory) is unaffected. Do not paper over this with a defensive `typeof === 'function'` guard in the cards without noting it here; the cards are meant to mirror real SDK usage, and silent guards hide the upstream defect.
