@@ -55,6 +55,7 @@ Each card also auto-fetches a server-side result after a successful identify and
 - Nuxt exposes it at `nuxt/server/api/identification/[eventId].get.ts` and `nuxt/server/api/unseal.post.ts`.
 - SPA exposes the same two routes via a Vite dev-middleware plugin in `spa/vite.config.ts`. The SPA has no production server; this is dev-only.
 - The client picks which endpoint to hit based on `selectedScenarioKey` — sealed scenarios POST to `/api/unseal`, everything else GETs `/api/identification/{eventId}`.
+- Each card's watcher calls `loadServerResultIfNew(state, result)`, which skips the fetch when `result.event_id` matches what's already in `state.serverData`. Client cache hits therefore don't refire the Server API. The check reads `state.serverData.event_id` (not the watcher's `previous` arg) because `useVisitorData` and the mixin transiently set `data` to null while loading — the `previous` arg is unreliable across that flicker.
 - Never import `shared/server.ts` or `@fingerprint/node-sdk` from client code — it pulls Node built-ins and will break the browser bundle. Client code uses `shared/serverClient.ts`.
 
 ## Known SDK bug — sealed_result lost across `localStorage`/`sessionStorage` cache

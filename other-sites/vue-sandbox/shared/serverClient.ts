@@ -7,6 +7,23 @@ export type ServerState = {
   serverLoading: boolean
 }
 
+/**
+ * Call from a watcher on the client `GetResult`. Skips the fetch when the result
+ * carries the same `event_id` already shown on the server side — so client cache hits
+ * (and the transient null→result flicker inside `useVisitorData` / the mixin) don't
+ * refire the Server API. Retries after an error still fire because an error path
+ * clears `serverData`.
+ */
+export function loadServerResultIfNew(
+  state: ServerState,
+  result: Fingerprint.GetResult | null | undefined,
+): void {
+  if (!result) return
+  const lastEventId = (state.serverData as { event_id?: string } | undefined)?.event_id
+  if (lastEventId === result.event_id) return
+  void loadServerResult(state, result)
+}
+
 export async function loadServerResult(
   state: ServerState,
   result: Fingerprint.GetResult | null | undefined,

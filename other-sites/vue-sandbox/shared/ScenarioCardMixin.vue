@@ -4,7 +4,7 @@ import { fingerprintGetVisitorDataMixin } from '@fingerprint/vue'
 import type { Fingerprint } from '@fingerprint/vue'
 import DemoCard from './DemoCard.vue'
 import { toDisplayResult } from './config'
-import { loadServerResult } from './serverClient'
+import { loadServerResultIfNew } from './serverClient'
 
 export default defineComponent({
   name: 'ScenarioCardMixin',
@@ -24,7 +24,7 @@ export default defineComponent({
   },
   watch: {
     'visitorData.data'(result: Fingerprint.GetResult | null | undefined) {
-      return loadServerResult(this, result)
+      loadServerResultIfNew(this, result)
     },
   },
   methods: {

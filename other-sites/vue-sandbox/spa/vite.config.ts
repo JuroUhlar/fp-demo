@@ -40,9 +40,10 @@ function fail(res: ServerResponse, code: number, message: string) {
   json(res, { error: message });
 }
 async function readJson<T>(req: IncomingMessage): Promise<T> {
-  const chunks: Buffer[] = [];
-  for await (const c of req) chunks.push(c as Buffer);
-  return JSON.parse(Buffer.concat(chunks).toString() || '{}') as T;
+  req.setEncoding('utf8');
+  let text = '';
+  for await (const chunk of req) text += chunk;
+  return JSON.parse(text || '{}') as T;
 }
 
 export default defineConfig({

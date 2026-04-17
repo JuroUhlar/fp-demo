@@ -3,7 +3,7 @@ import { defineComponent } from 'vue'
 import type { Fingerprint } from '@fingerprint/vue'
 import DemoCard from './DemoCard.vue'
 import { toDisplayResult } from './config'
-import { loadServerResult } from './serverClient'
+import { loadServerResultIfNew } from './serverClient'
 
 export default defineComponent({
   name: 'ScenarioCardOptions',
@@ -25,7 +25,7 @@ export default defineComponent({
   },
   watch: {
     raw(result: Fingerprint.GetResult | null) {
-      return loadServerResult(this, result)
+      loadServerResultIfNew(this, result)
     },
   },
   methods: {
