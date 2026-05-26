@@ -1,0 +1,13 @@
+{
+  "name": "svelte-sandbox-root",
+  "private": true,
+  "packageManager": "pnpm@9.12.2",
+  "scripts": {
+    "dev": "pnpm --parallel --filter svelte-sandbox-spa-svelte4 --filter svelte-sandbox-spa-svelte5 --filter svelte-sandbox-kit-svelte4 --filter svelte-sandbox-kit-svelte5 dev",
+    "dev:spa4": "pnpm --filter svelte-sandbox-spa-svelte4 dev",
+    "dev:spa5": "pnpm --filter svelte-sandbox-spa-svelte5 dev",
+    "dev:kit4": "pnpm --filter svelte-sandbox-kit-svelte4 dev",
+    "dev:kit5": "pnpm --filter svelte-sandbox-kit-svelte5 dev",
+    "typecheck": "pnpm --filter svelte-sandbox-spa-svelte4 typecheck && pnpm --filter svelte-sandbox-spa-svelte5 typecheck && pnpm --filter svelte-sandbox-kit-svelte4 typecheck && pnpm --filter svelte-sandbox-kit-svelte5 typecheck"
+  }
+}
