@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@fingerprint/node-sdk": "^7.0.0",
-    "@fingerprint/vue": "2.0.0-rc.0",
+    "@fingerprint/vue": "2.0.0",
     "nuxt": "^3.13.0",
     "vue": "^3.5.0"
   },

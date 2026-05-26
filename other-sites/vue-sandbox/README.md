@@ -1,6 +1,6 @@
 # Fingerprint Vue SDK sandbox
 
-Two apps (Vite SPA + Nuxt) share [`shared/SandboxShell.vue`](./shared/SandboxShell.vue). Each renders the three public `@fingerprint/vue@2.0.0-rc.0` surfaces — Composition, Options, Mixin — against a selectable scenario and cache config. Each card auto-fetches a server-side mirror (`@fingerprint/node-sdk`) and renders it alongside the client result. The shell also provides common `linkedId` / `tag` inputs that are passed to every identify call across all three surfaces.
+Two apps (Vite SPA + Nuxt) share [`shared/SandboxShell.vue`](./shared/SandboxShell.vue). Each renders the three public `@fingerprint/vue@2.0.0` surfaces — Composition, Options, Mixin — against a selectable scenario and cache config. Each card auto-fetches a server-side mirror (`@fingerprint/node-sdk`) and renders it alongside the client result. The shell also provides common `linkedId` / `tag` inputs that are passed to every identify call across all three surfaces.
 
 ## Run
 
