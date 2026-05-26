@@ -10,31 +10,21 @@
     cacheStorageOptions,
     DEFAULT_LINKED_ID,
     DEFAULT_TAG,
+    getBootStartOptions,
+    getCommonGetOptions,
     selectedScenarioKey,
     startOptionsScenarios,
   } from './config'
-  import type { Fingerprint } from '@fingerprint/svelte'
 
   export let appName: string
 
-  let bootStartOptions: Fingerprint.StartOptions
-  $: {
-    const scenario = startOptionsScenarios.find((s) => s.key === $selectedScenarioKey) ?? startOptionsScenarios[0]
-    const base = { ...scenario.startOptions }
-    bootStartOptions = $cacheEnabled
-      ? { ...base, cache: { storage: $cacheStorage, duration: $cacheDuration } }
-      : base
-  }
+  let bootStartOptions = getBootStartOptions()
+  $: $selectedScenarioKey, $cacheEnabled, $cacheStorage, $cacheDuration,
+     bootStartOptions = getBootStartOptions()
 
-  let commonGetOptions: Fingerprint.GetOptions
-  $: {
-    const linkedId = $commonLinkedId.trim()
-    const tag = $commonTag.trim()
-    commonGetOptions = {
-      ...(linkedId ? { linkedId } : {}),
-      ...(tag ? { tag } : {}),
-    }
-  }
+  let commonGetOptions = getCommonGetOptions()
+  $: $commonLinkedId, $commonTag,
+     commonGetOptions = getCommonGetOptions()
 
   function reload() {
     if (typeof window !== 'undefined') window.location.reload()

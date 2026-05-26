@@ -23,7 +23,7 @@ export const cacheDurationOptions: readonly CacheDurationPreset[] = [
 
 function persistedWritable<T>(key: string, fallback: T, isValid: (v: unknown) => v is T): Writable<T> {
   const initial =
-    typeof localStorage === 'undefined'
+    typeof window === 'undefined'
       ? fallback
       : (() => {
           const raw = localStorage.getItem(key)

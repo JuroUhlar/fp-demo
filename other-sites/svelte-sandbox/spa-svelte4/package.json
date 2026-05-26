@@ -10,11 +10,11 @@
     "typecheck": "svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
-    "@fingerprint/node-sdk": "^7.0.0",
     "@fingerprint/svelte": "3.0.0-rc.0",
     "svelte": "^4.0.0"
   },
   "devDependencies": {
+    "@fingerprint/node-sdk": "^7.0.0",
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "@types/node": "^20.11.0",
     "svelte-check": "^4.0.0",
