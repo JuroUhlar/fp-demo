@@ -45,6 +45,7 @@ export const NpmPackageIdentificationDemo = ({
   getOptions,
   name,
   serverApiKey,
+  decryptionKey,
   customServerApiUrl,
   description,
 }: JsAgentDebugProps) => {
@@ -119,7 +120,7 @@ export const NpmPackageIdentificationDemo = ({
       {fingerprintData?.sealedResult && (
         <>
           <h2>Decrypted Event Response</h2>
-          <UnsealedResultDemo sealedResult={fingerprintData.sealedResult} endpoint="/api/decrypt" />
+          <UnsealedResultDemo sealedResult={fingerprintData.sealedResult} endpoint="/api/decrypt" decryptionKey={decryptionKey} />
         </>
       )}
     </>

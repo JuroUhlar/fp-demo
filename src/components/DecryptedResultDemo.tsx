@@ -5,8 +5,9 @@ import { useUnsealedResult } from '../hooks/useUnsealedResult';
 export const UnsealedResultDemo: FunctionComponent<{
   sealedResult: string;
   endpoint?: string;
-}> = ({ sealedResult, endpoint }) => {
-  const { data, isLoading, error } = useUnsealedResult(sealedResult, endpoint);
+  decryptionKey?: string;
+}> = ({ sealedResult, endpoint, decryptionKey }) => {
+  const { data, isLoading, error } = useUnsealedResult(sealedResult, endpoint, decryptionKey);
 
   if (isLoading) {
     return <div>Unsealing result...</div>;

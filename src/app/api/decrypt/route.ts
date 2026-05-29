@@ -6,15 +6,17 @@ import {
 
 export type DecryptPayload = {
   sealedResult: string;
+  decryptionKey?: string;
 };
 
 export type DecryptResponse = EventsGetResponse;
 
 export async function POST(request: Request) {
   try {
-    const sealedData = ((await request?.json()) as DecryptPayload).sealedResult;
+    const payload = (await request?.json()) as DecryptPayload;
+    const sealedData = payload.sealedResult;
 
-    const decryptionKey = process.env.SEALED_RESULTS_DECRYPT_KEY;
+    const decryptionKey = payload.decryptionKey ?? process.env.SEALED_RESULTS_DECRYPT_KEY;
 
     if (!sealedData || !decryptionKey) {
       console.error('Please set BASE64_KEY and BASE64_SEALED_RESULT environment variables');

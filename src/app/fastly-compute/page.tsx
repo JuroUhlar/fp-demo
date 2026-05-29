@@ -14,6 +14,7 @@ export default function ExamplePage() {
       }}
       name={'Fastly Compute Integration. Open Response'}
       serverApiKey={SUBS.openResponse.serverApiKey}
+      decryptionKey="kFNxOgVnDbJY4bjNn02tHnR/9ZOebWVMCEQV9Lmolb0="
     />
   );
 }
