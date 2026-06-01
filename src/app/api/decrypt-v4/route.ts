@@ -5,12 +5,14 @@ import {
 
 export type DecryptPayload = {
   sealedResult: string;
+  decryptionKey?: string;
 };
 
 export async function POST(request: Request) {
   try {
-    const { sealedResult: sealedData } = (await request.json()) as DecryptPayload;
-    const decryptionKey = process.env.SEALED_RESULTS_DECRYPT_KEY;
+    const payload = (await request.json()) as DecryptPayload;
+    const sealedData = payload.sealedResult;
+    const decryptionKey = payload.decryptionKey ?? process.env.SEALED_RESULTS_DECRYPT_KEY;
 
     if (!sealedData || !decryptionKey) {
       return Response.json(

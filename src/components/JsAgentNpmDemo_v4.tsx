@@ -46,6 +46,7 @@ export const NpmPackageIdentificationDemoV4 = ({
   serverApiKey,
   customServerApiUrl,
   description,
+  decryptionKey,
 }: JsAgentV4DebugProps) => {
   const [fingerprintData, setFingerprintData] = useState<GetResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -134,7 +135,7 @@ export const NpmPackageIdentificationDemoV4 = ({
       {fingerprintData?.sealed_result != null && (
         <>
           <h2>Decrypted Event Response</h2>
-          <UnsealedResultDemo sealedResult={fingerprintData.sealed_result.base64()} />
+          <UnsealedResultDemo sealedResult={fingerprintData.sealed_result.base64()} decryptionKey={decryptionKey} />
         </>
       )}
     </>
