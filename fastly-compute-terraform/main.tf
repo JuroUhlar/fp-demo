@@ -8,6 +8,7 @@
         integration_domain         = "fastly-compute-tf.jurajuhlar.com"
         service_id                 = "52FYzRcQKQzSdcd1MZ7v0M"
         integration_name           = "fingerprint-fastly-compute-terraform-test"
+        download_asset             = false
         agent_script_download_path = "agent"
         get_result_path            = "result"
     }
