@@ -49,6 +49,34 @@ Not tested:
 - `processIdentificationResponse` plugin / `SAVE_EVENT_TO_KV_STORE_PLUGIN_ENABLED`
 - Removing `fpcdn.io` backend from service dashboard
 
+## Terraform-managed service
+
+A separate Fastly Compute service was created via the [Terraform module](https://github.com/fingerprintjs/temp-fastly-compute-terraform) to test the Terraform deployment workflow independently from the manually-managed service above.
+
+| Resource | Value |
+|---|---|
+| Service ID | `52FYzRcQKQzSdcd1MZ7v0M` |
+| Domain | `fastly-compute-tf.jurajuhlar.com` |
+| Config Store | `Fingerprint_Compute_Config_Store_52FYzRcQKQzSdcd1MZ7v0M` (ID: `gec4z3HxxoIhoaICCbbA71`) |
+| Secret Store | `Fingerprint_Compute_Secret_Store_52FYzRcQKQzSdcd1MZ7v0M` (ID: `Op2bbR6ATk8AGR847aKxPv`) |
+| TLS Subscription | `RdWLe9lOZIdn3zphTN6ybw` (Let's Encrypt, issued) |
+| Version | v0.3.1 (latest stable) |
+| Subscription | `SUBS.openResponse` (same as manual service) |
+
+Config: `my-fp-demo/fastly-compute-terraform/main.tf`
+Demo page: `src/app/fastly-compute-terraform/page.tsx`
+
+### Setup notes
+
+The Terraform module uses `var.service_id` as a naming suffix for stores (e.g., `Fingerprint_Compute_Config_Store_<service_id>`), but the integration code at runtime looks up stores using `env('FASTLY_SERVICE_ID')` (the actual Fastly service ID). This creates a chicken-and-egg problem: the service ID isn't known until Terraform creates it. The workaround was:
+
+1. Create with a placeholder `service_id` → get actual service ID from Fastly
+2. `terraform state rm` the stores
+3. Update `service_id` to the actual service ID
+4. `terraform apply` to create correctly-named stores
+
+DNS (CNAME to Fastly) and TLS ACME challenge records were added via Cloudflare API (zone `jurajuhlar.com`). Secrets (`PROXY_SECRET`, `DECRYPTION_KEY`) were set via Fastly API.
+
 ## Breaking changes in v0.4.0
 
 ### Plugin system

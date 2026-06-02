@@ -66,6 +66,7 @@ export const SUBS = {
       region: 'us',
     },
     serverApiKey: '9faii9hhDKMmrELbeshz',
+    proxySecret: 'me2D2WXqzq9FwrCy8kvk',
     decryptionKey: process.env.OPEN_RESPONSE_DECRYPT_KEY,
   },
   stagingMain: {

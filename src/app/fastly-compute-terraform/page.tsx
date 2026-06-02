@@ -1,20 +1,20 @@
 import { NpmPackageIdentificationDemo } from '../../components/JsAgentNpmDemo';
-import { REGION_SDK, SERVER_API_KEY, SUBS } from '../../constants';
+import { SUBS } from '../../constants';
 
-const integrationUrl = 'https://fastly-compute.jurajuhlar.eu';
+const integrationUrl = 'https://fastly-compute-tf.jurajuhlar.com';
 
 export default function ExamplePage() {
-  const { loadOptions, serverApiKey } = SUBS.identificationOnly;
   return (
     <NpmPackageIdentificationDemo
       loadOptions={{
-        apiKey: loadOptions.apiKey,
-        region: loadOptions.region,
+        apiKey: SUBS.openResponse.loadOptions.apiKey,
+        region: SUBS.openResponse.loadOptions.region,
         endpoint: `${integrationUrl}/result`,
         scriptUrlPattern: `${integrationUrl}/agent?apiKey=<apiKey>&version=<version>&loaderVersion=<loaderVersion>`,
       }}
       name={'Fastly Compute Integration via Terraform'}
-      serverApiKey={serverApiKey}
+      serverApiKey={SUBS.openResponse.serverApiKey}
+      decryptionKey="kFNxOgVnDbJY4bjNn02tHnR/9ZOebWVMCEQV9Lmolb0="
     />
   );
 }
