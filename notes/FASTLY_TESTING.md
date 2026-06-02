@@ -74,6 +74,25 @@ Plugin 'SAVE_EVENT_TO_KV_STORE_PLUGIN_ENABLED' is not enabled
 **Test service**: `urFb9O94erZ7G2GScP9Igl` (`totally-legal-hog.edgecompute.app`), v0.4.0-rc.0, using `SUBS.main` proxy secret `znYGLC2S6jcfp0P7BDuL`.
 Demo page: `src/app/fastly-compute-terraform-v4-no-sealed/page.tsx`
 
+### Bug: Status page hides missing KV store when OCR is disabled (2026-06-02)
+
+**Empirically confirmed** on service `urFb9O94erZ7G2GScP9Igl` (`totally-legal-hog.edgecompute.app`).
+
+The KV store health check for sealed results (`handleStatusPage.ts:270`) only runs when **both** `isOpenClientResponseEnabled(env)` AND `isSaveSealedResultToKvStorePluginEnabled(env)` are true. But sealed-result storage is independent of Open Client Response — `SAVE_SEALED_RESULT_TO_KV_STORE_PLUGIN_ENABLED=true` with OCR disabled is a valid config (the plugin just saves sealed results to a KV store during `processSealedResult`).
+
+The event KV store check (`handleStatusPage.ts:279`) correctly has no OCR gate — `isSaveEventToKvStorePluginEnabled(env)` alone is sufficient.
+
+**Test setup**: Service `urFb9O94erZ7G2GScP9Igl` with no `Fingerprint_Results_*` or `Fingerprint_Events_*` KV stores.
+
+| Config state | Event KV warning | Sealed result KV warning |
+|---|---|---|
+| OCR=unset, `SAVE_SEALED_RESULT`=true, `SAVE_EVENT`=true | Yes (correct) | **No (BUG)** |
+| OCR=true, `SAVE_SEALED_RESULT`=true, `SAVE_EVENT`=true | Yes | Yes |
+
+**Impact**: A customer who enables sealed-result storage but not OCR (a valid V4-only config) gets no status page warning when the required `Fingerprint_Results_<serviceId>` KV store is missing or unreachable. The plugin silently fails at runtime.
+
+**Fix**: Remove the `isOpenClientResponseEnabled(env)` condition from the sealed-result KV store check on line 270, matching how the event KV store check on line 279 works.
+
 ### Terraform-managed service verification (2026-06-02)
 
 Service `52FYzRcQKQzSdcd1MZ7v0M` at `fastly-compute-tf.jurajuhlar.com`, upgraded to v0.4.0-rc.0 via `download_asset = false` + manually placed package.
