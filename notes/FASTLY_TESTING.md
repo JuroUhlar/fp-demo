@@ -49,6 +49,31 @@ Not tested:
 - `processIdentificationResponse` plugin / `SAVE_EVENT_TO_KV_STORE_PLUGIN_ENABLED`
 - Removing `fpcdn.io` backend from service dashboard
 
+### Bug: `processSealedResultResponse` runs unconditionally (2026-06-02)
+
+**Empirically confirmed** on service `urFb9O94erZ7G2GScP9Igl` (`totally-legal-hog.edgecompute.app`) — a separate Fastly Compute service deployed with `SUBS.main` (no sealed results enabled).
+
+When a V4 identification succeeds (HTTP 200) but the subscription does not have sealed results enabled (`sealed_result: null` in response), the Fastly Compute logs show:
+
+```
+Make sure Decryption Key is added to Secret Store and its activated from Fingerprint workspace:
+  (new Error("Sealed result is not enabled for this subscription", "__fastly_helpers.js", 5760))
+```
+
+**Root cause** (`src/handlers/handleApiRequest.ts:61-67`): `processSealedResultResponse()` is called unconditionally on every successful POST. Unlike `processOpenClientResponse()` (gated by `isOpenClientResponseEnabled()`), there is no guard. The function throws at line 19 when `sealedResult`/`sealed_result` is null/missing, before any plugin's own enabled-check can run.
+
+In contrast, `processIdentificationResponse` handles this correctly — the `saveEventToKVStore` plugin checks its config store flag first and exits early:
+```
+Plugin 'SAVE_EVENT_TO_KV_STORE_PLUGIN_ENABLED' is not enabled
+```
+
+**Impact**: Every identification request on a subscription without sealed results logs a misleading error about missing Decryption Keys. No functional impact (the `.catch()` prevents it from breaking the response), but it does unnecessary work (parsing, secret store lookup) and pollutes logs.
+
+**Fix**: Gate `processSealedResultResponse` behind a config check before calling it, similar to how `processOpenClientResponse` is gated. Or move the sealed-result/decryption-key validation after confirming at least one `processSealedResult` plugin is registered and enabled.
+
+**Test service**: `urFb9O94erZ7G2GScP9Igl` (`totally-legal-hog.edgecompute.app`), v0.4.0-rc.0, using `SUBS.main` proxy secret `znYGLC2S6jcfp0P7BDuL`.
+Demo page: `src/app/fastly-compute-terraform-v4-no-sealed/page.tsx`
+
 ### Terraform-managed service verification (2026-06-02)
 
 Service `52FYzRcQKQzSdcd1MZ7v0M` at `fastly-compute-tf.jurajuhlar.com`, upgraded to v0.4.0-rc.0 via `download_asset = false` + manually placed package.
