@@ -49,6 +49,18 @@ Not tested:
 - `processIdentificationResponse` plugin / `SAVE_EVENT_TO_KV_STORE_PLUGIN_ENABLED`
 - Removing `fpcdn.io` backend from service dashboard
 
+### Terraform-managed service verification (2026-06-02)
+
+Service `52FYzRcQKQzSdcd1MZ7v0M` at `fastly-compute-tf.jurajuhlar.com`, upgraded to v0.4.0-rc.0 via `download_asset = false` + manually placed package.
+
+| Check | Result |
+|---|---|
+| Status page (`/status`) | All green, version 0.4.0-rc.0, service version 3 |
+| JS Agent V3 identification (open response) | `sealedResult` returned, decryption successful, all smart signals present |
+| JS Agent V4 identification (`endpoints` catch-all) | `event_id` and `sealed_result` returned |
+| Server API v4 event response | `sdk.version: "4.1.0"`, integration `fingerprint-pro-fastly-compute v0.4.0-rc.0` |
+| V4 sealed result decryption (`/api/decrypt-v4`) | Decrypts successfully, all smart signals present |
+
 ## Terraform-managed service
 
 A separate Fastly Compute service was created via the [Terraform module](https://github.com/fingerprintjs/temp-fastly-compute-terraform) to test the Terraform deployment workflow independently from the manually-managed service above.
@@ -60,11 +72,13 @@ A separate Fastly Compute service was created via the [Terraform module](https:/
 | Config Store | `Fingerprint_Compute_Config_Store_52FYzRcQKQzSdcd1MZ7v0M` (ID: `gec4z3HxxoIhoaICCbbA71`) |
 | Secret Store | `Fingerprint_Compute_Secret_Store_52FYzRcQKQzSdcd1MZ7v0M` (ID: `Op2bbR6ATk8AGR847aKxPv`) |
 | TLS Subscription | `RdWLe9lOZIdn3zphTN6ybw` (Let's Encrypt, issued) |
-| Version | v0.3.1 (latest stable) |
+| Version | v0.4.0-rc.0 (upgraded from v0.3.1 on 2026-06-02) |
 | Subscription | `SUBS.openResponse` (same as manual service) |
 
 Config: `my-fp-demo/fastly-compute-terraform/main.tf`
-Demo page: `src/app/fastly-compute-terraform/page.tsx`
+Demo pages:
+- `src/app/fastly-compute-terraform/page.tsx` — V3 agent
+- `src/app/fastly-compute-terraform-v4/page.tsx` — V4 agent
 
 ### Setup notes
 
@@ -95,7 +109,7 @@ DNS (CNAME to Fastly) and TLS ACME challenge records were added via Cloudflare A
 
 V4 uses `Fingerprint.start()` with `endpoints` pointing at the integration URL. The catch-all route forwards all unmatched requests to the API origin. Tested with `endpoints: "https://fastly-compute.jurajuhlar.eu?region=us"`.
 
-Test page: `src/app/fastly-compute-agent-v4/page.tsx`
+Test pages: `src/app/fastly-compute-agent-v4/page.tsx` (manual service), `src/app/fastly-compute-terraform-v4/page.tsx` (terraform service)
 
 ### V3 path config
 
