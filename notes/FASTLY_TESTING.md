@@ -1,3 +1,230 @@
+# Fastly Compute latest main testing - plugin removal / single backend
+
+Tested: 2026-06-17
+Commit tested: `fd15ce64f3699fb488c5ccaf536588bbfff019c9` (`INTER-2098: Remove OCR plugin system and use single backend`)
+Release status: no newer GitHub release exists yet; built and deployed from `main`.
+Terraform: not tested; manual/CLI path only.
+
+## Migration guide cleanup and localhost retest
+
+Tested: 2026-06-18
+Guide: `fingerprintjs/docs` PR [#289](https://github.com/fingerprintjs/docs/pull/289), `fastly-compute-v3-to-v4-migration-guide.mdx`
+Demo: `http://localhost:3000/fastly-compute-latest`
+
+### Service migration changes
+
+US service `qpRIe1OIuDfIMijt5udzL1`:
+
+- Cloned active version 7 to version 8.
+- Kept only `fingerprint` -> `api.fpjs.io`.
+- Removed `api.fpjs.io`, `eu.api.fpjs.io`, `ap.api.fpjs.io`, and `fpcdn.io`.
+- Removed the `Fingerprint_Results_qpRIe1OIuDfIMijt5udzL1` KV Store resource link.
+- Activated version 8.
+- Deleted `DECRYPTION_KEY` from the Secret Store.
+- Deleted these plugin Config Store entries:
+  - `OPEN_CLIENT_RESPONSE_PLUGINS_ENABLED`
+  - `SAVE_TO_KV_STORE_PLUGIN_ENABLED`
+  - `SAVE_SEALED_RESULT_TO_KV_STORE_PLUGIN_ENABLED`
+- Deleted the results KV Store and its 21 entries.
+
+EU service `urFb9O94erZ7G2GScP9Igl`:
+
+- Cloned active version 5 to version 6.
+- Kept only `fingerprint` -> `eu.api.fpjs.io`.
+- Removed `api.fpjs.io` and `eu.api.fpjs.io`.
+- Activated version 6.
+- Deleted these plugin Config Store entries:
+  - `SAVE_EVENT_TO_KV_STORE_PLUGIN_ENABLED`
+  - `SAVE_SEALED_RESULT_TO_KV_STORE_PLUGIN_ENABLED`
+
+Both services retain `AGENT_SCRIPT_DOWNLOAD_PATH` and `GET_RESULT_PATH` because the e2e demo still verifies JavaScript agent v3 compatibility. Both Secret Stores now contain only `PROXY_SECRET`.
+
+### Post-migration verification
+
+| Check | Result |
+|---|---|
+| US `/status` | Version 8, `Fingerprint backend is configured`, no plugin section |
+| EU `/status` | Version 6, `Fingerprint backend is configured`, no plugin section |
+| US V4 from localhost | Passed, event `1781738485111.09XrtT`, sealed result returned |
+| US V3 from localhost | Passed, request `1781738486301.1hvYJb`, sealed result returned |
+| EU V4 from localhost | Passed, event `1781738484528.afjNob`, visitor `frQI0uJyKysH4BOgqXkj` |
+| EU V3 from localhost | Passed, request `1781738486259.OED3h5`, visitor `frQI0uJyKysH4BOgqXkj` |
+| Server API checks | All four events returned and reported `fingerprint-pro-fastly-compute` |
+| Browser/network errors | None; all Fastly agent, cache, and identification requests returned HTTP 200 |
+
+### V4 endpoint without a region query
+
+Removed the legacy `?region=us` and `?region=eu` suffixes from the demo's V4
+`endpoints` values and repeated the localhost e2e test.
+
+| Check | Result |
+|---|---|
+| US V4 POST | `https://fastly-compute.jurajuhlar.eu/?ci=js/4.1.0&q=...`, passed |
+| EU V4 POST | `https://totally-legal-hog.edgecompute.app/?ci=js/4.1.0&q=...`, passed |
+| V4 `region` query parameter | Absent from both identification POSTs |
+| US/EU V3 regression | Both `/agent` and `/result` flows still passed |
+| Server API checks | All four events returned and reported `fingerprint-pro-fastly-compute` |
+| Browser/network errors | None |
+
+This works because each migrated service now has a single `fingerprint` backend
+configured for its subscription region. The migration guide's code examples
+still include `?region=us`, so the examples are more conservative than the new
+single-backend runtime behavior.
+
+### Oddities
+
+- The migration guide names only `OPEN_CLIENT_RESPONSE_PLUGINS_ENABLED` and `SAVE_TO_KV_STORE_PLUGIN_ENABLED`, but services tested against the RC also contained `SAVE_SEALED_RESULT_TO_KV_STORE_PLUGIN_ENABLED` and `SAVE_EVENT_TO_KV_STORE_PLUGIN_ENABLED`. These are plugin-only and no longer read, so they were removed too.
+- The migrated single-backend implementation no longer needs the V4 `region` query parameter, but the migration guide's V4 endpoint examples still include it.
+- Deleting several Config Store entries concurrently caused one Fastly API `409 Conflict`; retrying the affected deletion sequentially succeeded.
+- The package and Server API integration metadata still report `0.4.0-rc.0`, even though the deployed package was built from post-RC commit `fd15ce64`. This is because both `handleStatusPage.ts` and `addTrafficMonitoring.ts` read `packageJson.version`, while `package.json` on `main` still has `"version": "0.4.0-rc.0"`.
+- The locally built package SHA-512 is `ebcebff007467f8c645b5969cf2f872ada46a08a27efa9022d45d1ab66bb4e46179ec6ad0de692bcac5a38b218fddb297ad1212a34932b2d5cafd6b0766fee9d`, exactly matching the active package metadata on both services.
+- The previous `origin_not_available` result from localhost is no longer reproducible. Both EU V3 and V4 pass from `http://localhost:3000`.
+
+### Service cleanup
+
+Retained and renamed:
+
+| Region | Service name | Service ID | Active version |
+|---|---|---|---|
+| US | `fingerprint-fastly-compute-manual-us-test` | `qpRIe1OIuDfIMijt5udzL1` | 8 |
+| EU | `fingerprint-fastly-compute-manual-eu-test` | `urFb9O94erZ7G2GScP9Igl` | 6 |
+
+Deleted:
+
+- `neatly-liberal-tahr.edgecompute.app` (`IlrgCZnYwFBP0EKVNRQsD6`)
+- `fingerprint-fastly-compute-terraform-test` (`52FYzRcQKQzSdcd1MZ7v0M`)
+
+After deletion, the Fastly account lists only the two retained Compute services.
+The deleted Terraform service's orphaned Config Store and Secret Store were
+also deleted. The local `fastly-compute-terraform/main.tf` still references its
+deleted service ID.
+
+## Source verification
+
+```bash
+git clone --depth 1 https://github.com/fingerprintjs/fastly-compute-proxy.git /tmp/fastly-compute-proxy-main
+cd /tmp/fastly-compute-proxy-main
+pnpm install --frozen-lockfile
+pnpm test
+pnpm run build
+```
+
+Results:
+
+| Check | Result |
+|---|---|
+| Unit tests | 7 suites / 97 tests passed |
+| Package build | `pkg/fingerprint-fastly-compute-proxy-integration.tar.gz` built successfully |
+| Built package size | 4,030,243 bytes in Fastly package metadata |
+| Package hash | `ebcebff007467f8c645b5969cf2f872ada46a08a27efa9022d45d1ab66bb4e46179ec6ad0de692bcac5a38b218fddb297ad1212a34932b2d5cafd6b0766fee9d` |
+
+## Manual Fastly deployments
+
+The public latest release endpoint still returns stable `v0.3.1`; the newest release/tag is `v0.4.0-rc.0`. The plugin-removal/single-backend changes are on `main` only, so the package was built locally and deployed with the Fastly CLI from the local dev dependency.
+
+### US subscription service
+
+| Resource | Value |
+|---|---|
+| Service ID | `qpRIe1OIuDfIMijt5udzL1` |
+| Domain | `fastly-compute.jurajuhlar.eu` |
+| Subscription | `SUBS.openResponse` |
+| Package deploy version | 6 |
+| Final active version | 7 |
+| New backend | `fingerprint` -> `api.fpjs.io` |
+
+Commands used:
+
+```bash
+fastly compute deploy --package pkg/fingerprint-fastly-compute-proxy-integration.tar.gz \
+  --service-id qpRIe1OIuDfIMijt5udzL1 --status-check-off \
+  --comment 'Test fd15ce64 remove OCR/plugins' --non-interactive
+
+fastly backend create --service-id qpRIe1OIuDfIMijt5udzL1 --version active --autoclone \
+  --name fingerprint --address api.fpjs.io --override-host api.fpjs.io \
+  --ssl-cert-hostname api.fpjs.io --ssl-sni-hostname api.fpjs.io \
+  --use-ssl --ssl-check-cert --port 443 --connect-timeout 1000 \
+  --first-byte-timeout 15000 --between-bytes-timeout 10000 --max-conn 200 \
+  --non-interactive
+
+fastly service-version activate --service-id qpRIe1OIuDfIMijt5udzL1 --version 7 --non-interactive
+```
+
+Status page:
+
+| Check | Result |
+|---|---|
+| `/status` | Service version 7 |
+| Single backend status | `Fingerprint backend is configured` |
+| Plugin section | Removed |
+| Required config | `PROXY_SECRET` set |
+| V3 path config | `AGENT_SCRIPT_DOWNLOAD_PATH` and `GET_RESULT_PATH` set |
+
+Functional checks:
+
+| Check | Result |
+|---|---|
+| JS Agent V4 via `https://fastly-compute.jurajuhlar.eu?region=us` | HTTP 200, returned `event_id: 1781722647291.JnE21x` and `sealed_result` |
+| Server API V4 event | `visitor_id: 03WGtDX4mini0dTxaevq`; `sdk.integrations[0].name: fingerprint-pro-fastly-compute`; version `0.4.0-rc.0` |
+| JS Agent V3 via `/agent` + `/result` | Agent download 200, browser cache 200, identification POST 200; returned `requestId: 1781722937021.1sxn3A` and `sealedResult` |
+
+### EU subscription service
+
+| Resource | Value |
+|---|---|
+| Service ID | `urFb9O94erZ7G2GScP9Igl` |
+| Domain | `totally-legal-hog.edgecompute.app` |
+| Subscription | `SUBS.main` |
+| Package deploy version | 4 |
+| Final active version | 5 |
+| New backend | `fingerprint` -> `eu.api.fpjs.io` |
+
+Commands used:
+
+```bash
+fastly compute deploy --package pkg/fingerprint-fastly-compute-proxy-integration.tar.gz \
+  --service-id urFb9O94erZ7G2GScP9Igl --status-check-off \
+  --comment 'Test fd15ce64 remove OCR/plugins' --non-interactive
+
+fastly backend create --service-id urFb9O94erZ7G2GScP9Igl --version active --autoclone \
+  --name fingerprint --address eu.api.fpjs.io --override-host eu.api.fpjs.io \
+  --ssl-cert-hostname eu.api.fpjs.io --ssl-sni-hostname eu.api.fpjs.io \
+  --use-ssl --ssl-check-cert --port 443 --connect-timeout 1000 \
+  --first-byte-timeout 15000 --between-bytes-timeout 10000 --max-conn 200 \
+  --prefer-ipv6 true --non-interactive
+
+fastly service-version activate --service-id urFb9O94erZ7G2GScP9Igl --version 5 --non-interactive
+```
+
+Status page:
+
+| Check | Result |
+|---|---|
+| `/status` | Service version 5 |
+| Single backend status | `Fingerprint backend is configured` |
+| Plugin section | Removed |
+| Required config | `PROXY_SECRET` set |
+| V3 path config | `AGENT_SCRIPT_DOWNLOAD_PATH` and `GET_RESULT_PATH` set |
+
+Functional checks:
+
+| Check | Result |
+|---|---|
+| JS Agent V4 from `https://www.jurajuhlar.eu/` origin via `https://totally-legal-hog.edgecompute.app?region=eu` | HTTP 200, returned `event_id: 1781722876479.TsxReP`, `visitor_id: l12OeNeVNZxu0cpjPofJ`, `sealed_result: null` |
+| Server API V4 event | `visitor_id: l12OeNeVNZxu0cpjPofJ`; `sdk.integrations[0].name: fingerprint-pro-fastly-compute`; version `0.4.0-rc.0` |
+| JS Agent V3 from `https://www.jurajuhlar.eu/` origin via `/agent` + `/result` | Agent download 200, browser cache 200, identification POST 200; returned `requestId: 1781722976906.J8ZZuF`, `visitorId: l12OeNeVNZxu0cpjPofJ` |
+
+Historical caveat:
+
+- During the initial 2026-06-17 test, `SUBS.main` returned HTTP 403 `origin_not_available` from `http://localhost:3020`. This was not reproducible during the 2026-06-18 migration retest from `http://localhost:3000`; both EU V3 and V4 passed.
+
+## Notes / observations
+
+- The status page still displays integration version `0.4.0-rc.0` because `package.json` has not been versioned after the `main` changes. The package metadata hash/size and status page behavior confirm the deployed code is from the new build.
+- The old plugin configuration block is gone from both status pages.
+- The new `fingerprint` backend path is active on both services. Deprecated region-named backends remained after the initial deployment and were removed during the 2026-06-18 migration cleanup.
+- EU service activation needed a short propagation delay. Immediately after activating version 5, `/status` still showed version 4; after roughly 30 seconds it showed version 5.
+
 # Fastly Compute v0.4.0-rc.0 Testing Results
 
 Tested: 2026-06-01
