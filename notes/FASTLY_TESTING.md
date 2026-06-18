@@ -5,6 +5,79 @@ Commit tested: `fd15ce64f3699fb488c5ccaf536588bbfff019c9` (`INTER-2098: Remove O
 Release status: no newer GitHub release exists yet; built and deployed from `main`.
 Terraform: not tested; manual/CLI path only.
 
+## Terraform module (main) deployment — V3/V4 US+EU
+
+Tested: 2026-06-18
+Module: `main` of [terraform-fastly-compute-fingerprint-proxy-integration](https://github.com/fingerprintjs/terraform-fastly-compute-fingerprint-proxy-integration)
+Docs: `fingerprintjs/docs` PR [#289](https://github.com/fingerprintjs/docs/pull/289), `deploy-fastly-compute-using-terraform.mdx`
+Config: `fastly-compute-terraform-latest/main.tf`
+Demo: `src/app/fastly-compute-terraform-latest/page.tsx` (`http://localhost:3000/fastly-compute-terraform-latest`)
+
+Goal: reproduce the `fastly-compute-latest` manual page (V3/V4, US/EU) but with
+two brand-new services stood up by the latest Terraform module instead of the CLI.
+
+### New services
+
+| Region | Subscription | Service ID | Domain | Active version |
+|---|---|---|---|---|
+| US | `SUBS.openResponse` | `hvP0tc7uht2CZfUdLfpiUN` | `crisp-walnut-harbor.edgecompute.app` | 2 |
+| EU | `SUBS.main` | `YUrRol6y49g4Tmet6pcxWp` | `mellow-cedar-meadow.edgecompute.app` | 2 |
+
+Both use free `*.edgecompute.app` domains (Fastly auto-TLS, no Cloudflare DNS).
+`region = "us"` / `region = "eu"` produce a single `fingerprint` backend
+(`api.fpjs.io` / `eu.api.fpjs.io`) — the new module's single-backend path.
+
+### Deployment flow (matches PR #289)
+
+The new module can no longer create the Compute service itself; you pre-create
+an empty service, then import it. Steps actually run:
+
+1. Created two empty `type=wasm` services via the Fastly API (CLI auth was expired).
+2. Built the package from `fastly-compute-proxy` `main` (HEAD `8c3591b`) with
+   `pnpm install --frozen-lockfile && pnpm run build`; copied the 4,035,808-byte
+   tarball into `fastly-compute-terraform-latest/assets/`. Used `download_asset = false`.
+   **Do not** rely on `download_asset = true` / `asset_version = "latest"`: the
+   latest GitHub *release* is stale (`v0.3.1`; `v0.4.0-rc.0` is a prerelease), so
+   it would deploy the old multi-backend/plugin code instead of single-backend.
+3. One `main.tf` with two module instances (`fingerprint_us`, `fingerprint_eu`),
+   both sourced from `github.com/fingerprintjs/terraform-fastly-compute-fingerprint-proxy-integration`.
+4. `terraform init` → `terraform import module.fingerprint_us.fastly_service_compute.fingerprint_integration <id>`
+   (and `_eu`) → `terraform apply`.
+5. Set `PROXY_SECRET` in each Secret Store via the Fastly API (Terraform can't set
+   secrets): US = `me2D2WXqzq9FwrCy8kvk` (openResponse), EU = `znYGLC2S6jcfp0P7BDuL` (main).
+
+The Fastly API token is **not** stored in source (this repo is public). `main.tf`
+declares a `sensitive` `fastly_api_token` variable; supply it out-of-band:
+`export TF_VAR_fastly_api_token=<global-scope token>`. The old hardcoded token
+(`X-pX7...`) had already been committed in `fastly-compute-terraform/main.tf` and
+must be rotated in the Fastly dashboard.
+
+`agent_script_download_path = "agent"` and `get_result_path = "result"` keep the
+V3 endpoints matching the demo page. Config Store entries are created with the
+default `manage_fastly_config_store_entries = false`.
+
+### Verification
+
+| Check | Result |
+|---|---|
+| US `/status` | Version 0.4.0-rc.0, service v2, `Fingerprint backend is configured`, PROXY_SECRET + V3 paths set, no plugin section |
+| EU `/status` | Version 0.4.0-rc.0, service v2, same as US |
+| US V4 (open response) | event `1781784100492.Y3Ymf4`, `sealed_result` returned + decrypted, visitor `s98cElxuAD0gqi9vGqFN` |
+| US V3 (open response) | request `1781784098581.YcXAQf`, `sealedResult` returned, visitor `s98cElxuAD0gqi9vGqFN` |
+| EU V4 (main) | event `1781784101831.kfW1wz`, `sealed_result: null` (expected), visitor `Gkemm0ImpKKK0ZTYAPle` |
+| EU V3 (main) | request `1781784098469.j1Ncux`, extended result, visitor `Gkemm0ImpKKK0ZTYAPle` |
+| Server API (all four) | Events returned, `sdk.integrations[0].name: fingerprint-pro-fastly-compute` v0.4.0-rc.0 |
+| V4 `?region=` query | Omitted from both V4 `endpoints`; single backend handles routing |
+| V3 agent download | `/agent` proxied HTTP 200, `text/javascript`, 166,880 bytes on both services |
+
+### Notes
+
+- The home page (`src/app/page.tsx`) auto-lists `page.tsx` routes, so the new demo
+  appears without a nav edit.
+- The older `fastly-compute-terraform/` dir was left untouched; its state still
+  references the deleted `52FYzRcQKQzSdcd1MZ7v0M` and the old `temp-fastly-compute-terraform`
+  module, so a separate `fastly-compute-terraform-latest/` dir was used.
+
 ## Migration guide cleanup and localhost retest
 
 Tested: 2026-06-18
