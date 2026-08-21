@@ -1,22 +1,17 @@
 # Proxy v4
 
-Custom Fingerprint proxy integration using Next.js App Router.
+Custom Fingerprint proxy using a single handler. Every request under `/proxy-v4` is forwarded to the Fingerprint API with the same path, so agent download, identification, and browser cache share one code path.
 
-## Handlers
+See [handleProxyRequest.ts](./handleProxyRequest.ts).
 
-| Endpoint          | Method | Handler                                                                                                                |
-| ----------------- | ------ | ---------------------------------------------------------------------------------------------------------------------- |
-| `/proxy-v4`       | POST   | [proxyIdentificationRequest.ts](./proxyIdentificationRequest.ts) - Forwards identification requests to Fingerprint API |
-| `/proxy-v4/*`     | GET    | [proxyBrowserCacheRequest.ts](./[...randomPathSegments]/proxyBrowserCacheRequest.ts) - Handles browser cache requests  |
-| `/proxy-v4/web/*` | GET    | [proxyAgentDownloadRequest.ts](./web/[...path]/proxyAgentDownloadRequest.ts) - Serves the JS agent from CDN            |
-
-## Routes
-
-- [route.ts](./route.ts) - Root POST route
-- [[...randomPathSegments]/route.ts](./[...randomPathSegments]/route.ts) - Catch-all GET route for cache
-- [web/[...path]/route.ts](./web/[...path]/route.ts) - Agent download route
+| Incoming | Fingerprint API |
+| --- | --- |
+| `POST /proxy-v4` | identification |
+| `GET /proxy-v4/web/*` | JS agent download |
+| `GET /proxy-v4/*` | browser cache |
 
 ## Demo
 
-- [demo/page.tsx](./demo/page.tsx) - Demo page using the proxy
-- [demo-v3-agent/page.tsx](./demo-v3-agent/page.tsx) - Demo page using the proxy with V3 agent
+- [demo/page.tsx](./demo/page.tsx)
+- [demo-v3-agent/page.tsx](./demo-v3-agent/page.tsx)
+- [demo-incremental-id/page.tsx](./demo-incremental-id/page.tsx)
