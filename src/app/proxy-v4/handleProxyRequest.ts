@@ -60,7 +60,9 @@ export async function handleProxyRequest(request: Request, proxySecret: string):
 
 function fingerprintApiUrl(incomingUrl: URL): URL {
   const path = incomingUrl.pathname.slice(PROXY_PATH.length) || '/';
-  const targetUrl = new URL(path, 'https://eu.api.fpjs.io');
+  // Assign pathname on a fixed origin so `//host` cannot change the destination.
+  const targetUrl = new URL('https://eu.api.fpjs.io');
+  targetUrl.pathname = path;
   targetUrl.search = incomingUrl.search;
   return targetUrl;
 }
