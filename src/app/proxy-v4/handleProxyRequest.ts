@@ -47,6 +47,8 @@ export async function handleProxyRequest(request: Request, proxySecret: string):
     const originResponse = await fetch(targetUrl, {
       method: request.method,
       headers,
+      // Next.js caches fetch by default; agent and browser-cache responses must never be stored.
+      cache: 'no-store',
       // Node fetch: buffer the body. Streaming needs `duplex: 'half'`, which Workers do not.
       body: request.method === 'GET' || request.method === 'HEAD' ? undefined : await request.blob(),
     });
@@ -75,11 +77,7 @@ function toClientResponse(originResponse: Response): Response {
   headers.delete('content-encoding');
   headers.delete('transfer-encoding');
   headers.delete('content-length');
-
-  // Cap JS cache so a CDN in front of this app cannot pin a stale agent.
-  if (headers.get('content-type')?.includes('javascript')) {
-    headers.set('cache-control', 'public, max-age=3600, s-maxage=60');
-  }
+  // Keep `cache-control`, `age`, and `etag` as received: Fingerprint sets the agent's cache lifetime.
 
   return new Response(originResponse.body, {
     status: originResponse.status,

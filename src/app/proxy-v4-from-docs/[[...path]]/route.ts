@@ -81,12 +81,6 @@ async function handleProxyRequest(request: Request): Promise<Response> {
     });
 
     const updatedHeaders = new Headers(originResponse.headers);
-    if (updatedHeaders.get('content-type')?.includes('javascript')) {
-      updatedHeaders.set(
-        'cache-control',
-        'public, max-age=3600, s-maxage=60',
-      );
-    }
 
     updatedHeaders.delete('content-encoding');
     updatedHeaders.delete('transfer-encoding');
