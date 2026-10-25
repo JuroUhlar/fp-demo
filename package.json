@@ -2,6 +2,7 @@
   "name": "fp-demo",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "yarn@1.22.22",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,6 +10,7 @@
     "lint": "next lint",
     "tsnode": "npx ts-node -O '{\"module\": \"commonjs\"}'",
     "test": "playwright test",
+    "test:unit": "tsx --test src/app/api/automation-intelligence/route.test.ts",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed"
   },
@@ -53,6 +55,7 @@
     "@types/pako": "^2.0.3",
     "autoprefixer": "^10.4.18",
     "postcss": "^8.4.36",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.1",
+    "tsx": "^4.23.15"
   }
 }
