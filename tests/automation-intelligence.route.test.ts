@@ -1,6 +1,14 @@
 import assert from 'node:assert/strict';
 import { afterEach, test } from 'node:test';
-import { GET } from './route';
+import { GET } from '../src/app/api/automation-intelligence/route';
+
+type EdgeBody = {
+  headers: { name: string; value: string }[];
+  method: string;
+  url: string;
+  ipv4_address?: string;
+  ipv6_address?: string;
+};
 
 const originalFetch = globalThis.fetch;
 
@@ -10,19 +18,13 @@ afterEach(() => {
 
 test('GET returns Automation Intelligence JSON for the incoming request', async () => {
   let fingerprintUrl = '';
-  let fingerprintBody: {
-    headers: { name: string; value: string }[];
-    method: string;
-    url: string;
-    ipv4_address?: string;
-    ipv6_address?: string;
-  } | null = null;
+  let fingerprintBody: EdgeBody | undefined;
   let authHeader = '';
 
   globalThis.fetch = async (input, init) => {
     fingerprintUrl = String(input);
     authHeader = new Headers(init?.headers).get('Authorization') ?? '';
-    fingerprintBody = JSON.parse(String(init?.body)) as typeof fingerprintBody;
+    fingerprintBody = JSON.parse(String(init?.body)) as EdgeBody;
     return Response.json({
       event_id: '1758130560902.8tRtrH',
       timestamp: 1758130560902,

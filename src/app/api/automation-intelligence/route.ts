@@ -1,5 +1,7 @@
 import { collectAutomationIntelligence } from '../../automation-intelligence/collectIntelligence';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request): Promise<Response> {
   try {
     const result = await collectAutomationIntelligence(request);

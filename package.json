@@ -10,7 +10,7 @@
     "lint": "next lint",
     "tsnode": "npx ts-node -O '{\"module\": \"commonjs\"}'",
     "test": "playwright test",
-    "test:unit": "tsx --test src/app/api/automation-intelligence/route.test.ts",
+    "test:unit": "tsx --test tests/automation-intelligence.route.test.ts",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed"
   },
