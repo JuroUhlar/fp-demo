@@ -1,7 +1,11 @@
 import crypto from 'crypto';
 
 function isValidHmacSignature(signature: string, data: Buffer, secret: string) {
-  return signature === crypto.createHmac('sha256', secret).update(data).digest('hex');
+  // Node 24 / newer @types/node: Buffer is not assignable to BinaryLike without a copy.
+  return (
+    signature ===
+    crypto.createHmac('sha256', secret).update(Uint8Array.from(data)).digest('hex')
+  );
 }
 
 type SignatureValidationParams = {
